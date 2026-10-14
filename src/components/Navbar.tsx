@@ -73,81 +73,67 @@ export default function Navbar() {
       {/* START MOBILE NAVBAR */}
       <div
         id="menu_mobile"
-        className={`menu-mobile-menu-container ${mobileOpen ? "open" : ""}`}
-        style={{
-          transform: mobileOpen ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 0.3s ease-in-out",
-          position: "fixed",
-          top: 0,
-          right: 0,
-          width: "300px",
-          height: "100%",
-          backgroundColor: "#141820",
-          zIndex: 9999,
-          padding: "20px",
-          boxShadow: "-5px 0 25px rgba(0,0,0,0.7)",
-          display: "block",
-        }}
+        className={`menu-mobile-menu-container ${mobileOpen ? "active" : ""}`}
       >
-        <ul className="mob-menu-top" style={{ listStyle: "none", padding: 0, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(212,175,55,0.2)", paddingBottom: "15px" }}>
+        <ul className="mob-menu-top">
           <li className="menu-header">
-            <span style={{ color: "var(--primary-gold)", fontWeight: 700, letterSpacing: "1px" }}>MENU UTAMA</span>
+            <span>MENU UTAMA</span>
           </li>
-          <li>
+          <li style={{ display: "inline-block" }}>
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
               className="mob-close-toggle"
-              style={{ background: "transparent", border: "none", cursor: "pointer", color: "white", fontSize: "20px" }}
+              aria-label="Tutup Menu"
             >
               <i className="fas fa-times"></i>
             </button>
           </li>
         </ul>
-        <div className="menu-tab-div" style={{ marginTop: "20px" }}>
-          <ul id="mobile-menu" className="menu" style={{ listStyle: "none", padding: 0 }}>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#home-section" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+        <div className="menu-tab-div">
+          <ul id="mobile-menu" className="menu">
+            <li>
+              <Link href="/#home-section" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Beranda
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#about" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#about" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Tentang Kami
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#services" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#services" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Layanan Kami
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/booking" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "var(--primary-gold)", fontWeight: "bold", textDecoration: "none" }}>
+            <li>
+              <Link href="/booking" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "var(--primary-gold)", fontWeight: "bold" }}>
                 Booking Online Sekarang
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#gallery" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#gallery" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Galeri Rambut
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#team" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#team" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Tim Barber
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#pricing" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#pricing" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Daftar Harga
               </Link>
             </li>
-            <li style={{ padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <Link href="/#contact-us" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "white", textDecoration: "none" }}>
+            <li>
+              <Link href="/#contact-us" onClick={() => setMobileOpen(false)} className="a-mob-menu">
                 Hubungi Kami
               </Link>
             </li>
-            <li style={{ padding: "15px 0" }}>
-              <Link href="/admin/login" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "14px" }}>
+            <li>
+              <Link href="/admin/login" onClick={() => setMobileOpen(false)} className="a-mob-menu" style={{ opacity: 0.7 }}>
                 <i className="fas fa-lock mr-2"></i> Portal Admin
               </Link>
             </li>
@@ -155,19 +141,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      {mobileOpen && (
-        <div
-          id="menu_mobile_overlay"
-          className="menu-mobile-overlay open"
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.7)",
-            zIndex: 9998,
-          }}
-          onClick={() => setMobileOpen(false)}
-        ></div>
-      )}
+      <div
+        id="menu_mobile_overlay"
+        className={`menu-mobile-overlay ${mobileOpen ? "active" : ""}`}
+        onClick={() => setMobileOpen(false)}
+      ></div>
     </>
   );
 }
