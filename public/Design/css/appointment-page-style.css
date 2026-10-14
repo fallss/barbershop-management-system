@@ -1,7 +1,4 @@
-body
-{
-    background: #f7f7f7;
-}
+/* Body inherited from globals & luxury-barber.css */
 
 .text_header
 {
@@ -14,9 +11,8 @@ body
 
 .booking_section
 {
-    max-width: 720px;
-    margin: 50px auto;
-    /*min-height: 500px;*/
+    max-width: 840px;
+    margin: 40px auto 80px auto;
 }
 
 .items_tab
@@ -164,22 +160,5 @@ body
 
 .tab_reservation
 {
-    display: none;
-}
-
-.client_details_div .form-control
-{
-    background-color: #fff;
-    border-radius: 0;
-    padding: 25px 10px;
-    box-shadow: none;
-    border: 2px solid #eee;
-    margin: 10px 0px;
-}
-
-.client_details_div .form-control:focus 
-{
-    border-color: #9e8a78;
-    box-shadow: none;
-    outline: none;
+    display: block;
 }
