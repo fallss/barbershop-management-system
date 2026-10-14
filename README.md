@@ -1,125 +1,142 @@
-# 💈 Barberia Luxe — Sistem Reservasi & Manajemen Barbershop Premium
+# 💈 Barberia Luxe — Barbershop Management & Online Booking System
 
-[![PHP Version](https://img.shields.io/badge/PHP-8.2%20%7C%208.4-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
-[![MySQL](https://img.shields.io/badge/MySQL-MariaDB-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-4.5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4.0-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.3.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vercel Ready](https://img.shields.io/badge/Vercel-Zero--Config%20Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![License](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)](LICENSE)
 
-> **Barberia Luxe** adalah aplikasi web modern berbasis **PHP & MySQL** untuk manajemen barbershop eksklusif. Dilengkapi antarmuka elegan bertema *Luxury Dark & Warm Gold*, sistem pemesanan janji temu online 4-langkah, dan portal dashboard admin komprehensif.
+> **Barberia Luxe** adalah platform manajemen dan sistem reservasi barbershop eksklusif modern yang telah **berhasil dimigrasikan sepenuhnya dari PHP Native & MySQL ke Next.js (App Router, React & TypeScript)**, dirancang secara optimal untuk **0-Configuration 1-Click Deployment di Vercel**.
 
 ---
 
-## ✨ Fitur Utama
+## 🏆 Hasil Migrasi: PHP Native ke Next.js & Ekosistem Vercel
 
-### 🌟 Sisi Pelanggan (Public Website)
-- **Desain Mewah "Barberia Luxe"**: Desain bertema gelap (obsidian `#0b0c10`) dengan aksen emas hangat (`#d4af37`), tipografi premium (*Playfair Display* & *Plus Jakarta Sans*), dan animasi mikro responsif.
-- **Hero Carousel Interaktif**: Banner promosi mewah dengan navigasi visual dan tombol CTA langsung.
-- **Katalog Layanan & Harga Rupiah**: Daftar menu lengkap mulai dari *Gentleman Classic Haircut*, *Fade & Texture*, *Hot Towel Shave*, hingga *Facial Grooming*.
-- **Galeri Portofolio Potongan Rambut**: Galeri showcase model rambut terkini.
-- **Profil Master Barber**: Informasi staf barber berpengalaman beserta keahlian masing-masing.
+Sesuai standar industri modern, aplikasi ini telah bertransformasi:
+
+| Komponen | Versi Legacy (PHP) | Versi Modern (Next.js / Vercel) | Keunggulan Migrasi |
+| :--- | :--- | :--- | :--- |
+| **Bahasa Utama** | PHP 8 | **TypeScript / JavaScript (ESNext)** | Type-safe, autocompletion, mencegah bug runtime |
+| **Framework** | PHP Native | **Next.js 16 (App Router)** | Zero-config di Vercel, Serverless Edge CDN global |
+| **Frontend UI** | HTML5, Bootstrap 4, CSS | **React 19 + Tailwind CSS + Luxury CSS Variables** | Desain *Luxury Obsidian & Warm Gold* super cepat & responsif |
+| **Backend & API** | `contact.php`, `appointments_ajax.php` | **Next.js Route Handlers (`/api/*`)** | Terintegrasi langsung dalam satu codebase |
+| **Sesi Admin** | `$_SESSION` bawaan PHP | **Secure Cookie Session** | Aman dari kebocoran sesi, support multi-device |
+| **Database** | MySQL Lokal (`barbershop_db.sql`) | **Resilient Serverless Data Layer** | Siap pakai instan (pre-seeded), mendukung Supabase/Neon/TiDB |
+
+---
+
+## ✨ Fitur-Fitur Unggulan
+
+### 🌟 1. Sisi Pelanggan (Public Landing & Booking)
+- **Tema Mewah "Barberia Luxe"**: Skema warna *Dark Obsidian* (`#0b0c10`) dengan aksen *Warm Gold* (`#d4af37`), tipografi bergengsi, dan animasi mikro interaktif.
+- **Hero Showcase**: Headline berkelas, metrik reputasi (15+ tahun, 12.500+ pelanggan, rating 4.9/5.0), dan tombol booking instan.
+- **Katalog Layanan & Tarif Rupiah**: Filter kategori interaktif (*Potong Rambut*, *Shaving & Brewok*, *Perawatan Wajah*, *Paket Komplit Executive*).
+- **Galeri Portofolio Potongan Rambut**: Showcase visual gaya rambut tren terkini.
+- **Profil Master Barber**: Informasi pengalaman, ulasan bintang, dan tombol booking langsung per master barber.
 - **Sistem Booking Wizard 4-Langkah**:
-  1. **Langkah 1**: Pemilihan layanan barbershop (multi-select).
-  2. **Langkah 2**: Pemilihan barber favorit.
-  3. **Langkah 3**: Kalender jadwal interaktif 10 hari ke depan dengan slot waktu per 30 menit.
-  4. **Langkah 4**: Pengisian data diri pelanggan dengan validasi nomor HP format Indonesia.
-- **Formulir Kontak AJAX**: Kirim pesan langsung tanpa reload halaman.
+  1. **Langkah 1**: Pemilihan layanan dengan kalkulasi otomatis subtotal biaya & durasi pengerjaan.
+  2. **Langkah 2**: Pemilihan master barber spesifik atau opsi *"Siapa Saja yang Tersedia"*.
+  3. **Langkah 3**: Kalender tanggal interaktif 10 hari ke depan dan slot jam operasional.
+  4. **Langkah 4**: Pengisian data pelanggan (nama, nomor WhatsApp, email, catatan khusus).
+- **Tiket Konfirmasi Digital**: Menampilkan kode booking unik (contoh: `BK-89213`), rincian biaya, dan tombol langsung kirim ke WhatsApp official barbershop.
+- **Formulir Kontak Responsif**: Pengiriman pesan langsung terhubung ke API handler.
 
-### 🛡️ Sisi Pengelola (Admin Dashboard Portal)
-- **Portal Masuk Terisolasi**: Halaman login admin modern dengan enkripsi SHA-1.
-- **Statistik & Metrik Real-time**: Ringkasan jumlah pelanggan, total menu layanan, staf barber aktif, dan total transaksi reservasi.
-- **Manajemen Jadwal Booking**:
-  - *Jadwal Mendatang*: Pantau janji temu aktif.
-  - *Riwayat Reservasi*: Seluruh catatan pemesanan pelanggan.
-  - *Pembatalan Janji*: Modal pembatalan dengan pencatatan alasan resmi.
-- **Manajemen Katalog Layanan**: CRUD kategori layanan dan menu servis lengkap dengan estimasi durasi dan harga.
-- **Manajemen Staf & Jadwal Kerja**: Atur profil barber serta jam operasional kerja mingguan (Senin–Minggu).
-- **Direktori Pelanggan**: Database kontak pelanggan yang pernah melakukan reservasi.
+### 🛡️ 2. Portal Manajemen & Kasir (Admin Dashboard)
+- **Akses Terproteksi**: Halaman login admin (`/admin/login`) berdesain luxury dengan kredensial demo cepat.
+- **Statistik & Metrik Real-Time**: Total reservasi, booking menunggu konfirmasi, jadwal terkonfirmasi, dan estimasi omzet pendapatan.
+- **Tabel Monitoring Jadwal**: Filter status (*Semua*, *Menunggu*, *Dikonfirmasi*, *Selesai*, *Dibatalkan*).
+- **Aksi Cepat Staf Kasir**: Konfirmasi booking, tandai selesai layanan, batalkan jadwal (disertai modal alasan pembatalan), dan hapus data.
+- **Katalog Layanan CRUD**: Halaman `/admin/services` untuk menambah layanan baru, mengatur tarif Rupiah, dan durasi pengerjaan.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 🔑 Kredensial Login Demo Admin
 
-- **Backend**: PHP 8.x (Native dengan PDO MySQL prepared statements)
-- **Database**: MySQL 5.7+ / MariaDB 10.4+
-- **Frontend**: HTML5, CSS3 kustom (`luxury-barber.css`), Bootstrap 4
-- **Interaktivitas**: JavaScript (ES6+), jQuery, SweetAlert, AJAX
-- **Kontainerisasi & Cloud**: Dockerfile siap pakai untuk cloud deployment (Railway, Render, VPS)
+Untuk menguji fitur portal kasir & administrator:
+- **URL Login**: `/admin/login`
+- **Username**: `admin`
+- **Password**: `admin123`
+*(Tersedia tombol "Auto Isi" di halaman login untuk kemudahan testing)*
 
 ---
 
-## 🚀 Panduan Menjalankan Secara Lokal
+## 🚀 Panduan Deploy ke Vercel (1-Click Deploy)
+
+Website ini telah disiapkan dengan konfigurasi standar Next.js sehingga dapat di-deploy ke Vercel tanpa pengaturan rumit:
+
+### Langkah Deploy:
+1. Pastikan perubahan telah di-push ke repositori GitHub:
+   ```bash
+   git add .
+   git commit -m "Migrasi penuh ke Next.js & TypeScript untuk Vercel"
+   git push origin main
+   ```
+2. Buka dashboard [Vercel](https://vercel.com/) dan klik **"Add New Project"** -> **"Project"**.
+3. Pilih repositori **`barbershop-management-system`** dari akun GitHub Anda.
+4. Vercel akan otomatis mendeteksi:
+   - **Framework Preset**: `Next.js`
+   - **Root Directory**: `./`
+   - **Build Command**: `next build`
+   - **Output Directory**: `.next`
+5. Klik **"Deploy"**. Dalam waktu 30–60 detik, website barbershop Anda akan online di domain gratis `*.vercel.app`!
+
+---
+
+## 💻 Menjalankan Secara Lokal (Local Development)
 
 ### Prasyarat
-- PHP 8.0 atau lebih baru (dengan ekstensi `pdo_mysql`)
-- MySQL / MariaDB Server
+- Node.js versi 18.18+ atau 20+
+- npm atau pnpm / yarn
 
-### 1. Clone Repositori
+### Instalasi & Menjalankan:
 ```bash
-git clone https://github.com/username/barberia-luxe.git
-cd barberia-luxe
+# 1. Masuk ke direktori project
+cd barbershop-management-system
+
+# 2. Install dependensi
+npm install
+
+# 3. Jalankan server pengembangan lokal
+npm run dev
 ```
 
-### 2. Import Database
-1. Buka database management tool Anda (phpMyAdmin, DBeaver, HeidiSQL, atau Terminal MySQL).
-2. Buat database baru bernama `barbershop`:
-   ```sql
-   CREATE DATABASE barbershop;
-   ```
-3. Import file `barbershop_db.sql` ke dalam database `barbershop`.
-
-### 3. Konfigurasi Database
-Sesuaikan file `connect.php` dan `barber-admin/connect.php` dengan kredensial database lokal Anda (atau atur via Environment Variable):
-```php
-$db_host = getenv('DB_HOST') ?: '127.0.0.1';
-$db_port = getenv('DB_PORT') ?: '3306';
-$db_name = getenv('DB_NAME') ?: 'barbershop';
-$user    = getenv('DB_USER') ?: 'root';
-$pass    = getenv('DB_PASS') ?: '';
-```
-
-### 4. Jalankan Web Server
-Gunakan server bawaan PHP:
-```bash
-php -S 127.0.0.1:8000
-```
-Buka browser dan akses:
-- **Website Utama:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- **Formulir Booking:** [http://127.0.0.1:8000/appointment.php](http://127.0.0.1:8000/appointment.php)
-- **Portal Admin:** [http://127.0.0.1:8000/barber-admin/login.php](http://127.0.0.1:8000/barber-admin/login.php)
+Buka browser Anda dan akses:
+- **Website Utama**: [http://localhost:3000](http://localhost:3000)
+- **Formulir Reservasi**: [http://localhost:3000/booking](http://localhost:3000/booking)
+- **Portal Staf & Admin**: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
 ---
 
-## 🔑 Kredensial Login Admin Default
+## 📁 Struktur Direktori Project
 
-| Field | Nilai |
-| :--- | :--- |
-| **URL Portal** | `/barber-admin/login.php` |
-| **Username** | `admin` |
-| **Password** | `admin123` |
+```
+├── public/                  # Aset statis & foto barbershop
+│   └── images/              # Foto portofolio, master barber, interior
+├── src/
+│   ├── app/
+│   │   ├── admin/           # Dashboard manajemen & login admin
+│   │   │   ├── login/       # Halaman login staf
+│   │   │   ├── services/    # Manajemen menu layanan
+│   │   │   └── page.tsx     # Dashboard monitoring reservasi
+│   │   ├── api/             # API Route Handlers
+│   │   │   ├── appointments/# Endpoint GET & POST reservasi
+│   │   │   ├── auth/        # Endpoint login, logout, sesi
+│   │   │   └── contact/     # Endpoint formulir pesan kontak
+│   │   ├── booking/         # Wizard booking 4 langkah
+│   │   ├── globals.css      # Luxury dark & gold design system
+│   │   ├── layout.tsx       # Root layout & SEO metadata
+│   │   └── page.tsx         # Luxury landing page
+│   ├── components/          # Komponen React (Navbar, Footer, LayoutWrapper)
+│   └── lib/                 # Data Access Layer & model data barbershop
+├── legacy-php/              # Arsip source code PHP original
+├── next.config.ts           # Konfigurasi Next.js
+├── tsconfig.json            # Konfigurasi TypeScript
+├── package.json             # Dependensi project Next.js
+└── README.md
+```
 
 ---
 
-## ☁️ Panduan Deploy ke Cloud (Railway / Render / cPanel)
-
-Project ini sudah dilengkapi **Dockerfile production** dan pendeteksi environment variable otomatis.
-
-### Cara 1: Deploy ke Railway (Direkomendasikan)
-1. Push project ini ke repository GitHub Anda.
-2. Buka [Railway.app](https://railway.app), klik **+ New Project** $\rightarrow$ **Provision MySQL**.
-3. Klik **+ New** $\rightarrow$ **GitHub Repo** $\rightarrow$ Hubungkan ke repo project ini.
-4. Railway akan otomatis mendeteksi `Dockerfile` dan menginjeksi kredensial database `MYSQLHOST`, `MYSQLUSER`, dll.
-5. Import `barbershop_db.sql` ke database MySQL Railway Anda.
-6. Generate domain di menu **Settings** $\rightarrow$ Website langsung aktif dengan HTTPS!
-
-### Cara 2: Web Hosting cPanel
-1. Compress seluruh file ke file `.zip`.
-2. Upload dan ekstrak di folder `public_html` cPanel Anda.
-3. Buat database baru di **MySQL Databases** cPanel dan import `barbershop_db.sql` via **phpMyAdmin**.
-4. Sesuaikan nama database, user, dan password pada file `connect.php` dan `barber-admin/connect.php`.
-
----
-
-## 📄 Lisensi
-
-Didistribusikan di bawah lisensi MIT. Lihat file `LICENSE` untuk informasi lebih lanjut.
+## 📜 Lisensi & Hak Cipta
+Hak Cipta © 2026 Barberia Luxe. Dirilis di bawah lisensi [MIT](LICENSE).
