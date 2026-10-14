@@ -1,13 +1,24 @@
 # 💈 Barberia Luxe — Barbershop Management & Online Booking System
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white&color=00c776)](https://barbershop-management-system-murex.vercel.app/)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.0-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.3.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Vercel Ready](https://img.shields.io/badge/Vercel-Zero--Config%20Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![License](https://img.shields.io/badge/License-MIT-gold?style=for-the-badge)](LICENSE)
 
-> **Barberia Luxe** adalah platform manajemen dan sistem reservasi barbershop eksklusif modern yang telah **berhasil dimigrasikan sepenuhnya dari PHP Native & MySQL ke Next.js (App Router, React & TypeScript)**, dirancang secara optimal untuk **0-Configuration 1-Click Deployment di Vercel**.
+> 🚀 **LIVE DEMO**: [https://barbershop-management-system-murex.vercel.app/](https://barbershop-management-system-murex.vercel.app/)
+
+**Barberia Luxe** adalah platform manajemen dan sistem reservasi barbershop eksklusif modern yang telah **berhasil dimigrasikan sepenuhnya dari PHP Native & MySQL ke Next.js (App Router, React & TypeScript)**, dirancang secara optimal untuk performa tinggi dan **Zero-Config 1-Click Deployment di Vercel**.
+
+---
+
+## 🌐 Tautan Cepat Demo Aplikasi (Live Links)
+
+| Halaman | Deskripsi | Tautan Langsung |
+| :--- | :--- | :--- |
+| 💈 **Landing Page** | Beranda website utama, katalog harga, tim master barber, dan FAQ | [Kunjungi Website Utama](https://barbershop-management-system-murex.vercel.app/) |
+| 📅 **Formulir Booking** | Wizard 4-langkah pemesanan jadwal & tiket booking digital | [Buka Halaman Reservasi](https://barbershop-management-system-murex.vercel.app/booking) |
+| 🛡️ **Portal Admin** | Dashboard manajemen reservasi & kasir (Login: `admin` / `admin123`) | [Masuk ke Portal Admin](https://barbershop-management-system-murex.vercel.app/admin/login) |
 
 ---
 
