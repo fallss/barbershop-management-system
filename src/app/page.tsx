@@ -806,39 +806,148 @@ export default function HomePage() {
               if (services.length === 0) return null;
               return (
                 <div key={category.id} className="col-lg-6 col-md-12 mb-4">
-                  <div className="price_wrap h-100" style={{ background: "#131722", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "14px", padding: "28px" }}>
-                    <h3 className="d-flex justify-content-between align-items-center mb-3">
-                      <span>{category.icon} {category.name}</span>
-                      <small style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: "normal" }}>
+                  <div
+                    className="price_wrap h-100"
+                    style={{
+                      background: "#131722",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "16px",
+                      padding: "26px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+                    }}
+                  >
+                    {/* Category Header */}
+                    <div
+                      className="d-flex justify-content-between align-items-center mb-4"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(20, 24, 34, 0.85) 100%)",
+                        border: "1px solid rgba(212, 175, 55, 0.35)",
+                        borderRadius: "12px",
+                        padding: "13px 18px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#ffffff",
+                          fontWeight: 700,
+                          fontSize: "17px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          letterSpacing: "0.02em",
+                        }}
+                      >
+                        <span style={{ fontSize: "19px" }}>{category.icon}</span>
+                        <span>{category.name}</span>
+                      </span>
+                      <span
+                        className="badge"
+                        style={{
+                          background: "rgba(212, 175, 55, 0.22)",
+                          color: "#f5d061",
+                          border: "1px solid rgba(212, 175, 55, 0.5)",
+                          borderRadius: "20px",
+                          padding: "4px 12px",
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          letterSpacing: "0.03em",
+                        }}
+                      >
                         {services.length} Layanan
-                      </small>
-                    </h3>
-                    <ul className="price_list">
-                      {services.map((service) => (
-                        <li key={service.id} className="mb-3 pb-3 border-bottom border-dark">
-                          <div className="d-flex justify-content-between align-items-start">
-                            <div>
-                              <h4 style={{ fontSize: "16px", color: "#fff", fontWeight: 700, margin: "0 0 4px" }}>
-                                {service.name}
-                              </h4>
-                              <p style={{ color: "#94a3b8", fontSize: "12.5px", margin: "0 0 6px" }}>
-                                {service.description}
-                              </p>
-                              <div className="d-flex align-items-center">
-                                <span
-                                  className="badge mr-2"
-                                  style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", fontSize: "11px", fontWeight: 500 }}
-                                >
-                                  <i className="far fa-clock mr-1" style={{ fontSize: "11px", color: "inherit", margin: 0 }}></i> {service.duration_min} Menit
-                                </span>
-                                <Link href={`/booking?service=${service.id}`} className="text-warning small font-weight-bold">
-                                  Pilih Layanan →
-                                </Link>
-                              </div>
-                            </div>
-                            <span className="price" style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "16px", whiteSpace: "nowrap" }}>
+                      </span>
+                    </div>
+
+                    {/* Services List with Perfect Dotted Leader Lines */}
+                    <ul className="price_list p-0 m-0" style={{ listStyle: "none" }}>
+                      {services.map((service, sIndex) => (
+                        <li
+                          key={service.id}
+                          className="mb-3 pb-3"
+                          style={{
+                            borderBottom: sIndex === services.length - 1 ? "none" : "1px solid rgba(255, 255, 255, 0.07)",
+                            listStyle: "none",
+                            padding: "6px 0",
+                          }}
+                        >
+                          {/* Row: Title - Straight Dotted Leader Line - Price */}
+                          <div
+                            className="d-flex align-items-baseline justify-content-between mb-1"
+                            style={{ width: "100%", gap: "8px" }}
+                          >
+                            <h4
+                              style={{
+                                fontSize: "16px",
+                                color: "#ffffff",
+                                fontWeight: 700,
+                                margin: 0,
+                                whiteSpace: "nowrap",
+                                letterSpacing: "0.015em",
+                              }}
+                            >
+                              {service.name}
+                            </h4>
+                            <div
+                              style={{
+                                flex: 1,
+                                borderBottom: "2px dotted rgba(212, 175, 55, 0.35)",
+                                margin: "0 6px",
+                                height: "1px",
+                                minWidth: "16px",
+                              }}
+                            ></div>
+                            <span
+                              className="price"
+                              style={{
+                                color: "var(--primary-gold)",
+                                fontWeight: 700,
+                                fontSize: "16.5px",
+                                whiteSpace: "nowrap",
+                                letterSpacing: "0.02em",
+                              }}
+                            >
                               {formatRupiah(service.price)}
                             </span>
+                          </div>
+
+                          {/* Description */}
+                          <p
+                            style={{
+                              color: "#94a3b8",
+                              fontSize: "13px",
+                              lineHeight: "1.55",
+                              margin: "5px 0 10px 0",
+                            }}
+                          >
+                            {service.description}
+                          </p>
+
+                          {/* Footer with Duration Badge and Action Link */}
+                          <div className="d-flex align-items-center justify-content-between">
+                            <span
+                              className="badge"
+                              style={{
+                                background: "rgba(255,255,255,0.06)",
+                                color: "#cbd5e1",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                fontSize: "11px",
+                                fontWeight: 500,
+                                padding: "4px 10px",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              <i className="far fa-clock" style={{ fontSize: "11px", color: "var(--primary-gold)" }}></i>
+                              <span>{service.duration_min} Menit</span>
+                            </span>
+                            <Link
+                              href={`/booking?service=${service.id}`}
+                              className="text-warning small font-weight-bold d-inline-flex align-items-center"
+                              style={{ textDecoration: "none", fontSize: "12.5px", gap: "6px" }}
+                            >
+                              <span>Pilih Layanan</span>
+                              <i className="fas fa-arrow-right" style={{ fontSize: "10px" }}></i>
+                            </Link>
                           </div>
                         </li>
                       ))}

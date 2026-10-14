@@ -84,3 +84,38 @@ p {
 .btn {
   letter-spacing: 0.025em !important;
 }
+
+/* ==========================================================================
+   PRICING SECTION & MENU POLISH (Fix low contrast & messy pseudo dashes)
+   ========================================================================== */
+.pricing_section .price_wrap h3,
+.price_wrap h3 {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.14) 0%, rgba(20, 24, 34, 0.85) 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+  border-radius: 10px !important;
+  padding: 13px 18px !important;
+  color: #ffffff !important;
+  font-size: 17.5px !important;
+  font-weight: 700 !important;
+  margin-bottom: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.pricing_section .price_wrap .price_list li h4:after,
+.price_list li h4:after,
+.price_wrap h4:after {
+  content: none !important;
+  display: none !important;
+}
+
+.pricing_section .price_wrap .price_list li span.price,
+.price_list .price {
+  position: static !important;
+  color: var(--primary-gold) !important;
+  font-weight: 700 !important;
+  font-size: 17px !important;
+  letter-spacing: 0.02em !important;
+}

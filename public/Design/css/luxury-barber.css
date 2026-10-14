@@ -966,20 +966,23 @@ ul#mobile-menu.menu li a:hover {
 }
 
 .price_wrap h3 {
-  color: var(--primary-gold) !important;
-  font-size: 21px !important;
-  font-weight: 700;
-  border-bottom: 2px solid var(--gold-subtle);
-  padding-bottom: 14px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(212,175,55,0.14) 0%, rgba(20,24,34,0.8) 100%) !important;
+  border: 1px solid rgba(212,175,55,0.35) !important;
+  border-radius: 10px !important;
+  padding: 13px 18px !important;
+  margin-bottom: 22px !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
 }
 
 .price_list li {
   padding: 14px 0 !important;
-  border-bottom: 1px dashed var(--dark-border) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
   position: relative;
 }
 
@@ -990,26 +993,30 @@ ul#mobile-menu.menu li a:hover {
 .price_list h4 {
   font-size: 16px !important;
   color: #ffffff !important;
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-weight: 700 !important;
+  margin: 0 !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.price_list li h4:after {
+  content: none !important;
+  display: none !important;
 }
 
 .price_list p {
   font-size: 13px !important;
   color: var(--text-muted) !important;
-  line-height: 1.5;
-  margin: 0 60px 0 0 !important;
+  line-height: 1.55 !important;
+  margin: 6px 0 10px 0 !important;
 }
 
 .price_list .price {
-  position: absolute;
-  right: 0;
-  top: 14px;
+  position: static !important;
   color: var(--primary-gold) !important;
   font-weight: 700 !important;
-  font-size: 16px !important;
+  font-size: 17px !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
+  letter-spacing: 0.02em !important;
 }
 
 /* Contact Section */
