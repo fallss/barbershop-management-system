@@ -713,15 +713,24 @@ ul#mobile-menu.menu li a:hover {
   opacity: 1;
 }
 
-.service_box i {
-  font-size: 42px !important;
+.service_box i.service-main-icon,
+.service_box > i {
+  font-size: 38px !important;
   color: var(--primary-gold) !important;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   display: inline-block;
   transition: var(--transition);
 }
 
-.service_box:hover i {
+.service_box .badge i,
+.service_box span i {
+  font-size: 11px !important;
+  margin: 0 !important;
+  color: inherit !important;
+}
+
+.service_box:hover i.service-main-icon,
+.service_box:hover > i {
   transform: scale(1.1);
 }
 

@@ -552,7 +552,7 @@ export default function HomePage() {
                           {category ? category.name : "Grooming"}
                         </span>
                         <span style={{ fontSize: "11.5px", color: "#64748b" }}>
-                          <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                          <i className="far fa-clock mr-1" style={{ fontSize: "11px", color: "inherit", margin: 0 }}></i> {service.duration_min} Menit
                         </span>
                       </div>
 
@@ -829,7 +829,7 @@ export default function HomePage() {
                                   className="badge mr-2"
                                   style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", fontSize: "11px", fontWeight: 500 }}
                                 >
-                                  <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                                  <i className="far fa-clock mr-1" style={{ fontSize: "11px", color: "inherit", margin: 0 }}></i> {service.duration_min} Menit
                                 </span>
                                 <Link href={`/booking?service=${service.id}`} className="text-warning small font-weight-bold">
                                   Pilih Layanan →

@@ -11,8 +11,10 @@
 
 .booking_section
 {
-    max-width: 840px;
-    margin: 40px auto 80px auto;
+    max-width: 1320px;
+    width: 100%;
+    margin: 40px auto 100px auto;
+    padding: 0 20px;
 }
 
 .items_tab
