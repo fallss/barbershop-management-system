@@ -46,80 +46,62 @@ export default function AdminServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#f8f9fa] pb-16">
-      {/* Top Navbar */}
-      <header className="bg-[#141721] border-b border-[#d4af37]/20 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/admin" className="text-xs text-[#d4af37] hover:underline font-bold">
-              ← Kembali ke Dashboard
-            </Link>
-          </div>
-          <button
-            onClick={() => setNewServiceModal(true)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-xs shadow hover:scale-105 transition-all"
-          >
-            + Tambah Layanan Baru
+    <div style={{ minHeight: "100vh", backgroundColor: "#0d0f13", color: "#f8fafc", paddingBottom: "50px" }}>
+      <nav className="navbar navbar-dark bg-dark px-4 py-3" style={{ borderBottom: "1px solid rgba(212,175,55,0.2)" }}>
+        <div className="container-fluid d-flex justify-content-between align-items-center">
+          <Link href="/admin" className="text-warning font-weight-bold" style={{ textDecoration: "none" }}>
+            <i className="fas fa-arrow-left mr-2"></i> Kembali ke Dashboard
+          </Link>
+          <button onClick={() => setNewServiceModal(true)} className="btn btn-warning btn-sm font-weight-bold">
+            <i className="fas fa-plus mr-1"></i> Tambah Layanan Baru
           </button>
         </div>
-      </header>
+      </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-serif text-white">
-            Katalog Layanan & Perawatan
-          </h1>
-          <p className="text-xs text-gray-400 mt-1">
-            Atur menu potong rambut, shave, spa wajah, dan durasi pengerjaan.
-          </p>
+      <div className="container-fluid px-4 py-4">
+        <div className="mb-4">
+          <h2 style={{ fontFamily: "Playfair Display, serif", color: "#fff", margin: 0 }}>
+            Katalog Layanan & Perawatan Barbershop
+          </h2>
+          <p className="text-muted small mt-1">Atur menu servis, tarif Rupiah, dan durasi pengerjaan.</p>
         </div>
 
-        <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/20 overflow-hidden shadow-xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#0b0c10] text-gray-400 uppercase tracking-wider text-[10px] border-b border-gray-800">
-                <tr>
-                  <th className="py-3 px-4">ID</th>
-                  <th className="py-3 px-4">Nama Layanan</th>
-                  <th className="py-3 px-4">Kategori</th>
-                  <th className="py-3 px-4">Deskripsi</th>
-                  <th className="py-3 px-4">Durasi</th>
-                  <th className="py-3 px-4">Tarif</th>
-                  <th className="py-3 px-4 text-center">Aksi</th>
+        <div className="card" style={{ background: "#141820", border: "1px solid rgba(212,175,55,0.2)", borderRadius: "12px", overflow: "hidden" }}>
+          <div className="table-responsive">
+            <table className="table table-dark table-hover mb-0 text-left" style={{ fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "#090a0d", color: "#94a3b8", textTransform: "uppercase", fontSize: "11px" }}>
+                  <th className="p-3">ID</th>
+                  <th className="p-3">Nama Layanan</th>
+                  <th className="p-3">Kategori</th>
+                  <th className="p-3">Deskripsi</th>
+                  <th className="p-3">Durasi</th>
+                  <th className="p-3">Tarif</th>
+                  <th className="p-3 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
+              <tbody>
                 {services.map((item) => {
                   const cat = INITIAL_CATEGORIES.find((c) => c.id === item.category_id);
                   return (
-                    <tr key={item.id} className="hover:bg-[#191d2b] transition-colors">
-                      <td className="py-4 px-4 font-mono font-bold text-gray-400">#{item.id}</td>
-                      <td className="py-4 px-4 whitespace-nowrap">
-                        <div className="font-bold text-white flex items-center space-x-2">
-                          <span>{item.name}</span>
-                          {item.popular && (
-                            <span className="text-[9px] bg-[#d4af37] text-[#0b0c10] px-1.5 py-0.5 rounded font-extrabold uppercase">
-                              Favorit
-                            </span>
-                          )}
-                        </div>
+                    <tr key={item.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                      <td className="p-3 font-weight-bold text-muted">#{item.id}</td>
+                      <td className="p-3">
+                        <strong className="text-white">{item.name}</strong>
+                        {item.popular && (
+                          <span className="badge badge-warning ml-2 font-weight-bold">FAVORIT</span>
+                        )}
                       </td>
-                      <td className="py-4 px-4 whitespace-nowrap text-gray-300">
-                        {cat ? `${cat.icon} ${cat.name}` : "-"}
-                      </td>
-                      <td className="py-4 px-4 text-gray-400 max-w-sm">{item.description}</td>
-                      <td className="py-4 px-4 whitespace-nowrap text-[#d4af37] font-semibold">
-                        {item.duration_min} Menit
-                      </td>
-                      <td className="py-4 px-4 whitespace-nowrap font-serif font-bold text-[#fce8a6]">
-                        {formatRupiah(item.price)}
-                      </td>
-                      <td className="py-4 px-4 whitespace-nowrap text-center">
+                      <td className="p-3 text-muted">{cat ? `${cat.icon} ${cat.name}` : "-"}</td>
+                      <td className="p-3 text-muted small" style={{ maxWidth: "300px" }}>{item.description}</td>
+                      <td className="p-3 text-warning font-weight-bold">{item.duration_min} Menit</td>
+                      <td className="p-3 font-weight-bold" style={{ color: "var(--primary-gold)" }}>{formatRupiah(item.price)}</td>
+                      <td className="p-3 text-center">
                         <button
                           onClick={() => handleDeleteService(item.id, item.name)}
-                          className="px-2.5 py-1 rounded bg-red-950/60 hover:bg-red-800 text-red-300 border border-red-800 font-bold text-[10px]"
+                          className="btn btn-danger btn-sm"
                         >
-                          Hapus
+                          <i className="fas fa-trash-alt mr-1"></i> Hapus
                         </button>
                       </td>
                     </tr>
@@ -129,102 +111,108 @@ export default function AdminServicesPage() {
             </table>
           </div>
         </div>
-      </main>
+      </div>
 
-      {/* Modal Add Service */}
       {newServiceModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-[#141721] border border-[#d4af37]/40 rounded-2xl p-6 space-y-4 shadow-2xl">
-            <h3 className="text-lg font-bold text-white font-serif">Tambah Layanan Baru</h3>
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.8)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <div className="card p-4" style={{ maxWidth: "480px", width: "100%", background: "#141820", border: "1px solid var(--primary-gold)", borderRadius: "12px" }}>
+            <h4 className="text-white mb-3" style={{ fontFamily: "Playfair Display, serif" }}>Tambah Layanan Baru</h4>
 
-            <form onSubmit={handleAddService} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-gray-300 mb-1 font-semibold">Nama Layanan *</label>
+            <form onSubmit={handleAddService}>
+              <div className="form-group mb-2">
+                <label className="text-light small font-weight-bold">Nama Layanan *</label>
                 <input
                   type="text"
                   required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Contoh: Royal Scalp Treatment"
-                  className="w-full px-3 py-2 rounded-lg bg-[#0b0c10] border border-gray-700 text-white focus:border-[#d4af37] focus:outline-none"
+                  className="form-control"
+                  placeholder="Contoh: Royal Hot Towel Shave"
+                  style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-300 mb-1 font-semibold">Kategori *</label>
+              <div className="form-group mb-2">
+                <label className="text-light small font-weight-bold">Kategori *</label>
                 <select
                   value={form.category_id}
                   onChange={(e) => setForm({ ...form, category_id: Number(e.target.value) })}
-                  className="w-full px-3 py-2 rounded-lg bg-[#0b0c10] border border-gray-700 text-white focus:border-[#d4af37] focus:outline-none"
+                  className="form-control"
+                  style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
                 >
                   {INITIAL_CATEGORIES.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
+                    <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-gray-300 mb-1 font-semibold">Tarif (Rp) *</label>
+              <div className="form-row mb-2">
+                <div className="col">
+                  <label className="text-light small font-weight-bold">Tarif (Rp) *</label>
                   <input
                     type="number"
                     required
                     value={form.price}
                     onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#0b0c10] border border-gray-700 text-white focus:border-[#d4af37] focus:outline-none"
+                    className="form-control"
+                    style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
                   />
                 </div>
-                <div>
-                  <label className="block text-gray-300 mb-1 font-semibold">Durasi (Menit) *</label>
+                <div className="col">
+                  <label className="text-light small font-weight-bold">Durasi (Menit) *</label>
                   <input
                     type="number"
                     required
                     value={form.duration_min}
                     onChange={(e) => setForm({ ...form, duration_min: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#0b0c10] border border-gray-700 text-white focus:border-[#d4af37] focus:outline-none"
+                    className="form-control"
+                    style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-gray-300 mb-1 font-semibold">Deskripsi Layanan *</label>
+              <div className="form-group mb-3">
+                <label className="text-light small font-weight-bold">Deskripsi Layanan *</label>
                 <textarea
                   rows={3}
                   required
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="Jelaskan detail pengerjaan dan fasilitas..."
-                  className="w-full px-3 py-2 rounded-lg bg-[#0b0c10] border border-gray-700 text-white focus:border-[#d4af37] focus:outline-none"
-                />
+                  className="form-control"
+                  placeholder="Jelaskan fasilitas dan cara pengerjaan..."
+                  style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
+                ></textarea>
               </div>
 
-              <div className="flex items-center space-x-2 pt-1">
+              <div className="form-check mb-4">
                 <input
                   type="checkbox"
-                  id="popular"
+                  id="pop"
                   checked={form.popular}
                   onChange={(e) => setForm({ ...form, popular: e.target.checked })}
-                  className="rounded border-gray-700 text-[#d4af37] focus:ring-0"
+                  className="form-check-input"
                 />
-                <label htmlFor="popular" className="text-gray-300 font-medium">
+                <label htmlFor="pop" className="form-check-label text-light small">
                   Tandai sebagai Layanan Favorit / Unggulan
                 </label>
               </div>
 
-              <div className="flex justify-end space-x-3 pt-3 border-t border-gray-800">
-                <button
-                  type="button"
-                  onClick={() => setNewServiceModal(false)}
-                  className="px-4 py-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700"
-                >
+              <div className="d-flex justify-content-end">
+                <button type="button" onClick={() => setNewServiceModal(false)} className="btn btn-secondary btn-sm mr-2">
                   Batal
                 </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-lg bg-[#d4af37] text-[#0b0c10] font-bold hover:bg-white"
-                >
+                <button type="submit" className="btn btn-warning btn-sm font-weight-bold">
                   Simpan Layanan
                 </button>
               </div>

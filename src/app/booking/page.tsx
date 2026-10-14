@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { INITIAL_SERVICES, INITIAL_BARBERS, INITIAL_CATEGORIES, formatRupiah, Service, Barber } from "@/lib/data";
+import { INITIAL_SERVICES, INITIAL_BARBERS, formatRupiah } from "@/lib/data";
 
 function BookingContent() {
   const searchParams = useSearchParams();
@@ -26,7 +26,6 @@ function BookingContent() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [completedBooking, setCompletedBooking] = useState<any>(null);
 
-  // Set initial selections from URL query
   useEffect(() => {
     if (preselectedServiceId) {
       const id = parseInt(preselectedServiceId);
@@ -61,21 +60,18 @@ function BookingContent() {
     };
   });
 
-  // Default first date
   useEffect(() => {
     if (!selectedDate && availableDates.length > 0) {
       setSelectedDate(availableDates[0].dateStr);
     }
   }, [selectedDate, availableDates]);
 
-  // Available Time Slots (09:00 - 20:30)
   const timeSlots = [
     "09:00", "09:45", "10:30", "11:15", "13:00", "13:45",
     "14:30", "15:15", "16:00", "16:45", "17:30", "18:15",
     "19:00", "19:45", "20:30"
   ];
 
-  // Calculate totals
   const chosenServices = INITIAL_SERVICES.filter((s) => selectedServices.includes(s.id));
   const totalPrice = chosenServices.reduce((sum, s) => sum + s.price, 0);
   const totalDuration = chosenServices.reduce((sum, s) => sum + s.duration_min, 0);
@@ -134,7 +130,6 @@ function BookingContent() {
     }
   };
 
-  // SUCCESS CONFIRMATION VIEW
   if (completedBooking) {
     const waText = encodeURIComponent(
       `Halo Barberia Luxe, saya ingin konfirmasi reservasi:\n\n` +
@@ -148,133 +143,111 @@ function BookingContent() {
     );
 
     return (
-      <div className="min-h-screen bg-[#0b0c10] py-16 px-4">
-        <div className="max-w-2xl mx-auto bg-[#141721] border border-[#d4af37]/40 rounded-3xl p-8 sm:p-10 shadow-2xl relative overflow-hidden">
-          <div className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#d4af37] to-[#aa8014] mx-auto flex items-center justify-center text-3xl shadow-lg shadow-[#d4af37]/30">
-              ✓
-            </div>
-            <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold block">
-              Reservasi Berhasil Diajukan!
+      <section className="booking_section">
+        <div className="container py-5">
+          <div className="booking-header-title text-center mb-5">
+            <span className="hero-badge mb-2">
+              <i className="fas fa-check-circle"></i> Reservasi Terkirim
             </span>
-            <h2 className="text-3xl font-bold font-serif text-white">
-              Tiket Reservasi Barberia Luxe
-            </h2>
-            <p className="text-xs text-gray-400">
-              Simpan bukti reservasi ini atau tunjukkan kode booking saat tiba di lokasi.
-            </p>
+            <h2>Tiket Reservasi Barberia Luxe</h2>
+            <p>Terima kasih atas kepercayaan Anda. Reservasi Anda berhasil diajukan!</p>
           </div>
 
-          {/* Ticket Card */}
-          <div className="mt-8 bg-[#0b0c10] border border-gray-800 rounded-2xl p-6 space-y-4">
-            <div className="flex justify-between items-center pb-4 border-b border-gray-800">
-              <div>
-                <span className="text-[10px] uppercase text-gray-500 font-semibold block">Kode Booking</span>
-                <span className="text-2xl font-extrabold text-[#fce8a6] font-mono tracking-wider">
-                  {completedBooking.id}
-                </span>
-              </div>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-950/80 border border-amber-600/50 text-amber-300">
-                Menunggu Konfirmasi
-              </span>
-            </div>
+          <div className="row justify-content-center">
+            <div className="col-lg-7">
+              <div className="card" style={{ background: "#141820", border: "1px solid var(--primary-gold)", borderRadius: "14px", padding: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.6)" }}>
+                <div className="d-flex justify-content-between align-items-center pb-3 border-bottom border-secondary mb-4">
+                  <div>
+                    <span className="text-muted small text-uppercase">Kode Booking Anda</span>
+                    <h3 style={{ color: "var(--primary-gold)", margin: 0, fontFamily: "monospace", letterSpacing: "2px" }}>
+                      {completedBooking.id}
+                    </h3>
+                  </div>
+                  <span className="badge badge-warning p-2" style={{ background: "rgba(212,175,55,0.2)", color: "var(--primary-gold)" }}>
+                    Menunggu Konfirmasi
+                  </span>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4 text-xs">
-              <div>
-                <span className="text-gray-500 block">Nama Pelanggan</span>
-                <span className="text-white font-semibold">{completedBooking.client_name}</span>
-              </div>
-              <div>
-                <span className="text-gray-500 block">WhatsApp / Telepon</span>
-                <span className="text-white font-semibold">{completedBooking.client_phone}</span>
-              </div>
-              <div>
-                <span className="text-gray-500 block">Tanggal & Jam</span>
-                <span className="text-white font-semibold">
-                  {completedBooking.appointment_date} • {completedBooking.appointment_time} WIB
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-500 block">Master Barber</span>
-                <span className="text-white font-semibold">{completedBooking.barber_name}</span>
+                <div className="row mb-3">
+                  <div className="col-sm-6 mb-2">
+                    <span className="text-muted small d-block">Nama Pelanggan:</span>
+                    <strong>{completedBooking.client_name}</strong>
+                  </div>
+                  <div className="col-sm-6 mb-2">
+                    <span className="text-muted small d-block">No. WhatsApp / HP:</span>
+                    <strong>{completedBooking.client_phone}</strong>
+                  </div>
+                  <div className="col-sm-6 mb-2">
+                    <span className="text-muted small d-block">Waktu & Jadwal:</span>
+                    <strong style={{ color: "var(--primary-gold)" }}>{completedBooking.appointment_date} • {completedBooking.appointment_time} WIB</strong>
+                  </div>
+                  <div className="col-sm-6 mb-2">
+                    <span className="text-muted small d-block">Master Barber:</span>
+                    <strong>{completedBooking.barber_name}</strong>
+                  </div>
+                </div>
+
+                <div className="border-top border-secondary pt-3 mb-3">
+                  <span className="text-muted small d-block mb-2">Layanan yang Dipilih:</span>
+                  <ul className="list-unstyled">
+                    {completedBooking.services_details.map((srv: any, idx: number) => (
+                      <li key={idx} className="d-flex justify-content-between text-light py-1 border-bottom border-dark">
+                        <span>{srv.name}</span>
+                        <span style={{ color: "var(--primary-gold)" }}>{formatRupiah(srv.price)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="d-flex justify-content-between align-items-center pt-2">
+                  <h4 style={{ margin: 0, fontSize: "18px" }}>Total Biaya</h4>
+                  <h3 style={{ margin: 0, color: "var(--primary-gold)", fontFamily: "Playfair Display, serif" }}>
+                    {formatRupiah(completedBooking.total_price)}
+                  </h3>
+                </div>
+
+                <div className="mt-4 pt-3 border-top border-secondary d-flex flex-column flex-sm-row gap-2 justify-content-between">
+                  <a
+                    href={`https://wa.me/6281234567890?text=${waText}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-success font-weight-bold py-3 px-4 mb-2 mb-sm-0"
+                    style={{ borderRadius: "8px", background: "#25D366", borderColor: "#25D366" }}
+                  >
+                    <i className="fab fa-whatsapp mr-2"></i> Kirim ke WhatsApp Resmi
+                  </a>
+                  <Link href="/" className="default_btn py-3 px-4 text-center">
+                    Kembali ke Beranda
+                  </Link>
+                </div>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-gray-800">
-              <span className="text-[10px] text-gray-500 uppercase font-semibold block mb-2">
-                Daftar Layanan:
-              </span>
-              <ul className="space-y-1.5 text-xs">
-                {completedBooking.services_details.map((srv: any, idx: number) => (
-                  <li key={idx} className="flex justify-between text-gray-300">
-                    <span>{srv.name}</span>
-                    <span className="text-[#fce8a6] font-semibold">{formatRupiah(srv.price)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pt-4 border-t border-gray-800 flex justify-between items-center">
-              <span className="text-sm font-bold text-white">Total Biaya Pembayaran</span>
-              <span className="text-xl font-extrabold text-[#fce8a6] font-serif">
-                {formatRupiah(completedBooking.total_price)}
-              </span>
-            </div>
-            <p className="text-[11px] text-gray-500 italic">
-              *Pembayaran dilakukan di kasir setelah layanan selesai (Menerima QRIS, Debit, Kredit & Tunai).
-            </p>
-          </div>
-
-          {/* Action CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <a
-              href={`https://wa.me/6281234567890?text=${waText}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-sm text-center shadow-lg transition-colors flex items-center justify-center space-x-2"
-            >
-              <span>💬 Kirim ke WhatsApp Kami</span>
-            </a>
-            <Link
-              href="/"
-              className="py-3.5 px-6 rounded-xl bg-[#1c202e] border border-gray-700 hover:border-gray-500 text-white font-semibold text-sm text-center transition-colors"
-            >
-              Kembali ke Beranda
-            </Link>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header Title */}
-        <div className="text-center mb-10">
-          <Link
-            href="/"
-            className="inline-flex items-center space-x-2 text-xs text-[#d4af37] hover:underline uppercase tracking-wider font-semibold mb-3"
-          >
-            <span>← Kembali ke Beranda</span>
-          </Link>
-          <h1 className="text-3xl sm:text-5xl font-bold font-serif text-white">
-            Reservasi Jadwal <span className="gold-gradient-text">Barberia Luxe</span>
-          </h1>
-          <p className="text-sm text-gray-400 mt-2">
-            Pesan sesi potong rambut dan perawatan eksklusif Anda dalam 4 langkah mudah.
-          </p>
+    <section className="booking_section">
+      <div className="container py-5">
+        <div className="booking-header-title text-center mb-5">
+          <span className="hero-badge mb-2">
+            <i className="far fa-calendar-check"></i> Reservasi Mudah & Cepat
+          </span>
+          <h2>Formulir Booking Janji Temu</h2>
+          <p>Silakan ikuti 4 langkah mudah berikut untuk memilih layanan, barber pilihan, dan jadwal kunjungan Anda.</p>
         </div>
 
-        {/* STEPPER PROGRESS */}
-        <div className="grid grid-cols-4 gap-2 sm:gap-4 mb-10 text-center">
+        {/* Step Indicator Nodes */}
+        <div className="step-wizard-nav mb-5">
           {[
             { num: 1, label: "Layanan" },
             { num: 2, label: "Barber" },
-            { num: 3, label: "Jadwal" },
+            { num: 3, label: "Waktu" },
             { num: 4, label: "Data Diri" },
           ].map((item) => (
-            <button
+            <div
               key={item.num}
               onClick={() => {
                 if (item.num === 1) setStep(1);
@@ -282,421 +255,335 @@ function BookingContent() {
                 if (item.num === 3 && selectedServices.length > 0) setStep(3);
                 if (item.num === 4 && selectedServices.length > 0 && selectedTime) setStep(4);
               }}
-              className={`py-3 px-2 rounded-xl border text-xs sm:text-sm font-bold transition-all ${
-                step === item.num
-                  ? "bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-lg shadow-[#d4af37]/20"
-                  : step > item.num
-                  ? "bg-[#141721] text-[#d4af37] border-[#d4af37]/40"
-                  : "bg-[#11131a] text-gray-500 border-gray-800"
-              }`}
+              className={`wizard-step-node ${step === item.num ? "active" : ""}`}
+              style={{ cursor: "pointer" }}
             >
-              <span className="block text-[10px] opacity-75">Langkah {item.num}</span>
-              <span>{item.label}</span>
-            </button>
+              <div className="wizard-step-circle">{item.num}</div>
+              <span className="wizard-step-label">{item.label}</span>
+            </div>
           ))}
         </div>
 
-        {/* Error Alert */}
         {errorMessage && (
-          <div className="mb-6 p-4 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-center justify-between">
-            <span>⚠️ {errorMessage}</span>
-            <button onClick={() => setErrorMessage("")} className="font-bold ml-2">✕</button>
+          <div className="alert alert-danger mb-4" role="alert">
+            <i className="fas fa-exclamation-triangle mr-2"></i> {errorMessage}
           </div>
         )}
 
-        {/* STEP 1: PILIH LAYANAN */}
+        {/* STEP 1: SELECT SERVICE */}
         {step === 1 && (
-          <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/20 p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-800 pb-4">
+          <div className="select_services_div tab_reservation">
+            <div className="text_header mb-4 d-flex justify-content-between align-items-center flex-wrap">
               <div>
-                <h3 className="text-xl font-bold font-serif text-white">Langkah 1: Pilih Layanan</h3>
-                <p className="text-xs text-gray-400">Anda dapat memilih satu atau beberapa layanan sekaligus.</p>
+                <h3 style={{ fontSize: "20px", color: "#fff", margin: 0 }}>
+                  <span style={{ color: "var(--primary-gold)" }}>Langkah 1:</span> Pilih Layanan Barbershop
+                </h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "4px" }}>
+                  Anda dapat mencentang lebih dari satu layanan (misal: Potong Rambut + Cukur Handuk Hangat).
+                </p>
               </div>
               <div className="text-right">
-                <span className="text-xs text-[#d4af37] font-semibold block">
-                  {selectedServices.length} Layanan Dipilih • {totalDuration} Menit
-                </span>
-                <span className="text-base font-extrabold text-[#fce8a6] font-serif">
-                  Total: {formatRupiah(totalPrice)}
+                <span className="badge badge-warning p-2" style={{ background: "rgba(212,175,55,0.15)", color: "var(--primary-gold)", fontSize: "13px" }}>
+                  {selectedServices.length} Dipilih • Total: {formatRupiah(totalPrice)}
                 </span>
               </div>
             </div>
 
-            {INITIAL_CATEGORIES.map((cat) => {
-              const catServices = INITIAL_SERVICES.filter((s) => s.category_id === cat.id);
-              return (
-                <div key={cat.id} className="space-y-3">
-                  <div className="flex items-center space-x-2 text-sm font-bold text-[#d4af37] uppercase tracking-wider">
-                    <span>{cat.icon}</span>
-                    <span>{cat.name}</span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {catServices.map((service) => {
-                      const isSelected = selectedServices.includes(service.id);
-                      return (
-                        <div
-                          key={service.id}
-                          onClick={() => toggleService(service.id)}
-                          className={`p-4 rounded-xl cursor-pointer border transition-all flex flex-col justify-between ${
-                            isSelected
-                              ? "bg-[#1f2433] border-[#d4af37] shadow-md shadow-[#d4af37]/15 ring-1 ring-[#d4af37]"
-                              : "bg-[#0b0c10] border-gray-800 hover:border-gray-600"
-                          }`}
-                        >
-                          <div>
-                            <div className="flex justify-between items-start mb-1">
-                              <h4 className="text-sm font-bold text-white">{service.name}</h4>
-                              <div
-                                className={`w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold ${
-                                  isSelected
-                                    ? "bg-[#d4af37] text-[#0b0c10]"
-                                    : "border border-gray-600 text-transparent"
-                                }`}
-                              >
-                                ✓
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-400 leading-relaxed mb-3">
-                              {service.description}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between pt-2 border-t border-gray-800 text-xs">
-                            <span className="text-gray-500">⏱ {service.duration_min} Menit</span>
-                            <span className="text-sm font-extrabold text-[#fce8a6] font-serif">
-                              {formatRupiah(service.price)}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-
-            <div className="pt-6 border-t border-gray-800 flex justify-end">
-              <button
-                type="button"
-                disabled={selectedServices.length === 0}
-                onClick={() => setStep(2)}
-                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-105 transition-all disabled:opacity-40 disabled:hover:scale-100"
-              >
-                Lanjut ke Pilih Barber ({selectedServices.length} Dipilih) →
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* STEP 2: PILIH BARBER */}
-        {step === 2 && (
-          <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/20 p-6 sm:p-8 space-y-6">
-            <div className="border-b border-gray-800 pb-4">
-              <h3 className="text-xl font-bold font-serif text-white">Langkah 2: Pilih Master Barber</h3>
-              <p className="text-xs text-gray-400">
-                Pilih barber langganan Anda atau pilih &quot;Siapa Saja yang Tersedia&quot; untuk jadwal tercepat.
-              </p>
-            </div>
-
-            {/* Option: Any Barber */}
-            <div
-              onClick={() => setSelectedBarber(null)}
-              className={`p-5 rounded-xl cursor-pointer border transition-all flex items-center justify-between ${
-                selectedBarber === null
-                  ? "bg-[#1f2433] border-[#d4af37] ring-1 ring-[#d4af37]"
-                  : "bg-[#0b0c10] border-gray-800 hover:border-gray-600"
-              }`}
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-full bg-[#2a2e3d] flex items-center justify-center text-xl">
-                  ⚡
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-white">Siapa Saja yang Tersedia (Any Barber)</h4>
-                  <p className="text-xs text-gray-400">
-                    Sistem akan mencocokkan Anda dengan master barber profesional yang siap pada jam yang Anda pilih.
-                  </p>
-                </div>
-              </div>
-              <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                  selectedBarber === null
-                    ? "bg-[#d4af37] text-[#0b0c10]"
-                    : "border border-gray-600 text-transparent"
-                }`}
-              >
-                ✓
-              </div>
-            </div>
-
-            {/* Specific Barbers Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {INITIAL_BARBERS.map((barber) => {
-                const isSelected = selectedBarber === barber.id;
+            <div className="service-select-grid">
+              {INITIAL_SERVICES.map((row) => {
+                const isSelected = selectedServices.includes(row.id);
                 return (
                   <div
-                    key={barber.id}
-                    onClick={() => setSelectedBarber(barber.id)}
-                    className={`rounded-2xl overflow-hidden cursor-pointer border transition-all flex flex-col justify-between ${
-                      isSelected
-                        ? "bg-[#1f2433] border-[#d4af37] ring-1 ring-[#d4af37] shadow-lg shadow-[#d4af37]/20"
-                        : "bg-[#0b0c10] border-gray-800 hover:border-gray-600"
-                    }`}
+                    key={row.id}
+                    className={`service-card-item ${isSelected ? "selected" : ""}`}
+                    onClick={() => toggleService(row.id)}
+                    style={{ cursor: "pointer" }}
                   >
-                    <div className="relative h-44 w-full">
-                      <img
-                        src={barber.avatar}
-                        alt={barber.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-2 right-2 bg-[#0b0c10]/80 px-2 py-0.5 rounded-full text-xs font-bold text-[#fce8a6] flex items-center space-x-1">
-                        <span>⭐</span>
-                        <span>{barber.rating}</span>
+                    <div className="service-card-left">
+                      <div className="service-check-box">
+                        <i className="fas fa-check" style={{ fontSize: "12px", opacity: isSelected ? 1 : 0 }}></i>
+                      </div>
+                      <div>
+                        <div className="service-info-name">{row.name}</div>
+                        <div className="service-info-desc">{row.description}</div>
                       </div>
                     </div>
-                    <div className="p-4 space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] text-[#d4af37] uppercase font-bold tracking-wider">
-                          {barber.role}
-                        </span>
-                        <div
-                          className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-                            isSelected
-                              ? "bg-[#d4af37] text-[#0b0c10]"
-                              : "border border-gray-600 text-transparent"
-                          }`}
-                        >
-                          ✓
-                        </div>
-                      </div>
-                      <h4 className="text-base font-bold text-white">{barber.name}</h4>
-                      <p className="text-xs text-gray-400 line-clamp-2">{barber.bio}</p>
+                    <div className="service-card-right">
+                      <span className="service-badge-duration">
+                        <i className="far fa-clock"></i> {row.duration_min} Menit
+                      </span>
+                      <span className="service-badge-price">
+                        {formatRupiah(row.price)}
+                      </span>
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            <div className="pt-6 border-t border-gray-800 flex justify-between">
+            <div className="d-flex justify-content-end mt-4">
               <button
                 type="button"
-                onClick={() => setStep(1)}
-                className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold transition-colors"
+                disabled={selectedServices.length === 0}
+                onClick={() => setStep(2)}
+                className="btn-hero-primary"
+                style={{ opacity: selectedServices.length === 0 ? 0.4 : 1, cursor: selectedServices.length === 0 ? "not-allowed" : "pointer" }}
               >
-                ← Kembali ke Layanan
-              </button>
-              <button
-                type="button"
-                onClick={() => setStep(3)}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-105 transition-all"
-              >
-                Lanjut ke Pilih Jadwal →
+                Lanjut ke Pilih Barber ({selectedServices.length} Dipilih) <i className="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 3: PILIH JADWAL & WAKTU */}
-        {step === 3 && (
-          <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/20 p-6 sm:p-8 space-y-6">
-            <div className="border-b border-gray-800 pb-4">
-              <h3 className="text-xl font-bold font-serif text-white">Langkah 3: Pilih Tanggal & Waktu</h3>
-              <p className="text-xs text-gray-400">Pilih tanggal kunjungan dalam 10 hari ke depan dan slot waktu yang nyaman.</p>
+        {/* STEP 2: SELECT BARBER */}
+        {step === 2 && (
+          <div className="select_employee_div tab_reservation">
+            <div className="text_header mb-4">
+              <h3 style={{ fontSize: "20px", color: "#fff", margin: 0 }}>
+                <span style={{ color: "var(--primary-gold)" }}>Langkah 2:</span> Pilih Barber / Stylist Favorit
+              </h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "4px" }}>
+                Setiap barber kami memiliki keahlian khusus untuk memastikan penampilan terbaik Anda.
+              </p>
             </div>
 
-            {/* Date Selector Pills */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#d4af37] mb-3">
-                1. Pilih Tanggal:
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-                {availableDates.map((d) => {
-                  const isSelected = selectedDate === d.dateStr;
-                  return (
-                    <button
-                      key={d.dateStr}
-                      type="button"
-                      onClick={() => setSelectedDate(d.dateStr)}
-                      className={`p-3 rounded-xl border text-center transition-all ${
-                        isSelected
-                          ? "bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-lg shadow-[#d4af37]/25"
-                          : "bg-[#0b0c10] text-gray-300 border-gray-800 hover:border-gray-600"
-                      }`}
-                    >
-                      <span className="block text-xs font-bold">{d.dayName}</span>
-                      <span className="block text-sm font-extrabold mt-0.5">{d.dateFormatted}</span>
-                    </button>
-                  );
-                })}
+            {/* Any Barber */}
+            <div
+              className={`employee-card-item mb-3 ${selectedBarber === null ? "selected" : ""}`}
+              onClick={() => setSelectedBarber(null)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="employee-avatar">
+                <i className="fas fa-bolt"></i>
+              </div>
+              <div className="employee-info flex-grow-1">
+                <div className="employee-name">Siapa Saja yang Tersedia (Any Barber)</div>
+                <div className="employee-specialty">Sistem otomatis mencocokkan jadwal tercepat untuk Anda</div>
+              </div>
+              <div className="employee-check">
+                <i className="fas fa-check-circle" style={{ color: selectedBarber === null ? "var(--primary-gold)" : "#475569", fontSize: "20px" }}></i>
               </div>
             </div>
 
-            {/* Time Slots Selector */}
-            <div className="pt-4">
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#d4af37] mb-3">
-                2. Pilih Jam / Waktu Mulai:
+            <div className="employee-select-grid">
+              {INITIAL_BARBERS.map((barber) => {
+                const isSelected = selectedBarber === barber.id;
+                return (
+                  <div
+                    key={barber.id}
+                    className={`employee-card-item ${isSelected ? "selected" : ""}`}
+                    onClick={() => setSelectedBarber(barber.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="employee-avatar" style={{ overflow: "hidden", padding: 0 }}>
+                      <img src={barber.avatar} alt={barber.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                    <div className="employee-info flex-grow-1">
+                      <div className="employee-name">{barber.name}</div>
+                      <div className="employee-specialty">{barber.role} ({barber.experience})</div>
+                      <div className="small text-muted mt-1">{barber.bio}</div>
+                    </div>
+                    <div className="employee-check">
+                      <i className="fas fa-check-circle" style={{ color: isSelected ? "var(--primary-gold)" : "#475569", fontSize: "20px" }}></i>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="d-flex justify-content-between mt-4">
+              <button type="button" onClick={() => setStep(1)} className="btn btn-secondary">
+                <i className="fas fa-arrow-left mr-2"></i> Kembali ke Layanan
+              </button>
+              <button type="button" onClick={() => setStep(3)} className="btn-hero-primary">
+                Lanjut ke Pilih Waktu <i className="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3: SELECT TIME */}
+        {step === 3 && (
+          <div className="select_date_time_div tab_reservation">
+            <div className="text_header mb-4">
+              <h3 style={{ fontSize: "20px", color: "#fff", margin: 0 }}>
+                <span style={{ color: "var(--primary-gold)" }}>Langkah 3:</span> Tentukan Tanggal & Jam Kunjungan
+              </h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "4px" }}>
+                Pilih tanggal dalam 10 hari ke depan dan slot waktu yang sesuai.
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <label style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "14px", textTransform: "uppercase" }}>
+                1. Pilih Tanggal:
               </label>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
-                {timeSlots.map((time) => {
-                  const isSelected = selectedTime === time;
-                  return (
+              <div className="row">
+                {availableDates.map((d) => (
+                  <div key={d.dateStr} className="col-sm-3 col-6 mb-2">
                     <button
-                      key={time}
+                      type="button"
+                      onClick={() => setSelectedDate(d.dateStr)}
+                      className="w-100 p-2 text-center"
+                      style={{
+                        background: selectedDate === d.dateStr ? "var(--primary-gold)" : "#141820",
+                        color: selectedDate === d.dateStr ? "#0d0f13" : "#f8fafc",
+                        border: selectedDate === d.dateStr ? "1px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "8px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <small className="d-block text-uppercase" style={{ fontSize: "11px", opacity: 0.8 }}>{d.dayName}</small>
+                      <span>{d.dateFormatted}</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "14px", textTransform: "uppercase" }}>
+                2. Pilih Jam Mulai:
+              </label>
+              <div className="row">
+                {timeSlots.map((time) => (
+                  <div key={time} className="col-sm-2 col-4 mb-2">
+                    <button
                       type="button"
                       onClick={() => setSelectedTime(time)}
-                      className={`py-3 rounded-xl border text-center text-sm font-bold transition-all ${
-                        isSelected
-                          ? "bg-[#d4af37] text-[#0b0c10] border-[#d4af37] shadow-lg shadow-[#d4af37]/25 scale-105"
-                          : "bg-[#0b0c10] text-gray-300 border-gray-800 hover:border-gray-600"
-                      }`}
+                      className="w-100 p-2 text-center"
+                      style={{
+                        background: selectedTime === time ? "var(--primary-gold)" : "#141820",
+                        color: selectedTime === time ? "#0d0f13" : "#f8fafc",
+                        border: selectedTime === time ? "1px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "8px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
                     >
                       {time} WIB
                     </button>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-gray-800 flex justify-between">
-              <button
-                type="button"
-                onClick={() => setStep(2)}
-                className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold transition-colors"
-              >
-                ← Kembali ke Barber
+            <div className="d-flex justify-content-between mt-4">
+              <button type="button" onClick={() => setStep(2)} className="btn btn-secondary">
+                <i className="fas fa-arrow-left mr-2"></i> Kembali ke Barber
               </button>
               <button
                 type="button"
                 disabled={!selectedDate || !selectedTime}
                 onClick={() => setStep(4)}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-105 transition-all disabled:opacity-40 disabled:hover:scale-100"
+                className="btn-hero-primary"
+                style={{ opacity: !selectedDate || !selectedTime ? 0.4 : 1 }}
               >
-                Lanjut ke Data Diri →
+                Lanjut ke Data Diri <i className="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 4: DATA DIRI & KONFIRMASI AKHIR */}
+        {/* STEP 4: CLIENT INFO */}
         {step === 4 && (
-          <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/20 p-6 sm:p-8 space-y-6">
-            <div className="border-b border-gray-800 pb-4">
-              <h3 className="text-xl font-bold font-serif text-white">Langkah 4: Informasi Pelanggan</h3>
-              <p className="text-xs text-gray-400">
-                Lengkapi kontak Anda untuk konfirmasi jadwal dan notifikasi pengingat sebelum waktu potong rambut.
+          <div className="client_details_div tab_reservation">
+            <div className="text_header mb-4">
+              <h3 style={{ fontSize: "20px", color: "#fff", margin: 0 }}>
+                <span style={{ color: "var(--primary-gold)" }}>Langkah 4:</span> Isi Informasi Pelanggan
+              </h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "4px" }}>
+                Informasi ini digunakan untuk konfirmasi jadwal dan notifikasi pengingat via WhatsApp.
               </p>
             </div>
 
-            {/* Booking Summary Box */}
-            <div className="bg-[#0b0c10] border border-gray-800 rounded-xl p-4 sm:p-5 space-y-3">
-              <div className="flex justify-between items-center text-xs pb-3 border-b border-gray-800">
-                <span className="text-gray-400">Ringkasan Jadwal:</span>
-                <span className="text-[#fce8a6] font-bold">
+            {/* Summary Box */}
+            <div className="p-3 mb-4 rounded" style={{ background: "#141820", border: "1px solid rgba(212,175,55,0.3)" }}>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <span className="text-muted small">Jadwal Reservasi:</span>
+                <strong style={{ color: "var(--primary-gold)" }}>
                   {selectedDate} • {selectedTime} WIB (Barber: {chosenBarber ? chosenBarber.name : "Siapa Saja"})
-                </span>
+                </strong>
               </div>
-              <div className="space-y-1 text-xs">
-                {chosenServices.map((s) => (
-                  <div key={s.id} className="flex justify-between text-gray-300">
-                    <span>{s.name} ({s.duration_min} mnt)</span>
-                    <span className="font-semibold text-white">{formatRupiah(s.price)}</span>
-                  </div>
-                ))}
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <span className="text-muted small">Layanan ({selectedServices.length}):</span>
+                <span>{chosenServices.map((s) => s.name).join(", ")} ({totalDuration} mnt)</span>
               </div>
-              <div className="pt-3 border-t border-gray-800 flex justify-between items-center">
-                <span className="text-sm font-bold text-white">Total Biaya Reservasi:</span>
-                <span className="text-xl font-extrabold text-[#fce8a6] font-serif">
-                  {formatRupiah(totalPrice)}
-                </span>
+              <div className="d-flex justify-content-between align-items-center border-top border-secondary pt-2">
+                <strong>Total Biaya:</strong>
+                <h4 style={{ margin: 0, color: "var(--primary-gold)" }}>{formatRupiah(totalPrice)}</h4>
               </div>
             </div>
 
-            {/* Input Form */}
-            <form onSubmit={handleBookingSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                  Nama Lengkap *
-                </label>
+            <form onSubmit={handleBookingSubmit} className="client_details_form">
+              <div className="form-group">
+                <label style={{ color: "white", fontSize: "13px", fontWeight: "bold" }}>Nama Lengkap *</label>
                 <input
                   type="text"
                   required
                   value={clientData.name}
                   onChange={(e) => setClientData({ ...clientData, name: e.target.value })}
+                  className="form-control"
                   placeholder="Contoh: Raditya Danu"
-                  className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                    No. WhatsApp / HP Aktif *
-                  </label>
+              <div className="form-row">
+                <div className="form-group col-md-6">
+                  <label style={{ color: "white", fontSize: "13px", fontWeight: "bold" }}>Nomor WhatsApp / HP *</label>
                   <input
                     type="tel"
                     required
                     value={clientData.phone}
                     onChange={(e) => setClientData({ ...clientData, phone: e.target.value })}
+                    className="form-control"
                     placeholder="081234567890"
-                    className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                    Alamat Email *
-                  </label>
+                <div className="form-group col-md-6">
+                  <label style={{ color: "white", fontSize: "13px", fontWeight: "bold" }}>Alamat Email *</label>
                   <input
                     type="email"
                     required
                     value={clientData.email}
                     onChange={(e) => setClientData({ ...clientData, email: e.target.value })}
+                    className="form-control"
                     placeholder="nama@email.com"
-                    className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                  Catatan Khusus (Opsional)
-                </label>
+              <div className="form-group">
+                <label style={{ color: "white", fontSize: "13px", fontWeight: "bold" }}>Catatan Khusus (Opsional)</label>
                 <textarea
                   rows={3}
                   value={clientData.notes}
                   onChange={(e) => setClientData({ ...clientData, notes: e.target.value })}
-                  placeholder="Contoh: Kulit sensitif, ingin model fade samping tipis, atau permintaan khusus lainnya..."
-                  className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
-                />
+                  className="form-control"
+                  placeholder="Contoh: Ingin model low fade samping tipis..."
+                ></textarea>
               </div>
 
-              <div className="pt-6 border-t border-gray-800 flex justify-between items-center">
-                <button
-                  type="button"
-                  onClick={() => setStep(3)}
-                  className="px-6 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold transition-colors"
-                >
-                  ← Kembali ke Jadwal
+              <div className="d-flex justify-content-between mt-4">
+                <button type="button" onClick={() => setStep(3)} className="btn btn-secondary">
+                  <i className="fas fa-arrow-left mr-2"></i> Kembali ke Waktu
                 </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-105 transition-all disabled:opacity-50"
-                >
-                  {submitting ? "Memproses Reservasi..." : "Konfirmasi Reservasi Sekarang →"}
+                <button type="submit" disabled={submitting} className="btn-hero-primary">
+                  {submitting ? "Memproses..." : "Konfirmasi Reservasi Sekarang"} <i className="fas fa-check ml-2"></i>
                 </button>
               </div>
             </form>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
 export default function BookingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0b0c10] text-center py-20 text-white">Memuat Sistem Booking...</div>}>
+    <Suspense fallback={<div className="container py-5 text-center text-light">Memuat Sistem Booking...</div>}>
       <BookingContent />
     </Suspense>
   );

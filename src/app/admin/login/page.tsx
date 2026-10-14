@@ -42,47 +42,95 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-[#141721] border border-[#d4af37]/30 rounded-3xl p-8 sm:p-10 shadow-2xl relative">
-        <div className="text-center space-y-3 mb-8">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#d4af37] to-[#aa8014] mx-auto flex items-center justify-center shadow-lg shadow-[#d4af37]/20">
-            <span className="text-2xl">🔒</span>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #0d0f13 0%, #171b24 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+      }}
+    >
+      <div
+        className="card"
+        style={{
+          maxWidth: "440px",
+          width: "100%",
+          background: "#141820",
+          border: "1px solid rgba(212,175,55,0.3)",
+          borderRadius: "16px",
+          padding: "36px",
+          boxShadow: "0 15px 40px rgba(0,0,0,0.7)",
+        }}
+      >
+        <div className="text-center mb-4">
+          <div
+            style={{
+              width: "60px",
+              height: "60px",
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, #d4af37, #aa8014)",
+              margin: "0 auto 15px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "24px",
+              color: "#0d0f13",
+              boxShadow: "0 8px 20px rgba(212,175,55,0.25)",
+            }}
+          >
+            <i className="fas fa-user-shield"></i>
           </div>
-          <span className="text-[10px] uppercase tracking-widest text-[#d4af37] font-bold block">
-            Portal Khusus Staf & Administrator
+          <span style={{ color: "var(--primary-gold)", fontSize: "11px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" }}>
+            PORTAL ADMINISTRATOR & KASIR
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white">
+          <h2 style={{ color: "#fff", fontSize: "24px", margin: "6px 0 0", fontFamily: "Playfair Display, serif" }}>
             Barberia Luxe Admin
           </h2>
-          <p className="text-xs text-gray-400">
-            Kelola reservasi pelanggan, jadwal master barber, dan katalog layanan.
+          <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "4px" }}>
+            Kelola jadwal reservasi, staf barber, dan menu layanan.
           </p>
         </div>
 
         {/* Demo Credentials Box */}
-        <div className="bg-[#1c202e] border border-dashed border-[#d4af37]/40 rounded-xl p-3.5 mb-6 text-xs flex items-center justify-between">
+        <div
+          className="p-3 mb-4 rounded d-flex justify-content-between align-items-center"
+          style={{
+            background: "#1c202e",
+            border: "1px dashed rgba(212,175,55,0.4)",
+            fontSize: "12px",
+          }}
+        >
           <div>
-            <span className="text-gray-400 block text-[10px] uppercase font-semibold">Demo Akun:</span>
-            <span className="text-white font-mono">User: <strong>admin</strong> | Pass: <strong>admin123</strong></span>
+            <span style={{ color: "#94a3b8", display: "block", fontSize: "10px", textTransform: "uppercase" }}>Demo Akun:</span>
+            <span style={{ color: "#fff", fontFamily: "monospace" }}>User: <strong>admin</strong> | Pass: <strong>admin123</strong></span>
           </div>
           <button
             type="button"
             onClick={handleQuickDemo}
-            className="px-2.5 py-1 rounded bg-[#d4af37] text-[#0b0c10] font-bold text-[11px] hover:bg-white transition-colors"
+            className="btn btn-sm"
+            style={{
+              background: "var(--primary-gold)",
+              color: "#0d0f13",
+              fontWeight: "bold",
+              fontSize: "11px",
+              padding: "4px 10px",
+            }}
           >
             Auto Isi
           </button>
         </div>
 
         {error && (
-          <div className="mb-6 p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs">
-            ⚠️ {error}
+          <div className="alert alert-danger p-2 small mb-3" role="alert">
+            <i className="fas fa-exclamation-circle mr-1"></i> {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label style={{ color: "#cbd5e1", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
               Username
             </label>
             <input
@@ -90,39 +138,39 @@ export default function AdminLoginPage() {
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Masukkan username admin"
-              className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
+              className="form-control"
+              placeholder="admin"
+              style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-              Kata Sandi (Password)
+          <div className="form-group mb-4">
+            <label style={{ color: "#cbd5e1", fontSize: "12px", fontWeight: "bold", textTransform: "uppercase" }}>
+              Kata Sandi
             </label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="form-control"
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
+              style={{ background: "#0d0f13", border: "1px solid #334155", color: "#fff" }}
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 mt-2"
+            className="default_btn w-100 justify-content-center py-2.5"
+            style={{ fontSize: "14px" }}
           >
-            {loading ? "Memverifikasi Kredensial..." : "Masuk ke Dashboard →"}
+            {loading ? "Memverifikasi..." : "Masuk ke Dashboard"} <i className="fas fa-sign-in-alt ml-2"></i>
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-800 text-center">
-          <Link
-            href="/"
-            className="text-xs text-gray-400 hover:text-[#d4af37] transition-colors"
-          >
+        <div className="text-center mt-4 pt-3 border-top border-secondary">
+          <Link href="/" style={{ color: "#94a3b8", fontSize: "12px", textDecoration: "none" }}>
             ← Kembali ke Website Utama
           </Link>
         </div>

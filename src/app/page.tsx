@@ -1,26 +1,91 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { INITIAL_SERVICES, INITIAL_BARBERS, INITIAL_CATEGORIES, formatRupiah } from "@/lib/data";
+import { INITIAL_CATEGORIES, INITIAL_SERVICES } from "@/lib/data";
 
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [contactStatus, setContactStatus] = useState<{ loading: boolean; success: boolean; message: string }>({
-    loading: false,
-    success: false,
-    message: "",
-  });
+  // Hero Carousel State
+  const [heroSlide, setHeroSlide] = useState(0);
+  const heroSlides = [
+    {
+      img: "/Design/images/barbershop_image_1.jpg",
+      badge: "Barbershop Premium & Grooming",
+      badgeIcon: "fas fa-crown",
+      title: "Bukan Sekadar Cukur Rambut, Ini Pengalaman Eksklusif.",
+      desc: "Barbershop mewah khusus pria modern yang mengutamakan presisi, kerapian sempurna, kenyamanan ekstra, dan kepercayaan diri maksimal.",
+      btn1Text: "Pesan Jadwal Sekarang",
+      btn1Link: "/booking",
+      btn2Text: "Lihat Menu & Harga",
+      btn2Link: "#pricing",
+      btn2Icon: "fas fa-list-ul",
+    },
+    {
+      img: "/Design/images/barbershop_image_2.jpg",
+      badge: "Barber Profesional Tersertifikasi",
+      badgeIcon: "fas fa-award",
+      title: "Teknik Potong Presisi & Cukur Tradisional.",
+      desc: "Sentuhan tangan ahli barber berpengalaman dengan teknik modern fade, beard sculpting, dan terapi handuk hangat aromaterapi.",
+      btn1Text: "Booking Online Cepat",
+      btn1Link: "/booking",
+      btn2Text: "Tentang Barberia",
+      btn2Link: "#about",
+      btn2Icon: "fas fa-info-circle",
+    },
+    {
+      img: "/Design/images/barbershop_image_3.jpg",
+      badge: "Pelayanan Kelas Utama",
+      badgeIcon: "fas fa-gem",
+      title: "Suasana Vintage Mewah & Relaksasi Penuh.",
+      desc: "Nikmati kursi barber ergonomis premium, perawatan wajah menutrisi, dan produk pomade serta hair tonic impor terbaik.",
+      btn1Text: "Reservasi Kursi Anda",
+      btn1Link: "/booking",
+      btn2Text: "Kenali Tim Barber",
+      btn2Link: "#team",
+      btn2Icon: "fas fa-user-friends",
+    },
+  ];
 
-  const filteredServices = selectedCategory
-    ? INITIAL_SERVICES.filter((s) => s.category_id === selectedCategory)
-    : INITIAL_SERVICES;
+  // Auto advance hero carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  // Review Carousel State
+  const [reviewSlide, setReviewSlide] = useState(0);
+  const reviewSlides = [
+    {
+      quote:
+        "\"Pelayanan di Barberia Luxe benar-benar luar biasa! Potongan rambut sangat rapi dan detail, pijatan kepalanya bikin rileks setelah seharian kerja. Sistem booking online-nya sangat praktis tanpa perlu menunggu antrean.\"",
+      author: "Andi Firmansyah",
+      role: "Pengusaha & Pelanggan Setia",
+    },
+    {
+      quote:
+        "\"Fade cut paling halus yang pernah saya rasakan. Barber sangat mengerti karakteristik bentuk kepala saya dan memberikan saran model yang pas. Tempatnya bersih, adem, dan beraroma aromaterapi mewah.\"",
+      author: "Reza Pratama",
+      role: "Kreator Konten & Desainer",
+    },
+    {
+      quote:
+        "\"Paket Gentlemen Ultimate Grooming sangat saya rekomendasikan! Cukur handuk hangatnya mantap dan masker charcoal bikin muka segar seketika. Pasti langganan tetap di sini.\"",
+      author: "Bayu Wicaksono",
+      role: "Eksekutif Bisnis",
+    },
+  ];
+
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactAlert, setContactAlert] = useState<{ success: boolean; text: string } | null>(null);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setContactStatus({ loading: true, success: false, message: "" });
+    setContactLoading(true);
+    setContactAlert(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -29,582 +94,566 @@ export default function HomePage() {
       });
       const data = await res.json();
       if (data.success) {
-        setContactStatus({ loading: false, success: true, message: data.message });
-        setContactForm({ name: "", email: "", phone: "", message: "" });
+        setContactAlert({ success: true, text: data.message });
+        setContactForm({ name: "", email: "", subject: "", message: "" });
       } else {
-        setContactStatus({ loading: false, success: false, message: data.error || "Gagal mengirim pesan." });
+        setContactAlert({ success: false, text: data.error || "Gagal mengirim pesan." });
       }
     } catch {
-      setContactStatus({ loading: false, success: false, message: "Terjadi kesalahan jaringan." });
+      setContactAlert({ success: false, text: "Terjadi kesalahan jaringan." });
+    } finally {
+      setContactLoading(false);
     }
   };
 
   const galleryItems = [
-    { src: "/images/portfolio-1.jpg", title: "Executive Pompadour", category: "Classic Haircut" },
-    { src: "/images/portfolio-2.jpg", title: "Modern Skin Fade", category: "Fade & Taper" },
-    { src: "/images/portfolio-3.jpg", title: "Textured Crop Fade", category: "Contemporary" },
-    { src: "/images/portfolio-4.jpg", title: "Royal Hot Towel Shave", category: "Shaving & Beard" },
-    { src: "/images/portfolio-5.jpg", title: "Gentleman Side Part", category: "Formal Classic" },
-    { src: "/images/portfolio-6.jpg", title: "Beard Sculpt & Line-up", category: "Beard Styling" },
-    { src: "/images/portfolio-7.jpg", title: "French Crop Taper", category: "Modern Cut" },
-    { src: "/images/portfolio-8.jpg", title: "Charcoal Detox Facial", category: "Grooming Spa" },
+    { src: "/Design/images/portfolio-1.jpg", title: "Classic Pompadour" },
+    { src: "/Design/images/portfolio-2.jpg", title: "Skin Fade Undercut" },
+    { src: "/Design/images/portfolio-3.jpg", title: "Beard Sculpting & Trim" },
+    { src: "/Design/images/portfolio-4.jpg", title: "Textured French Crop" },
+    { src: "/Design/images/portfolio-5.jpg", title: "Side Part Gentleman" },
+    { src: "/Design/images/portfolio-6.jpg", title: "Modern Taper Fade" },
+    { src: "/Design/images/portfolio-7.jpg", title: "Sharp Clean Razor Edge" },
+    { src: "/Design/images/portfolio-8.jpg", title: "Slick Back Executive" },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#f8f9fa]">
-      {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden border-b border-[#d4af37]/20">
-        {/* Background Overlay */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c10] via-[#0b0c10]/85 to-transparent z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#d4af37]/15 via-transparent to-transparent z-10" />
-          <div
-            className="w-full h-full bg-cover bg-center filter brightness-40 scale-105 transition-transform duration-1000"
-            style={{ backgroundImage: "url('/images/barbershop_image_1.jpg')" }}
-          />
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-20 max-w-5xl mx-auto px-4 py-20 text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#141721]/90 border border-[#d4af37]/40 shadow-lg shadow-[#d4af37]/10 mb-8 backdrop-blur-sm animate-pulse">
-            <span className="text-sm">👑</span>
-            <span className="text-xs uppercase tracking-widest text-[#fce8a6] font-bold">
-              Barbershop Premium & Gentleman Grooming Jakarta
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-serif mb-6 leading-tight">
-            Seni Cukur Mahakarya untuk{" "}
-            <span className="gold-gradient-text block mt-2">Pria Berkelas</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-gray-300 font-light leading-relaxed mb-10">
-            Perpaduan presisi gunting master barber berpengalaman, tradisi cukur royal hot towel, dan relaksasi spa maskulin di atmosfer eksklusif Jakarta Selatan.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/booking"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold text-[#0b0c10] bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] hover:scale-105 shadow-xl shadow-[#d4af37]/25 transition-all duration-300"
-            >
-              <span>Pesan Jadwal Sekarang</span>
-              <span className="ml-2 font-bold text-lg">→</span>
-            </Link>
-            <Link
-              href="#layanan"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-semibold text-white bg-[#141721] border border-[#d4af37]/40 hover:border-[#d4af37] hover:bg-[#191d2b] transition-all duration-300"
-            >
-              Lihat Menu Layanan
-            </Link>
-          </div>
-
-          {/* Stats Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/10 text-center">
-            <div>
-              <p className="text-3xl sm:text-4xl font-extrabold gold-gradient-text font-serif">15+</p>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider">Tahun Pengalaman</p>
-            </div>
-            <div>
-              <p className="text-3xl sm:text-4xl font-extrabold gold-gradient-text font-serif">12.500+</p>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider">Pelanggan Puas</p>
-            </div>
-            <div>
-              <p className="text-3xl sm:text-4xl font-extrabold gold-gradient-text font-serif">4.9 / 5.0</p>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider">Bintang Kepuasan</p>
-            </div>
-            <div>
-              <p className="text-3xl sm:text-4xl font-extrabold gold-gradient-text font-serif">100%</p>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1 uppercase tracking-wider">Higienis & Bergaransi</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* TENTANG KAMI (ABOUT US) */}
-      <section id="tentang" className="py-24 bg-[#0e1017] border-b border-[#d4af37]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Visual Collage */}
-            <div className="relative">
-              <div className="relative z-10 rounded-2xl overflow-hidden border-2 border-[#d4af37]/30 shadow-2xl">
-                <img
-                  src="/images/about-1.jpg"
-                  alt="Barberia Luxe Interior"
-                  className="w-full h-[420px] object-cover hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <div className="hidden sm:block absolute -bottom-8 -right-6 z-20 w-64 h-52 rounded-xl overflow-hidden border-2 border-[#d4af37] shadow-2xl">
-                <img
-                  src="/images/about-2.jpg"
-                  alt="Master Barber in Action"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -top-6 -left-6 z-0 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl" />
-            </div>
-
-            {/* Content Text */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-                <span>✦</span>
-                <span>Standar Baru Perawatan Pria</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-serif leading-tight">
-                Tradisi Cukur Legendaris, <br />
-                <span className="gold-gradient-text">Kenyamanan Kelas Dunia</span>
-              </h2>
-              <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
-                Sejak pertama kali dibuka, <strong>Barberia Luxe</strong> mengusung visi sederhana namun berani: memberikan pengalaman grooming yang bukan sekadar potong rambut, melainkan sebuah ritual relaksasi maskulin yang meningkatkan rasa percaya diri setiap pria.
-              </p>
-              <p className="text-gray-400 leading-relaxed text-sm sm:text-base">
-                Setiap kunjungan dijamin dengan standar kebersihan tertinggi menggunakan UV Sterilizer medis, pisau cukur steril sekali pakai, dan produk perawatan rambut serta brewok grade dunia.
-              </p>
-
-              {/* Pillars Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                <div className="p-4 rounded-xl bg-[#141721] border border-[#d4af37]/20 flex items-start space-x-3">
-                  <span className="text-2xl">🛡️</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Sterilisasi Standar Medis</h4>
-                    <p className="text-gray-400 text-xs mt-1">Pisau cukur baru sekali pakai & sterilisasi UV setiap alat.</p>
+    <>
+      {/* HOME HERO SECTION */}
+      <section className="home-section" id="home-section">
+        <div className="home-section-content">
+          <div id="home-section-carousel" className="carousel slide" data-ride="carousel">
+            <ol className="carousel-indicators">
+              {heroSlides.map((_, idx) => (
+                <li
+                  key={idx}
+                  className={heroSlide === idx ? "active" : ""}
+                  onClick={() => setHeroSlide(idx)}
+                  style={{ cursor: "pointer" }}
+                ></li>
+              ))}
+            </ol>
+            <div className="carousel-inner">
+              {heroSlides.map((slide, idx) => (
+                <div key={idx} className={`carousel-item ${heroSlide === idx ? "active" : ""}`}>
+                  <img className="d-block w-100" src={slide.img} alt={slide.title} />
+                  <div className="carousel-caption d-md-block text-center">
+                    <div className="hero-badge">
+                      <i className={slide.badgeIcon}></i> {slide.badge}
+                    </div>
+                    <h3>{slide.title}</h3>
+                    <p>{slide.desc}</p>
+                    <div className="hero-cta-group">
+                      <Link href={slide.btn1Link} className="btn-hero-primary">
+                        <i className="far fa-calendar-check mr-2"></i> {slide.btn1Text}
+                      </Link>
+                      <a href={slide.btn2Link} className="btn-hero-secondary">
+                        <i className={`${slide.btn2Icon} mr-2`}></i> {slide.btn2Text}
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#141721] border border-[#d4af37]/20 flex items-start space-x-3">
-                  <span className="text-2xl">✂️</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Master Stylist Berlisensi</h4>
-                    <p className="text-gray-400 text-xs mt-1">Barber tersertifikasi internasional dengan jam terbang tinggi.</p>
-                  </div>
-                </div>
-                <div className="p-4 rounded-xl bg-[#141721] border border-[#d4af37]/20 flex items-start space-x-3">
-                  <span className="text-2xl">☕</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Lounge & Complimentary Coffee</h4>
-                    <p className="text-gray-400 text-xs mt-1">Nikmati racikan espresso premium dan kursi hidrolik kulit asli.</p>
-                  </div>
-                </div>
-                <div className="p-4 rounded-xl bg-[#141721] border border-[#d4af37]/20 flex items-start space-x-3">
-                  <span className="text-2xl">🧴</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Produk Perawatan Mewah</h4>
-                    <p className="text-gray-400 text-xs mt-1">Pomade organik, hair tonic, dan serum brewok kualitas terbaik.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MENU LAYANAN (SERVICES) */}
-      <section id="layanan" className="py-24 bg-[#0b0c10] border-b border-[#d4af37]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-              ✦ Kategori & Menu Layanan ✦
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold font-serif mt-2 mb-4">
-              Pilihan Perawatan <span className="gold-gradient-text">Eksklusif</span>
-            </h2>
-            <p className="text-gray-400 text-sm sm:text-base">
-              Pilih layanan sesuai kebutuhan Anda. Seluruh layanan sudah termasuk keramas bersih, pijatan relaksasi kepala, dan styling pomade.
-            </p>
-
-            {/* Category Filter Tabs */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-              <button
-                onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-                  selectedCategory === null
-                    ? "bg-[#d4af37] text-[#0b0c10] shadow-md shadow-[#d4af37]/20"
-                    : "bg-[#141721] text-gray-300 hover:text-white border border-[#2a2e3d]"
-                }`}
-              >
-                Semua Layanan
-              </button>
-              {INITIAL_CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center space-x-1.5 ${
-                    selectedCategory === cat.id
-                      ? "bg-[#d4af37] text-[#0b0c10] shadow-md shadow-[#d4af37]/20"
-                      : "bg-[#141721] text-gray-300 hover:text-white border border-[#2a2e3d]"
-                  }`}
-                >
-                  <span>{cat.icon}</span>
-                  <span>{cat.name}</span>
-                </button>
               ))}
             </div>
+
+            {/* PREVIOUS & NEXT */}
+            <a
+              className="carousel-control-prev"
+              style={{ cursor: "pointer" }}
+              onClick={() => setHeroSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)}
+              role="button"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="sr-only">Sebelumnya</span>
+            </a>
+            <a
+              className="carousel-control-next"
+              style={{ cursor: "pointer" }}
+              onClick={() => setHeroSlide((prev) => (prev + 1) % heroSlides.length)}
+              role="button"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="sr-only">Berikutnya</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* STATS RIBBON SECTION */}
+      <section className="stats-ribbon">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-3 col-6">
+              <div className="stat-item">
+                <span className="stat-number">15+</span>
+                <span className="stat-label">Tahun Pengalaman</span>
+              </div>
+            </div>
+            <div className="col-md-3 col-6">
+              <div className="stat-item">
+                <span className="stat-number">25K+</span>
+                <span className="stat-label">Pelanggan Puas</span>
+              </div>
+            </div>
+            <div className="col-md-3 col-6">
+              <div className="stat-item">
+                <span className="stat-number">100%</span>
+                <span className="stat-label">Barber Bersertifikat</span>
+              </div>
+            </div>
+            <div className="col-md-3 col-6">
+              <div className="stat-item">
+                <span className="stat-number">4.9 ★</span>
+                <span className="stat-label">Rating Kepuasan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT SECTION */}
+      <section id="about" className="about_section">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-6">
+              <div className="about_content">
+                <h3>Mengenal Barberia Luxe</h3>
+                <h2>Tradisi Cukur Klasik & Gaya Modern Sejak 1991</h2>
+                <p>
+                  Barberia Luxe lahir dari apresiasi mendalam terhadap seni pangkas rambut pria sejati. Kami memadukan estetika heritage klasik dengan teknik kontemporer untuk menghasilkan potongan yang mencerminkan karakter terbaik Anda.
+                </p>
+
+                <div className="about-features">
+                  <div className="about-feature-box">
+                    <i className="fas fa-cut"></i>
+                    <span>Gunting Presisi & Razor Tajam</span>
+                  </div>
+                  <div className="about-feature-box">
+                    <i className="fas fa-pump-soap"></i>
+                    <span>Peralatan Steril Medis 100%</span>
+                  </div>
+                  <div className="about-feature-box">
+                    <i className="fas fa-hot-tub"></i>
+                    <span>Handuk Hangat Aromaterapi</span>
+                  </div>
+                  <div className="about-feature-box">
+                    <i className="fas fa-coffee"></i>
+                    <span>Lounge Nyaman & Free Welcome Drink</span>
+                  </div>
+                </div>
+
+                <Link href="/booking" className="default_btn">
+                  <i className="far fa-calendar-alt mr-2"></i> Booking Jadwal Anda
+                </Link>
+              </div>
+            </div>
+            <div className="col-lg-6 d-none d-lg-block">
+              <div className="about_img" style={{ overflow: "hidden" }}>
+                <img className="about_img_1 w-100" src="/Design/images/about-1.jpg" alt="Atmosfer Barbershop" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES HIGHLIGHT SECTION */}
+      <section className="services_section" id="services">
+        <div className="container">
+          <div className="section_heading">
+            <h3>Keahlian & Sentuhan Premium</h3>
+            <h2>Layanan Unggulan Kami</h2>
+            <div className="heading-line"></div>
+          </div>
+          <div className="row">
+            <div className="col-lg-3 col-md-6 mb-4">
+              <div className="service_box">
+                <i className="bs bs-scissors-1"></i>
+                <h3>Potong Rambut Presisi</h3>
+                <p>Potongan rapi sesuai bentuk wajah dan gaya hidup Anda, lengkap dengan keramas bersih dan pijat kepala.</p>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 mb-4">
+              <div className="service_box">
+                <i className="bs bs-razor-2"></i>
+                <h3>Beard Trim & Sculpting</h3>
+                <p>Merapikan garis jenggot dan kumis agar tegas, simetris, dan ternutrisi dengan minyak aromaterapi.</p>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 mb-4">
+              <div className="service_box">
+                <i className="bs bs-brush"></i>
+                <h3>Hot Towel Smooth Shave</h3>
+                <p>Sensasi cukur bersih tradisional dengan handuk hangat, foam kaya busa, dan razor satu mata super halus.</p>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-6 mb-4">
+              <div className="service_box">
+                <i className="bs bs-hairbrush-1"></i>
+                <h3>Facial & Masker Wajah</h3>
+                <p>Perawatan kulit wajah khusus pria untuk mengangkat komedo, mengecilkan pori, dan menyegarkan kulit kusam.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BOOKING CTA SECTION */}
+      <section className="book_section" id="booking">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <div className="booking-cta-card">
+                <h2>Reservasi Online Tanpa Perlu Mengantre</h2>
+                <p>
+                  Pilih layanan yang Anda inginkan, tentukan barber favorit, dan jadwalkan waktu terbaik Anda dalam hitungan detik melalui sistem reservasi otomatis kami.
+                </p>
+                <Link href="/booking" className="btn-hero-primary" style={{ fontSize: "16px", padding: "15px 36px" }}>
+                  <i className="far fa-calendar-check mr-2"></i> Mulai Pesan Jadwal Sekarang
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY SECTION */}
+      <section className="gallery-section" id="gallery">
+        <div className="container">
+          <div className="section_heading">
+            <h3>Koleksi Gaya & Portofolio</h3>
+            <h2>Galeri Kreasi Barbershop</h2>
+            <div className="heading-line"></div>
+          </div>
+          <div className="row">
+            {galleryItems.map((item, idx) => (
+              <div key={idx} className="col-lg-3 col-md-6 gallery-column">
+                <div className="gallery-item-wrap">
+                  <div className="gallery-img" style={{ backgroundImage: `url('${item.src}')` }}></div>
+                  <div className="gallery-item-overlay">
+                    <span className="gallery-item-title">{item.title}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TEAM SECTION */}
+      <section id="team" className="team_section">
+        <div className="container">
+          <div className="section_heading">
+            <h3>Para Ahli Berpengalaman</h3>
+            <h2>Barber Profesional Kami</h2>
+            <div className="heading-line"></div>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-lg-4 col-md-6">
+              <div className="team-card">
+                <div className="team-img-wrap">
+                  <img src="/Design/images/team-1.jpg" alt="Budi Santoso" />
+                </div>
+                <div className="team-info">
+                  <h4 className="team-name">Budi Santoso</h4>
+                  <span className="team-role">Head Master Barber (10+ Thn)</span>
+                  <div className="team-stars">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <p className="text-muted small">Spesialis model klasik formal, potongan gunting presisi, dan styling eksekutif.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="team-card">
+                <div className="team-img-wrap">
+                  <img src="/Design/images/team-2.jpg" alt="Rian Pratama" />
+                </div>
+                <div className="team-info">
+                  <h4 className="team-name">Rian Pratama</h4>
+                  <span className="team-role">Senior Fade & Modern Stylist</span>
+                  <div className="team-stars">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <p className="text-muted small">Ahli gradasi skin fade halus, tren model kekinian (Crop, Mullet, Two Block), dan hair tattoo.</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="team-card">
+                <div className="team-img-wrap">
+                  <img src="/Design/images/team-3.jpg" alt="Dimas Kusuma" />
+                </div>
+                <div className="team-info">
+                  <h4 className="team-name">Dimas Kusuma</h4>
+                  <span className="team-role">Beard & Shave Specialist</span>
+                  <div className="team-stars">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <p className="text-muted small">Master cukur tradisional handuk hangat, penataan jenggot maskulin, dan facial spa.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEWS / TESTIMONIALS SECTION */}
+      <section id="reviews" className="testimonial_section">
+        <div className="container">
+          <div className="section_heading">
+            <h3>Kepuasan Pelanggan</h3>
+            <h2>Apa Kata Mereka Tentang Kami</h2>
+            <div className="heading-line"></div>
           </div>
 
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredServices.map((service) => (
-              <div
-                key={service.id}
-                className="card-luxury rounded-2xl p-6 flex flex-col justify-between relative group"
-              >
-                {service.popular && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-[#d4af37] to-[#aa8014] text-[#0b0c10] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow">
-                    Favorit
+          <div id="reviews-carousel" className="carousel slide" data-ride="carousel">
+            <div className="carousel-inner">
+              {reviewSlides.map((rev, idx) => (
+                <div key={idx} className={`carousel-item ${reviewSlide === idx ? "active" : ""}`}>
+                  <div className="testimonial-card-wrap">
+                    <div className="testi-stars">
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                    </div>
+                    <p className="testi-quote">{rev.quote}</p>
+                    <h5 className="testi-author">{rev.author}</h5>
+                    <span className="testi-role">{rev.role}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* PREVIOUS & NEXT */}
+            <a
+              className="carousel-control-prev"
+              style={{ cursor: "pointer" }}
+              onClick={() => setReviewSlide((prev) => (prev - 1 + reviewSlides.length) % reviewSlides.length)}
+              role="button"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="sr-only">Sebelumnya</span>
+            </a>
+            <a
+              className="carousel-control-next"
+              style={{ cursor: "pointer" }}
+              onClick={() => setReviewSlide((prev) => (prev + 1) % reviewSlides.length)}
+              role="button"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="sr-only">Berikutnya</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING SECTION */}
+      <section className="pricing_section" id="pricing">
+        <div className="container">
+          <div className="section_heading">
+            <h3>Harga Transparan & Kualitas Terbaik</h3>
+            <h2>Daftar Harga & Menu Layanan</h2>
+            <div className="heading-line"></div>
+          </div>
+
+          <div className="row">
+            {INITIAL_CATEGORIES.map((category) => {
+              const services = INITIAL_SERVICES.filter((s) => s.category_id === category.id);
+              if (services.length === 0) return null;
+              return (
+                <div key={category.id} className="col-lg-6 col-md-12 mb-4">
+                  <div className="price_wrap">
+                    <h3>
+                      <span>{category.name}</span>
+                      <small style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: "normal" }}>
+                        {services.length} Layanan
+                      </small>
+                    </h3>
+                    <ul className="price_list">
+                      {services.map((service) => (
+                        <li key={service.id}>
+                          <h4>{service.name}</h4>
+                          <p>{service.description}</p>
+                          <div className="d-flex align-items-center mt-2">
+                            <span
+                              className="badge badge-secondary mr-2"
+                              style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", fontWeight: 500 }}
+                            >
+                              <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                            </span>
+                            <Link href={`/booking?service=${service.id}`} className="text-warning small font-weight-bold ml-2">
+                              Pilih <i className="fas fa-chevron-right ml-1"></i>
+                            </Link>
+                          </div>
+                          <span className="price">
+                            Rp {service.price.toLocaleString("id-ID")}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-4">
+            <Link href="/booking" className="default_btn">
+              <i className="far fa-calendar-alt mr-2"></i> Buat Janji Temu Sekarang
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT SECTION */}
+      <section className="contact-section" id="contact-us">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 mb-5 mb-lg-0">
+              <div className="contact-info">
+                <h2>Kunjungi Studio Kami & Hubungi Kami Hari Ini</h2>
+                <p>
+                  Apakah Anda ingin berkonsultasi mengenai gaya rambut yang sesuai, reservasi rombongan, atau pertanyaan lainnya? Tim kami siap melayani Anda dengan senang hati.
+                </p>
+
+                <div className="contact-info-list">
+                  <div className="contact-info-item">
+                    <div className="contact-info-icon">
+                      <i className="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div className="contact-info-text">
+                      <strong>Lokasi Barbershop</strong>
+                      <span>Jl. Senopati No. 88, Kebayoran Baru, Jakarta Selatan 12190</span>
+                    </div>
+                  </div>
+
+                  <div className="contact-info-item">
+                    <div className="contact-info-icon">
+                      <i className="fas fa-phone-alt"></i>
+                    </div>
+                    <div className="contact-info-text">
+                      <strong>Telepon & WhatsApp</strong>
+                      <span>+62 812-3456-7890 / (021) 765-4321</span>
+                    </div>
+                  </div>
+
+                  <div className="contact-info-item">
+                    <div className="contact-info-icon">
+                      <i className="fas fa-envelope"></i>
+                    </div>
+                    <div className="contact-info-text">
+                      <strong>Email Resmi</strong>
+                      <span>info@barberialuxe.id / support@barberialuxe.id</span>
+                    </div>
+                  </div>
+
+                  <div className="contact-info-item">
+                    <div className="contact-info-icon">
+                      <i className="fas fa-clock"></i>
+                    </div>
+                    <div className="contact-info-text">
+                      <strong>Jam Operasional</strong>
+                      <span>Senin - Minggu: 09:00 - 21:00 WIB</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="contact-form">
+                <h3 className="mb-4 text-white" style={{ fontSize: "24px" }}>
+                  Kirim Pesan Langsung
+                </h3>
+
+                {contactAlert && (
+                  <div
+                    className={`alert ${contactAlert.success ? "alert-success" : "alert-danger"} mb-4`}
+                    role="alert"
+                  >
+                    {contactAlert.text}
                   </div>
                 )}
-                <div>
-                  <div className="text-xs text-[#d4af37] font-semibold flex items-center space-x-1 mb-2">
-                    <span>⏱</span>
-                    <span>{service.duration_min} Menit</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-[#d4af37] transition-colors mb-2">
-                    {service.name}
-                  </h3>
-                  <p className="text-xs text-gray-400 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-                </div>
 
-                <div className="pt-4 border-t border-gray-800/80 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase text-gray-500 block">Biaya</span>
-                    <span className="text-lg font-extrabold text-[#fce8a6] font-serif">
-                      {formatRupiah(service.price)}
-                    </span>
-                  </div>
-                  <Link
-                    href={`/booking?service=${service.id}`}
-                    className="px-3.5 py-2 rounded-lg text-xs font-bold text-[#0b0c10] bg-[#d4af37] hover:bg-white transition-colors"
-                  >
-                    Pesan →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link
-              href="/booking"
-              className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-xl shadow-[#d4af37]/20 hover:scale-105 transition-all"
-            >
-              <span>Mulai Booking Reservasi Online</span>
-              <span>→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* GALERI GAYA RAMBUT (HAIRCUT GALLERY) */}
-      <section id="galeri" className="py-24 bg-[#0e1017] border-b border-[#d4af37]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-              ✦ Portofolio & Inspirasi Gaya ✦
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold font-serif mt-2 mb-4">
-              Galeri Mahakarya <span className="gold-gradient-text">Barberia Luxe</span>
-            </h2>
-            <p className="text-gray-400 text-sm sm:text-base">
-              Setiap goresan gunting dan pisau cukur adalah karya seni yang disesuaikan secara khusus dengan bentuk wajah dan karakter pria modern.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {galleryItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="group relative rounded-xl overflow-hidden border border-[#d4af37]/20 aspect-square shadow-lg bg-[#141721]"
-              >
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 filter brightness-95 group-hover:brightness-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c10] via-[#0b0c10]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <span className="text-[10px] text-[#d4af37] uppercase font-bold tracking-wider">
-                    {item.category}
-                  </span>
-                  <h4 className="text-white text-sm font-bold">{item.title}</h4>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MASTER BARBER KAMI */}
-      <section id="barber" className="py-24 bg-[#0b0c10] border-b border-[#d4af37]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-              ✦ Tim Profesional ✦
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-bold font-serif mt-2 mb-4">
-              Pakar & <span className="gold-gradient-text">Master Barber</span>
-            </h2>
-            <p className="text-gray-400 text-sm sm:text-base">
-              Dipandu oleh barber berdedikasi tinggi dengan pengalaman bertahun-tahun di industri tata rambut pria internasional.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {INITIAL_BARBERS.map((barber) => (
-              <div
-                key={barber.id}
-                className="card-luxury rounded-2xl overflow-hidden flex flex-col justify-between group"
-              >
-                <div className="relative h-72 w-full overflow-hidden">
-                  <img
-                    src={barber.avatar}
-                    alt={barber.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#141721] via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 bg-[#0b0c10]/85 border border-[#d4af37]/40 px-2.5 py-1 rounded-full text-xs font-bold text-[#fce8a6] flex items-center space-x-1">
-                    <span>⭐</span>
-                    <span>{barber.rating}</span>
-                    <span className="text-gray-400 text-[10px]">({barber.reviews_count})</span>
-                  </div>
-                </div>
-
-                <div className="p-6 space-y-4">
-                  <div>
-                    <div className="text-xs text-[#d4af37] font-semibold uppercase tracking-wider">
-                      {barber.role} • {barber.experience}
+                <form onSubmit={handleContactSubmit} className="contactForm">
+                  <div className="form-group row">
+                    <div className="col-sm-6 mb-3 mb-sm-0">
+                      <input
+                        type="text"
+                        required
+                        value={contactForm.name}
+                        onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                        className="form-control"
+                        placeholder="Nama Lengkap *"
+                      />
                     </div>
-                    <h3 className="text-xl font-bold text-white mt-1">{barber.name}</h3>
-                  </div>
-
-                  <p className="text-xs text-gray-300 leading-relaxed">{barber.bio}</p>
-
-                  <div className="pt-2">
-                    <span className="text-[10px] text-gray-400 uppercase font-semibold block mb-2">
-                      Keahlian Khusus:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {barber.specialties.map((spec, sIdx) => (
-                        <span
-                          key={sIdx}
-                          className="text-[11px] px-2 py-0.5 rounded bg-[#1c202e] border border-gray-700 text-gray-300"
-                        >
-                          {spec}
-                        </span>
-                      ))}
+                    <div className="col-sm-6">
+                      <input
+                        type="email"
+                        required
+                        value={contactForm.email}
+                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        className="form-control"
+                        placeholder="Alamat Email *"
+                      />
                     </div>
                   </div>
-
-                  <div className="pt-4 border-t border-gray-800">
-                    <Link
-                      href={`/booking?barber=${barber.id}`}
-                      className="w-full inline-flex items-center justify-center py-2.5 rounded-lg text-xs font-bold text-[#0b0c10] bg-[#d4af37] hover:bg-white transition-colors"
-                    >
-                      Pesan Bersama {barber.name.split(" ")[0]} →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DAFTAR HARGA TRANSPARAN */}
-      <section id="harga" className="py-24 bg-[#0e1017] border-b border-[#d4af37]/10">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-              ✦ Biaya Transparan ✦
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif mt-2 mb-4">
-              Harga Jujur Tanpa <span className="gold-gradient-text">Biaya Tersembunyi</span>
-            </h2>
-            <p className="text-gray-400 text-sm">
-              Semua paket sudah termasuk konsultasi gaya, cuci rambut air hangat, massage relaksasi, dan minuman penyegar.
-            </p>
-          </div>
-
-          <div className="bg-[#141721] rounded-2xl border border-[#d4af37]/25 overflow-hidden shadow-2xl">
-            <div className="divide-y divide-gray-800">
-              {INITIAL_SERVICES.map((s) => (
-                <div
-                  key={s.id}
-                  className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#191d2b] transition-colors"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-3">
-                      <h4 className="text-base font-bold text-white">{s.name}</h4>
-                      {s.popular && (
-                        <span className="text-[10px] bg-[#d4af37]/20 text-[#fce8a6] border border-[#d4af37]/40 px-2 py-0.5 rounded-full font-bold uppercase">
-                          Favorit
-                        </span>
-                      )}
+                  <div className="form-group row">
+                    <div className="col-md-12">
+                      <input
+                        type="text"
+                        value={contactForm.subject}
+                        onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                        className="form-control"
+                        placeholder="Subjek / Keperluan"
+                      />
                     </div>
-                    <p className="text-xs text-gray-400 max-w-xl">{s.description}</p>
-                    <span className="text-[11px] text-[#d4af37] inline-block pt-1">
-                      Estimasi durasi: {s.duration_min} Menit
-                    </span>
                   </div>
-
-                  <div className="flex items-center justify-between sm:justify-end sm:space-x-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-800">
-                    <span className="text-lg font-bold text-[#fce8a6] font-serif">
-                      {formatRupiah(s.price)}
-                    </span>
-                    <Link
-                      href={`/booking?service=${s.id}`}
-                      className="px-4 py-2 rounded-lg text-xs font-bold text-[#0b0c10] bg-[#d4af37] hover:bg-white transition-colors"
-                    >
-                      Pilih
-                    </Link>
+                  <div className="form-group row">
+                    <div className="col-md-12">
+                      <textarea
+                        cols={30}
+                        rows={4}
+                        required
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                        className="form-control message"
+                        placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."
+                      ></textarea>
+                    </div>
                   </div>
-                </div>
-              ))}
+                  <div className="form-group row mb-0">
+                    <div className="col-md-12">
+                      <button
+                        type="submit"
+                        disabled={contactLoading}
+                        className="default_btn w-100 justify-content-center"
+                      >
+                        <i className="fas fa-paper-plane mr-2"></i>{" "}
+                        {contactLoading ? "Mengirim Pesan..." : "Kirim Pesan Sekarang"}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* FORMULIR KONTAK & LOKASI */}
-      <section id="kontak" className="py-24 bg-[#0b0c10]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Info Lokasi & Jam */}
-            <div className="space-y-6">
-              <span className="text-xs uppercase tracking-widest text-[#d4af37] font-bold">
-                ✦ Hubungi & Temukan Kami ✦
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold font-serif leading-tight">
-                Kunjungi Salon & Studio Kami di <br />
-                <span className="gold-gradient-text">Senopati, Jakarta Selatan</span>
-              </h2>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Ada pertanyaan khusus, reservasi rombongan pria (groomsmen package), atau permintaan jadwal di luar jam normal? Jangan ragu untuk mengirim pesan kepada kami.
-              </p>
-
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start space-x-3 p-4 rounded-xl bg-[#141721] border border-gray-800">
-                  <span className="text-2xl text-[#d4af37]">📍</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Alamat Studio</h4>
-                    <p className="text-gray-400 text-xs mt-0.5">
-                      Jl. Senopati Raya No. 88, Selong, Kebayoran Baru, Jakarta Selatan 12190
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 p-4 rounded-xl bg-[#141721] border border-gray-800">
-                  <span className="text-2xl text-[#d4af37]">🕒</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Jam Buka & Layanan</h4>
-                    <p className="text-gray-400 text-xs mt-0.5">
-                      Senin - Minggu: 09:00 - 21:00 WIB (Layanan terakhir 20:15 WIB)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 p-4 rounded-xl bg-[#141721] border border-gray-800">
-                  <span className="text-2xl text-[#d4af37]">💬</span>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Customer Care WhatsApp</h4>
-                    <p className="text-gray-400 text-xs mt-0.5">
-                      +62 812-3456-7890 (Respon cepat 08:00 - 22:00 WIB)
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Interactive Contact Form */}
-            <div className="bg-[#141721] rounded-2xl p-6 sm:p-8 border border-[#d4af37]/25 shadow-xl">
-              <h3 className="text-xl font-bold text-white mb-2 font-serif">Kirim Pesan Langsung</h3>
-              <p className="text-xs text-gray-400 mb-6">
-                Silakan isi data diri Anda di bawah. Tim kami akan menghubungi kembali dalam 15 menit.
-              </p>
-
-              {contactStatus.message && (
-                <div
-                  className={`p-4 rounded-xl text-xs mb-6 ${
-                    contactStatus.success
-                      ? "bg-green-950/80 border border-green-500/50 text-green-200"
-                      : "bg-red-950/80 border border-red-500/50 text-red-200"
-                  }`}
-                >
-                  {contactStatus.message}
-                </div>
-              )}
-
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                    Nama Lengkap *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={contactForm.name}
-                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                    placeholder="Contoh: Raditya Danu"
-                    className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={contactForm.email}
-                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      placeholder="nama@email.com"
-                      className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                      No. WhatsApp / HP
-                    </label>
-                    <input
-                      type="tel"
-                      value={contactForm.phone}
-                      onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                      placeholder="08123456789"
-                      className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">
-                    Pesan atau Pertanyaan *
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    placeholder="Tuliskan pertanyaan atau kebutuhan perawatan khusus Anda..."
-                    className="w-full px-4 py-3 rounded-xl bg-[#0b0c10] border border-gray-700 text-white text-sm focus:border-[#d4af37] focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={contactStatus.loading}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#fce8a6] via-[#d4af37] to-[#b89628] text-[#0b0c10] font-bold text-sm shadow-lg shadow-[#d4af37]/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
-                >
-                  {contactStatus.loading ? "Mengirim Pesan..." : "Kirimkan Pesan Sekarang →"}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    </>
   );
 }
