@@ -1,13 +1,86 @@
-/* Reset and Base Styles */
+/* ==========================================================================
+   GLOBAL RESET, TYPOGRAPHY & UNIVERSAL SPACING SYSTEM
+   ========================================================================== */
+
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 85px;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #0d0f13;
-  color: #f8fafc;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #0d0f13 !important;
+  color: #f8fafc !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 15px;
+  line-height: 1.68 !important;
+  letter-spacing: 0.015em !important;
+  word-spacing: 0.04em !important;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #ffffff !important;
+  letter-spacing: 0.025em !important;
+  line-height: 1.35 !important;
+  margin-bottom: 0.6rem;
+}
+
+p {
+  line-height: 1.72 !important;
+  margin-bottom: 1rem;
+  letter-spacing: 0.012em !important;
+}
+
+/* ==========================================================================
+   BOOTSTRAP 4 FLEX GAP UTILITIES (Fix for squished text/elements)
+   ========================================================================== */
+.gap-0 { gap: 0 !important; }
+.gap-1 { gap: 0.35rem !important; }
+.gap-1\.5, .gap-1-5 { gap: 0.5rem !important; }
+.gap-2 { gap: 0.75rem !important; }
+.gap-2\.5, .gap-2-5 { gap: 1rem !important; }
+.gap-3 { gap: 1.25rem !important; }
+.gap-4 { gap: 1.75rem !important; }
+.gap-5 { gap: 2.5rem !important; }
+
+.row-gap-1 { row-gap: 0.35rem !important; }
+.row-gap-2 { row-gap: 0.75rem !important; }
+.row-gap-3 { row-gap: 1.25rem !important; }
+.row-gap-4 { row-gap: 1.75rem !important; }
+
+.column-gap-1 { column-gap: 0.35rem !important; }
+.column-gap-2 { column-gap: 0.75rem !important; }
+.column-gap-3 { column-gap: 1.25rem !important; }
+.column-gap-4 { column-gap: 1.75rem !important; }
+
+/* Icon Spacing Helpers */
+.mr-1, [class*="mr-1"] { margin-right: 0.35rem !important; }
+.mr-2, [class*="mr-2"] { margin-right: 0.65rem !important; }
+.mr-3, [class*="mr-3"] { margin-right: 1rem !important; }
+.ml-1, [class*="ml-1"] { margin-left: 0.35rem !important; }
+.ml-2, [class*="ml-2"] { margin-left: 0.65rem !important; }
+.ml-3, [class*="ml-3"] { margin-left: 1rem !important; }
+
+/* Ensure badges and buttons have generous text breathing room */
+.badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.45em 0.85em !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+}
+
+.btn {
+  letter-spacing: 0.025em !important;
 }

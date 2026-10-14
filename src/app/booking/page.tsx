@@ -219,7 +219,7 @@ function BookingContent() {
     );
 
     return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#0b0c10", padding: "110px 20px 100px" }}>
+      <div style={{ minHeight: "100vh", backgroundColor: "#0b0c10", padding: "115px 20px 100px" }}>
         <div style={{ maxWidth: "680px", margin: "0 auto" }}>
           {/* Success Banner */}
           <div
@@ -254,7 +254,7 @@ function BookingContent() {
             <h2 style={{ fontFamily: "Playfair Display, serif", color: "#fff", margin: "8px 0 6px" }}>
               Terima Kasih, {completedBooking.client_name}!
             </h2>
-            <p style={{ color: "#cbd5e1", fontSize: "14px", margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: "#cbd5e1", fontSize: "14px", margin: 0, lineHeight: 1.6 }}>
               Jadwal Anda telah terdaftar otomatis di sistem kasir Barberia Luxe. Kami menantikan kehadiran Anda.
             </p>
           </div>
@@ -270,7 +270,7 @@ function BookingContent() {
             }}
           >
             <div className="d-flex justify-content-between align-items-center pb-3 border-bottom border-dark mb-4">
-              <div className="d-flex align-items-center gap-3">
+              <div className="d-flex align-items-center" style={{ gap: "12px" }}>
                 <div
                   style={{
                     width: "44px",
@@ -305,7 +305,7 @@ function BookingContent() {
               <div className="col-sm-6 mb-3">
                 <span className="text-muted small d-block" style={{ fontSize: "11px", textTransform: "uppercase" }}>Jadwal Kunjungan</span>
                 <strong style={{ color: "#fff", fontSize: "15px" }}>{completedBooking.appointment_date}</strong>
-                <div style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "14px" }}>
+                <div style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "14px", marginTop: "2px" }}>
                   Pukul {completedBooking.appointment_time} WIB
                 </div>
               </div>
@@ -313,19 +313,19 @@ function BookingContent() {
               <div className="col-sm-6 mb-3">
                 <span className="text-muted small d-block" style={{ fontSize: "11px", textTransform: "uppercase" }}>Master Barber</span>
                 <strong style={{ color: "#fff", fontSize: "15px" }}>{completedBooking.barber_name}</strong>
-                <div className="small text-muted" style={{ fontSize: "12px" }}>Grooming Specialist</div>
+                <div className="small text-muted" style={{ fontSize: "12px", marginTop: "2px" }}>Grooming Specialist</div>
               </div>
 
               <div className="col-sm-6 mb-3 mb-sm-0">
                 <span className="text-muted small d-block" style={{ fontSize: "11px", textTransform: "uppercase" }}>Pelanggan</span>
                 <strong style={{ color: "#fff", fontSize: "14px" }}>{completedBooking.client_name}</strong>
-                <div className="small text-muted">{completedBooking.client_phone}</div>
+                <div className="small text-muted" style={{ marginTop: "2px" }}>{completedBooking.client_phone}</div>
               </div>
 
               <div className="col-sm-6">
                 <span className="text-muted small d-block" style={{ fontSize: "11px", textTransform: "uppercase" }}>Lokasi Studio</span>
                 <strong style={{ color: "#fff", fontSize: "13px" }}>Jl. Senopati No. 88, Kebayoran Baru</strong>
-                <div className="small text-muted">Jakarta Selatan 12190</div>
+                <div className="small text-muted" style={{ marginTop: "2px" }}>Jakarta Selatan 12190</div>
               </div>
             </div>
 
@@ -334,9 +334,9 @@ function BookingContent() {
                 Rincian Layanan ({completedBooking.services_details.length}):
               </span>
               {completedBooking.services_details.map((srv: { name: string; price: number }, idx: number) => (
-                <div key={idx} className="d-flex justify-content-between small text-white py-1 border-bottom border-dark">
-                  <span>{srv.name}</span>
-                  <span style={{ color: "var(--primary-gold)", fontWeight: 600 }}>{formatRupiah(srv.price)}</span>
+                <div key={idx} className="d-flex justify-content-between small text-white py-1.5 border-bottom border-dark">
+                  <span style={{ paddingRight: "10px" }}>{srv.name}</span>
+                  <span style={{ color: "var(--primary-gold)", fontWeight: 600, whiteSpace: "nowrap" }}>{formatRupiah(srv.price)}</span>
                 </div>
               ))}
               <div className="d-flex justify-content-between align-items-center pt-3 mt-1">
@@ -348,7 +348,7 @@ function BookingContent() {
             </div>
 
             {/* Action Buttons */}
-            <div className="d-flex flex-column flex-sm-row gap-3">
+            <div className="d-flex flex-column flex-sm-row" style={{ gap: "10px" }}>
               <a
                 href={`https://wa.me/6281234567890?text=${waText}`}
                 target="_blank"
@@ -364,12 +364,12 @@ function BookingContent() {
                 className="btn btn-outline-warning py-2.5 px-3"
                 style={{ borderRadius: "10px", color: "var(--primary-gold)", borderColor: "rgba(212,175,55,0.5)", fontWeight: 600, fontSize: "13.5px" }}
               >
-                <i className="fas fa-print mr-1"></i> Cetak Tiket
+                <i className="fas fa-print mr-2"></i> Cetak Tiket
               </button>
               <Link
                 href="/"
                 className="btn btn-outline-secondary py-2.5 px-3"
-                style={{ borderRadius: "10px", color: "#cbd5e1", borderColor: "rgba(255,255,255,0.2)", fontSize: "13.5px" }}
+                style={{ borderRadius: "10px", color: "#cbd5e1", borderColor: "rgba(255,255,255,0.2)", fontSize: "13.5px", textAlign: "center" }}
               >
                 Beranda
               </Link>
@@ -385,9 +385,9 @@ function BookingContent() {
       <div className="container" style={{ maxWidth: "1340px" }}>
         {/* Breadcrumb & Header Title */}
         <div className="text-center mb-5">
-          <div className="d-flex justify-content-center align-items-center gap-2 mb-2" style={{ fontSize: "12.5px", color: "#94a3b8" }}>
-            <Link href="/" style={{ color: "#94a3b8", textDecoration: "none" }}>Beranda</Link>
-            <span>/</span>
+          <div className="d-flex justify-content-center align-items-center mb-2" style={{ fontSize: "13px", color: "#94a3b8" }}>
+            <Link href="/" style={{ color: "#cbd5e1", textDecoration: "none" }}>Beranda</Link>
+            <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.3)" }}>/</span>
             <span style={{ color: "var(--primary-gold)", fontWeight: 600 }}>Reservasi Jadwal Online</span>
           </div>
 
@@ -403,25 +403,25 @@ function BookingContent() {
               letterSpacing: "0.5px",
             }}
           >
-            <i className="far fa-calendar-check mr-1"></i> RESERVASI MUDAH & CEPAT
+            <i className="far fa-calendar-check mr-2"></i> RESERVASI MUDAH & CEPAT
           </span>
 
           <h1 style={{ fontFamily: "Playfair Display, serif", color: "#ffffff", fontSize: "36px", fontWeight: 700, margin: "6px 0 8px" }}>
             Pesan Jadwal Grooming Anda
           </h1>
-          <p style={{ color: "#94a3b8", maxWidth: "620px", margin: "0 auto", fontSize: "14.5px", lineHeight: 1.6 }}>
+          <p style={{ color: "#94a3b8", maxWidth: "620px", margin: "0 auto", fontSize: "14.5px", lineHeight: 1.68 }}>
             Ikuti 4 langkah mudah di bawah untuk memilih layanan, master barber pilihan, serta waktu kunjungan terbaik Anda.
           </p>
 
-          <div className="d-flex justify-content-center flex-wrap gap-3 mt-3">
-            <span style={{ fontSize: "12px", color: "#cbd5e1" }}>
-              <i className="fas fa-check-circle text-success mr-1"></i> Bebas Antre Fisik
+          <div className="d-flex justify-content-center flex-wrap mt-3" style={{ gap: "10px" }}>
+            <span style={{ fontSize: "12px", color: "#cbd5e1", background: "rgba(255,255,255,0.04)", padding: "6px 14px", borderRadius: "30px", border: "1px solid rgba(255,255,255,0.08)", display: "inline-flex", alignItems: "center" }}>
+              <i className="fas fa-check-circle text-success mr-2"></i> Bebas Antre Fisik
             </span>
-            <span style={{ fontSize: "12px", color: "#cbd5e1" }}>
-              <i className="fas fa-coffee mr-1" style={{ color: "var(--primary-gold)" }}></i> Free Welcome Drink & Wi-Fi
+            <span style={{ fontSize: "12px", color: "#cbd5e1", background: "rgba(255,255,255,0.04)", padding: "6px 14px", borderRadius: "30px", border: "1px solid rgba(255,255,255,0.08)", display: "inline-flex", alignItems: "center" }}>
+              <i className="fas fa-coffee mr-2" style={{ color: "var(--primary-gold)" }}></i> Free Welcome Drink & Wi-Fi
             </span>
-            <span style={{ fontSize: "12px", color: "#cbd5e1" }}>
-              <i className="fas fa-shield-alt text-info mr-1"></i> Sterilisasi Medis UV-C 100%
+            <span style={{ fontSize: "12px", color: "#cbd5e1", background: "rgba(255,255,255,0.04)", padding: "6px 14px", borderRadius: "30px", border: "1px solid rgba(255,255,255,0.08)", display: "inline-flex", alignItems: "center" }}>
+              <i className="fas fa-shield-alt text-info mr-2"></i> Sterilisasi Medis UV-C 100%
             </span>
           </div>
         </div>
@@ -469,7 +469,7 @@ function BookingContent() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        gap: "6px",
+                        gap: "8px",
                       }}
                     >
                       <div
@@ -537,12 +537,12 @@ function BookingContent() {
               {/* STEP 1: SELECT SERVICES */}
               {step === 1 && (
                 <div>
-                  <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                  <div className="d-flex justify-content-between align-items-center flex-wrap mb-3" style={{ gap: "10px" }}>
                     <div>
-                      <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700 }}>
+                      <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700, letterSpacing: "0.02em" }}>
                         <span style={{ color: "var(--primary-gold)" }}>Langkah 1:</span> Pilih Layanan Barbershop
                       </h3>
-                      <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "4px", marginBottom: 0 }}>
+                      <p style={{ color: "#94a3b8", fontSize: "13.5px", marginTop: "4px", marginBottom: 0, lineHeight: 1.6 }}>
                         Centang satu atau lebih layanan yang ingin Anda nikmati hari ini.
                       </p>
                     </div>
@@ -552,7 +552,7 @@ function BookingContent() {
                   </div>
 
                   {/* Category Filter Pills */}
-                  <div className="d-flex flex-wrap gap-2 mb-4">
+                  <div className="d-flex flex-wrap mb-4" style={{ gap: "8px" }}>
                     <button
                       type="button"
                       onClick={() => setActiveCategoryTab(0)}
@@ -562,9 +562,10 @@ function BookingContent() {
                         color: activeCategoryTab === 0 ? "#0b0c10" : "#cbd5e1",
                         fontWeight: 700,
                         borderRadius: "20px",
-                        padding: "6px 14px",
-                        fontSize: "12px",
+                        padding: "7px 16px",
+                        fontSize: "12.5px",
                         border: "1px solid rgba(255,255,255,0.1)",
+                        letterSpacing: "0.5px",
                       }}
                     >
                       Semua ({INITIAL_SERVICES.length})
@@ -583,19 +584,20 @@ function BookingContent() {
                             color: isActive ? "#0b0c10" : "#cbd5e1",
                             fontWeight: 700,
                             borderRadius: "20px",
-                            padding: "6px 14px",
-                            fontSize: "12px",
+                            padding: "7px 16px",
+                            fontSize: "12.5px",
                             border: "1px solid rgba(255,255,255,0.1)",
+                            letterSpacing: "0.5px",
                           }}
                         >
-                          {cat.icon} {cat.name} ({count})
+                          <span style={{ marginRight: "6px" }}>{cat.icon}</span> {cat.name} ({count})
                         </button>
                       );
                     })}
                   </div>
 
                   {/* Service Cards List */}
-                  <div className="d-flex flex-column gap-3">
+                  <div className="d-flex flex-column" style={{ gap: "12px" }}>
                     {filteredServices.map((row) => {
                       const isSelected = selectedServices.includes(row.id);
                       const cat = INITIAL_CATEGORIES.find((c) => c.id === row.category_id);
@@ -613,8 +615,8 @@ function BookingContent() {
                             boxShadow: isSelected ? "0 4px 20px rgba(212,175,55,0.15)" : "none",
                           }}
                         >
-                          <div className="d-flex justify-content-between align-items-start gap-3">
-                            <div className="d-flex align-items-start gap-3">
+                          <div className="d-flex justify-content-between align-items-start" style={{ gap: "16px" }}>
+                            <div className="d-flex align-items-start" style={{ gap: "16px" }}>
                               {/* Custom Checkbox */}
                               <div
                                 style={{
@@ -637,30 +639,30 @@ function BookingContent() {
                               </div>
 
                               <div>
-                                <div className="d-flex align-items-center gap-2 mb-1">
-                                  <span className="badge badge-secondary" style={{ fontSize: "10.5px", background: "rgba(255,255,255,0.06)", color: "#94a3b8" }}>
+                                <div className="d-flex align-items-center mb-1" style={{ gap: "8px" }}>
+                                  <span className="badge badge-secondary" style={{ fontSize: "10.5px", background: "rgba(255,255,255,0.08)", color: "#94a3b8", padding: "4px 8px" }}>
                                     {cat?.name || "Layanan"}
                                   </span>
                                   {row.popular && (
-                                    <span className="badge badge-warning" style={{ fontSize: "10.5px", background: "rgba(212,175,55,0.2)", color: "var(--primary-gold)" }}>
+                                    <span className="badge badge-warning" style={{ fontSize: "10.5px", background: "rgba(212,175,55,0.2)", color: "var(--primary-gold)", padding: "4px 8px" }}>
                                       ⭐ Populer
                                     </span>
                                   )}
                                 </div>
-                                <h4 style={{ fontSize: "16.5px", color: "#fff", fontWeight: 700, margin: "0 0 4px" }}>
+                                <h4 style={{ fontSize: "16.5px", color: "#fff", fontWeight: 700, margin: "0 0 6px", letterSpacing: "0.02em" }}>
                                   {row.name}
                                 </h4>
-                                <p style={{ color: "#94a3b8", fontSize: "13px", margin: 0, lineHeight: 1.4 }}>
+                                <p style={{ color: "#94a3b8", fontSize: "13px", margin: 0, lineHeight: 1.55 }}>
                                   {row.description}
                                 </p>
                               </div>
                             </div>
 
-                            <div className="text-right" style={{ flexShrink: 0 }}>
+                            <div className="text-right" style={{ flexShrink: 0, paddingLeft: "10px" }}>
                               <span style={{ fontSize: "12px", color: "#64748b", display: "block", marginBottom: "4px" }}>
                                 <i className="far fa-clock mr-1" style={{ fontSize: "11px" }}></i> {row.duration_min} Menit
                               </span>
-                              <strong style={{ color: "var(--primary-gold)", fontSize: "16px", fontWeight: 700 }}>
+                              <strong style={{ color: "var(--primary-gold)", fontSize: "16px", fontWeight: 700, whiteSpace: "nowrap" }}>
                                 {formatRupiah(row.price)}
                               </strong>
                             </div>
@@ -676,10 +678,10 @@ function BookingContent() {
               {step === 2 && (
                 <div>
                   <div className="mb-4">
-                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700 }}>
+                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700, letterSpacing: "0.02em" }}>
                       <span style={{ color: "var(--primary-gold)" }}>Langkah 2:</span> Pilih Master Barber Favorit
                     </h3>
-                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "4px", marginBottom: 0 }}>
+                    <p style={{ color: "#94a3b8", fontSize: "13.5px", marginTop: "4px", marginBottom: 0, lineHeight: 1.6 }}>
                       Setiap barber kami memiliki jam terbang tinggi dan teknik presisi terbaik.
                     </p>
                   </div>
@@ -718,20 +720,22 @@ function BookingContent() {
                               <img src={bbr.avatar} alt={bbr.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
 
-                            <h4 style={{ fontSize: "16px", color: "#fff", fontWeight: 700, margin: "0 0 2px" }}>
+                            <h4 style={{ fontSize: "16px", color: "#fff", fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.02em" }}>
                               {bbr.name}
                             </h4>
-                            <span style={{ fontSize: "12px", color: "var(--primary-gold)", fontWeight: 600, display: "block", marginBottom: "6px" }}>
+                            <span style={{ fontSize: "12px", color: "var(--primary-gold)", fontWeight: 600, display: "block", marginBottom: "8px" }}>
                               {bbr.role}
                             </span>
 
-                            <div className="mb-2" style={{ color: "#fbbf24", fontSize: "11px" }}>
-                              <i className="fas fa-star"></i> {bbr.rating} <span className="text-muted">({bbr.reviews_count} ulasan)</span>
+                            <div className="mb-2" style={{ color: "#fbbf24", fontSize: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+                              <i className="fas fa-star mr-1"></i>
+                              <span>{bbr.rating}</span>
+                              <span className="text-muted ml-1" style={{ fontSize: "11px" }}>({bbr.reviews_count} ulasan)</span>
                             </div>
 
-                            <div className="d-flex justify-content-center flex-wrap gap-1 mb-3">
+                            <div className="d-flex justify-content-center flex-wrap mb-3" style={{ gap: "6px" }}>
                               {bbr.specialties.map((s, idx) => (
-                                <span key={idx} className="badge" style={{ fontSize: "10px", background: "rgba(255,255,255,0.05)", color: "#cbd5e1" }}>
+                                <span key={idx} className="badge" style={{ fontSize: "10.5px", background: "rgba(255,255,255,0.06)", color: "#cbd5e1", padding: "4px 8px" }}>
                                   {s}
                                 </span>
                               ))}
@@ -745,6 +749,7 @@ function BookingContent() {
                                 fontWeight: 700,
                                 borderRadius: "20px",
                                 fontSize: "12px",
+                                padding: "7px 12px",
                               }}
                             >
                               {isSelected ? <><i className="fas fa-check mr-1"></i> Barber Terpilih</> : "Pilih Barber Ini"}
@@ -761,10 +766,10 @@ function BookingContent() {
               {step === 3 && (
                 <div>
                   <div className="mb-4">
-                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700 }}>
+                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700, letterSpacing: "0.02em" }}>
                       <span style={{ color: "var(--primary-gold)" }}>Langkah 3:</span> Tentukan Tanggal & Jam Kunjungan
                     </h3>
-                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "4px", marginBottom: 0 }}>
+                    <p style={{ color: "#94a3b8", fontSize: "13.5px", marginTop: "4px", marginBottom: 0, lineHeight: 1.6 }}>
                       Pilih salah satu tanggal di bawah, lalu tentukan jam yang cocok untuk Anda.
                     </p>
                   </div>
@@ -774,7 +779,7 @@ function BookingContent() {
                     <span className="text-muted small d-block mb-2 font-weight-bold uppercase" style={{ fontSize: "11px", letterSpacing: "1px" }}>
                       1. PILIH TANGGAL (10 HARI KE DEPAN)
                     </span>
-                    <div className="d-flex gap-2 overflow-auto pb-2" style={{ scrollSnapType: "x mandatory" }}>
+                    <div className="d-flex overflow-auto pb-2" style={{ scrollSnapType: "x mandatory", gap: "10px", padding: "4px 2px" }}>
                       {calendarDays.map((d) => {
                         const isDateActive = selectedDate === d.dateStr;
                         return (
@@ -786,7 +791,7 @@ function BookingContent() {
                             }}
                             style={{
                               flexShrink: 0,
-                              minWidth: "105px",
+                              minWidth: "110px",
                               background: isDateActive ? "rgba(212,175,55,0.15)" : "#161b26",
                               border: isDateActive ? "1.5px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.08)",
                               borderRadius: "12px",
@@ -800,10 +805,10 @@ function BookingContent() {
                             <span style={{ fontSize: "11px", fontWeight: 700, color: isDateActive ? "var(--primary-gold)" : "#94a3b8", textTransform: "uppercase", display: "block" }}>
                               {d.dayName}
                             </span>
-                            <strong style={{ fontSize: "14px", color: "#fff", display: "block", margin: "2px 0" }}>
+                            <strong style={{ fontSize: "14px", color: "#fff", display: "block", margin: "4px 0" }}>
                               {d.dateFormatted}
                             </strong>
-                            <span style={{ fontSize: "10px", color: "#10b981" }}>
+                            <span style={{ fontSize: "10.5px", color: "#10b981", display: "block", marginTop: "2px" }}>
                               ● Tersedia
                             </span>
                           </div>
@@ -814,16 +819,16 @@ function BookingContent() {
 
                   {/* 2. Time Slots Categorized */}
                   <div>
-                    <span className="text-muted small d-block mb-2 font-weight-bold uppercase" style={{ fontSize: "11px", letterSpacing: "1px" }}>
+                    <span className="text-muted small d-block mb-3 font-weight-bold uppercase" style={{ fontSize: "11px", letterSpacing: "1px" }}>
                       2. PILIH JAM KUNJUNGAN ({chosenDateObj.dayName}, {chosenDateObj.dateFormatted})
                     </span>
 
                     {/* Sesi Pagi */}
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "11.5px" }}>
+                    <div className="mb-4">
+                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "12px", letterSpacing: "0.5px" }}>
                         🌅 SESI PAGI (09:00 - 11:30)
                       </small>
-                      <div className="d-flex flex-wrap gap-2">
+                      <div className="d-flex flex-wrap" style={{ gap: "10px" }}>
                         {morningSlots.map((time) => {
                           const isSlotSelected = selectedTime === time;
                           return (
@@ -843,7 +848,7 @@ function BookingContent() {
                                 borderRadius: "8px",
                                 padding: "8px 16px",
                                 fontSize: "13px",
-                                minWidth: "75px",
+                                minWidth: "80px",
                                 boxShadow: isSlotSelected ? "0 4px 12px rgba(212,175,55,0.3)" : "none",
                               }}
                             >
@@ -855,11 +860,11 @@ function BookingContent() {
                     </div>
 
                     {/* Sesi Siang & Sore */}
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "11.5px" }}>
+                    <div className="mb-4">
+                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "12px", letterSpacing: "0.5px" }}>
                         ☀️ SESI SIANG & SORE (12:00 - 17:30)
                       </small>
-                      <div className="d-flex flex-wrap gap-2">
+                      <div className="d-flex flex-wrap" style={{ gap: "10px" }}>
                         {afternoonSlots.map((time) => {
                           const isSlotSelected = selectedTime === time;
                           return (
@@ -879,7 +884,7 @@ function BookingContent() {
                                 borderRadius: "8px",
                                 padding: "8px 16px",
                                 fontSize: "13px",
-                                minWidth: "75px",
+                                minWidth: "80px",
                                 boxShadow: isSlotSelected ? "0 4px 12px rgba(212,175,55,0.3)" : "none",
                               }}
                             >
@@ -892,10 +897,10 @@ function BookingContent() {
 
                     {/* Sesi Malam */}
                     <div>
-                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "11.5px" }}>
+                      <small className="text-muted d-block mb-2 font-weight-bold" style={{ fontSize: "12px", letterSpacing: "0.5px" }}>
                         🌙 SESI MALAM (18:00 - 20:00)
                       </small>
-                      <div className="d-flex flex-wrap gap-2">
+                      <div className="d-flex flex-wrap" style={{ gap: "10px" }}>
                         {eveningSlots.map((time) => {
                           const isSlotSelected = selectedTime === time;
                           return (
@@ -915,7 +920,7 @@ function BookingContent() {
                                 borderRadius: "8px",
                                 padding: "8px 16px",
                                 fontSize: "13px",
-                                minWidth: "75px",
+                                minWidth: "80px",
                                 boxShadow: isSlotSelected ? "0 4px 12px rgba(212,175,55,0.3)" : "none",
                               }}
                             >
@@ -933,10 +938,10 @@ function BookingContent() {
               {step === 4 && (
                 <div>
                   <div className="mb-4">
-                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700 }}>
+                    <h3 style={{ fontSize: "20px", color: "#fff", margin: 0, fontWeight: 700, letterSpacing: "0.02em" }}>
                       <span style={{ color: "var(--primary-gold)" }}>Langkah 4:</span> Informasi & Kontak Pemesan
                     </h3>
-                    <p style={{ color: "#94a3b8", fontSize: "13px", marginTop: "4px", marginBottom: 0 }}>
+                    <p style={{ color: "#94a3b8", fontSize: "13.5px", marginTop: "4px", marginBottom: 0, lineHeight: 1.6 }}>
                       Data ini diperlukan untuk konfirmasi tiket dan reservasi ke kasir.
                     </p>
                   </div>
@@ -1009,9 +1014,9 @@ function BookingContent() {
                     </div>
 
                     <div className="p-3 rounded mb-2" style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(212,175,55,0.3)" }}>
-                      <span className="small text-muted d-block" style={{ fontSize: "11px" }}>METODE PEMBAYARAN:</span>
+                      <span className="small text-muted d-block" style={{ fontSize: "11px", marginBottom: "4px" }}>METODE PEMBAYARAN:</span>
                       <strong className="text-white" style={{ fontSize: "13px" }}>
-                        <i className="fas fa-wallet mr-1 text-warning"></i> Bayar di Tempat (Tunai, QRIS, Debit BCA/Mandiri)
+                        <i className="fas fa-wallet mr-2 text-warning"></i> Bayar di Tempat (Tunai, QRIS, Debit BCA/Mandiri)
                       </strong>
                     </div>
                   </form>
@@ -1034,8 +1039,8 @@ function BookingContent() {
               }}
             >
               <div className="d-flex justify-content-between align-items-center pb-3 border-bottom border-dark mb-3">
-                <div className="d-flex align-items-center gap-2">
-                  <i className="fas fa-receipt" style={{ color: "var(--primary-gold)", fontSize: "18px" }}></i>
+                <div className="d-flex align-items-center" style={{ gap: "8px" }}>
+                  <i className="fas fa-receipt mr-2" style={{ color: "var(--primary-gold)", fontSize: "18px" }}></i>
                   <h4 style={{ fontFamily: "Playfair Display, serif", color: "#fff", margin: 0, fontSize: "18px" }}>
                     Ringkasan Reservasi
                   </h4>
@@ -1046,31 +1051,31 @@ function BookingContent() {
               </div>
 
               {/* Barber Preview */}
-              <div className="d-flex align-items-center gap-3 p-2.5 rounded mb-3" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div className="d-flex align-items-center p-2.5 rounded mb-3" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", gap: "12px" }}>
                 <div style={{ width: "48px", height: "48px", borderRadius: "50%", overflow: "hidden", border: "1.5px solid var(--primary-gold)", flexShrink: 0 }}>
                   <img src={chosenBarber.avatar} alt={chosenBarber.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div>
                   <small className="text-muted d-block" style={{ fontSize: "10.5px", textTransform: "uppercase" }}>Master Barber</small>
                   <strong className="text-white" style={{ fontSize: "14px" }}>{chosenBarber.name}</strong>
-                  <div style={{ fontSize: "11px", color: "var(--primary-gold)" }}>{chosenBarber.role}</div>
+                  <div style={{ fontSize: "11px", color: "var(--primary-gold)", marginTop: "2px" }}>{chosenBarber.role}</div>
                 </div>
               </div>
 
               {/* Schedule Preview */}
               <div className="p-2.5 rounded mb-3" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <small className="text-muted d-block" style={{ fontSize: "10.5px", textTransform: "uppercase" }}>Waktu & Jadwal</small>
+                <small className="text-muted d-block" style={{ fontSize: "10.5px", textTransform: "uppercase", marginBottom: "2px" }}>Waktu & Jadwal</small>
                 <strong className="text-white" style={{ fontSize: "13.5px" }}>
-                  <i className="far fa-calendar-alt mr-1" style={{ color: "var(--primary-gold)" }}></i> {chosenDateObj.dayName}, {chosenDateObj.dateFormatted}
+                  <i className="far fa-calendar-alt mr-2" style={{ color: "var(--primary-gold)" }}></i> {chosenDateObj.dayName}, {chosenDateObj.dateFormatted}
                 </strong>
-                <div style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "13px", marginTop: "2px" }}>
-                  <i className="far fa-clock mr-1"></i> {selectedTime} WIB
+                <div style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "13px", marginTop: "4px" }}>
+                  <i className="far fa-clock mr-2"></i> {selectedTime} WIB
                 </div>
               </div>
 
               {/* Services List Preview */}
               <div className="mb-3">
-                <div className="d-flex justify-content-between align-items-center mb-1">
+                <div className="d-flex justify-content-between align-items-center mb-2">
                   <small className="text-muted font-weight-bold" style={{ fontSize: "11px", textTransform: "uppercase" }}>
                     Layanan Dipilih ({chosenServices.length})
                   </small>
@@ -1079,11 +1084,11 @@ function BookingContent() {
                   </small>
                 </div>
 
-                <div className="d-flex flex-column gap-1.5" style={{ maxHeight: "160px", overflowY: "auto" }}>
+                <div className="d-flex flex-column" style={{ maxHeight: "160px", overflowY: "auto", gap: "6px" }}>
                   {chosenServices.map((srv) => (
-                    <div key={srv.id} className="d-flex justify-content-between small text-white py-1 border-bottom border-dark">
-                      <span style={{ fontSize: "12.5px" }}>{srv.name}</span>
-                      <span style={{ color: "var(--primary-gold)", fontWeight: 600, fontSize: "12.5px" }}>
+                    <div key={srv.id} className="d-flex justify-content-between small text-white py-1.5 border-bottom border-dark">
+                      <span style={{ fontSize: "12.5px", paddingRight: "10px" }}>{srv.name}</span>
+                      <span style={{ color: "var(--primary-gold)", fontWeight: 600, fontSize: "12.5px", whiteSpace: "nowrap" }}>
                         {formatRupiah(srv.price)}
                       </span>
                     </div>
@@ -1102,12 +1107,12 @@ function BookingContent() {
               </div>
 
               {/* Wizard Navigation Action Button */}
-              <div className="d-flex flex-column gap-2">
+              <div className="d-flex flex-column" style={{ gap: "8px" }}>
                 {step < 4 ? (
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    className="btn w-100 py-3 d-flex align-items-center justify-content-center gap-2"
+                    className="btn w-100 py-3 d-flex align-items-center justify-content-center"
                     style={{
                       background: "linear-gradient(135deg, #d4af37 0%, #aa8524 100%)",
                       color: "#0b0c10",
@@ -1117,17 +1122,18 @@ function BookingContent() {
                       boxShadow: "0 6px 20px rgba(212,175,55,0.35)",
                       border: "none",
                       cursor: "pointer",
+                      gap: "8px",
                     }}
                   >
                     <span>Lanjut ke Langkah {step + 1}</span>
-                    <i className="fas fa-arrow-right"></i>
+                    <i className="fas fa-arrow-right ml-1"></i>
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={handleBookingSubmit}
                     disabled={submitting}
-                    className="btn w-100 py-3 d-flex align-items-center justify-content-center gap-2"
+                    className="btn w-100 py-3 d-flex align-items-center justify-content-center"
                     style={{
                       background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
                       color: "#fff",
@@ -1137,13 +1143,14 @@ function BookingContent() {
                       boxShadow: "0 6px 20px rgba(16,185,129,0.35)",
                       border: "none",
                       cursor: "pointer",
+                      gap: "8px",
                     }}
                   >
                     {submitting ? (
                       "Memproses Reservasi..."
                     ) : (
                       <>
-                        <i className="fas fa-check-circle"></i>
+                        <i className="fas fa-check-circle mr-1"></i>
                         <span>Konfirmasi & Dapatkan Tiket</span>
                       </>
                     )}
@@ -1172,9 +1179,9 @@ function BookingContent() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="small"
-                  style={{ color: "#25D366", textDecoration: "none", fontSize: "12px" }}
+                  style={{ color: "#25D366", textDecoration: "none", fontSize: "12px", display: "inline-flex", alignItems: "center" }}
                 >
-                  <i className="fab fa-whatsapp mr-1"></i> Butuh bantuan cepat? Chat Kasir
+                  <i className="fab fa-whatsapp mr-1.5" style={{ fontSize: "14px" }}></i> Butuh bantuan cepat? Chat Kasir
                 </a>
               </div>
             </div>
