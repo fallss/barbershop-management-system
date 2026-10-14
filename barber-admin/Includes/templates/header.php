@@ -36,11 +36,11 @@
 			<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 		  		<!-- Sidebar - Brand -->
-		  		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+		  		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
 					<div class="sidebar-brand-icon rotate-n-15">
 			  			<i class="bs bs-scissors-1"></i>
 					</div>
-					<div class="sidebar-brand-text mx-3">Barbershop</div>
+					<div class="sidebar-brand-text mx-3">Barberia Luxe</div>
 		  		</a>
 
 		  		<!-- Divider -->
@@ -50,7 +50,7 @@
 			  	<li class="nav-item active">
 					<a class="nav-link" href="index.php">
 				  		<i class="fas fa-fw fa-tachometer-alt"></i>
-				  		<span>Dashboard</span>
+				  		<span>Dashboard Utama</span>
 				  	</a>
 			  	</li>
 
@@ -59,55 +59,48 @@
 
 	  			<!-- Heading -->
 	  			<div class="sidebar-heading">
-					SERVICES & SAMPLES
+					LAYANAN & KATALOG
 	  			</div>
 
-	  			<!-- Nav Item - Pages Collapse Menu -->
+	  			<!-- Nav Item - Service Categories -->
 	  			<li class="nav-item">
 					<a class="nav-link" href="service-categories.php">
 		  				<i class="fas fa-list"></i>
-		  				<span>Service Categories</span>
+		  				<span>Kategori Layanan</span>
 		  			</a>
 	  			</li>
 	  			<li class="nav-item">
 					<a class="nav-link" href="services.php">
 		  				<i class="bs bs-scissors-1"></i>
-		  				<span>Services</span>
+		  				<span>Daftar Layanan</span>
 		  			</a>
 	  			</li>
-	  			<li class="nav-item">
-					<a class="nav-link" href="#">
-		  				<i class="far fa-image"></i>
-		  				<span>Samples</span>
-		  			</a>
-	  			</li>
-			  	
 
 	  			<!-- Divider -->
 	  			<hr class="sidebar-divider">
 
 	  			<!-- Heading -->
 	  			<div class="sidebar-heading">
-					CLIENTS & STAFF
+					PELANGGAN & STAF
 	  			</div>
 
-	  			<!-- Nav Item - Charts -->
+	  			<!-- Nav Item - Clients & Staff -->
 	  			<li class="nav-item">
 					<a class="nav-link" href="clients.php">
 		  				<i class="far fa-address-card"></i>
-		  				<span>Clients</span>
+		  				<span>Data Pelanggan</span>
 		  			</a>
 	  			</li>
 	  			<li class="nav-item">
 					<a class="nav-link" href="employees.php">
 		  				<i class="far fa-user"></i>
-		  				<span>Employees</span>
+		  				<span>Karyawan / Barber</span>
 		  			</a>
 	  			</li>
 	  			<li class="nav-item">
 					<a class="nav-link" href="employees-schedule.php">
 		  				<i class="fas fa-calendar-week icon-ver"></i>
-		  				<span>Employees Schedule</span>
+		  				<span>Jadwal Jam Kerja</span>
 		  			</a>
 	  			</li>
 	  
@@ -139,9 +132,9 @@
 					  	<!-- Topbar Navbar -->
 					  	<ul class="navbar-nav ml-auto">
 							<li class="nav-item">
-		              			<a class="nav-link" href="../" target="_blank">
-		              				<i class="far fa-eye"></i>
-		                			<span style="margin-left: 5px;">View website</span>
+		              			<a class="nav-link text-primary font-weight-bold" href="../index.php" target="_blank">
+		              				<i class="far fa-eye mr-1"></i>
+		                			<span>Lihat Website</span>
 		              			</a>
 		          			</li>
 							<div class="topbar-divider d-none d-sm-block"></div>
@@ -149,30 +142,17 @@
 							<!-- Nav Item - User Information -->
 							<li class="nav-item dropdown no-arrow">
 					  			<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="mr-2 d-none d-lg-inline text-gray-600 small">
+									<span class="mr-2 d-none d-lg-inline text-gray-700 font-weight-bold small">
 										<?php echo $_SESSION['username_barbershop_Xw211qAAsq4']; ?>
 									</span>
-									<i class="fas fa-caret-down"></i>
+									<i class="fas fa-caret-down text-gray-500"></i>
 								</a>
 							  	
 							  	<!-- Dropdown - User Information -->
 							  	<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-									<a class="dropdown-item" href="#">
-								  		<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-								  		Profile
-									</a>
-									<a class="dropdown-item" href="#">
-								  		<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-								  		Settings
-									</a>
-									<a class="dropdown-item" href="#">
-								  		<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-								  		Activity Log
-									</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-								  		<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-								  		Logout
+									<a class="dropdown-item" href="logout.php">
+								  		<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-danger"></i>
+								  		Keluar (Logout)
 									</a>
 							  	</div>
 							</li>

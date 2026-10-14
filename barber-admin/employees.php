@@ -3,7 +3,7 @@
     session_start();
 
     //Page Title
-    $pageTitle = 'Employees';
+    $pageTitle = 'Data Karyawan / Barber';
 
     //Includes
     include 'connect.php';
@@ -22,11 +22,21 @@
     
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Employees</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                    <i class="fas fa-download fa-sm text-white-50"></i>
-                    Generate Report
-                </a>
+                <div>
+                    <h1 class="h3 mb-1 text-gray-800 font-weight-bold">Manajemen Karyawan / Barber</h1>
+                    <p class="text-muted small mb-0">Kelola profil barber, nomor kontak, dan penugasan jadwal kerja.</p>
+                </div>
+                <?php if(!isset($_GET['do']) || $_GET['do'] == 'Manage') { ?>
+                    <a href="employees.php?do=Add" class="btn btn-primary btn-sm shadow-sm">
+                        <i class="fa fa-plus fa-sm text-white-50 mr-1"></i> 
+                        Tambah Barber Baru
+                    </a>
+                <?php } else { ?>
+                    <a href="employees.php" class="btn btn-secondary btn-sm shadow-sm">
+                        <i class="fa fa-arrow-left fa-sm text-white-50 mr-1"></i> 
+                        Kembali ke Daftar Barber
+                    </a>
+                <?php } ?>
             </div>
 
             <?php
@@ -43,33 +53,26 @@
 
                 if($do == 'Manage')
                 {
-                    $stmt = $con->prepare("SELECT * FROM employees");
+                    $stmt = $con->prepare("SELECT * FROM employees ORDER BY employee_id ASC");
                     $stmt->execute();
                     $rows_employees = $stmt->fetchAll(); 
-
                     ?>
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Employees</h6>
+                            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Daftar Barber Aktif</h6>
+                                <span class="badge badge-primary px-3 py-2"><?php echo count($rows_employees); ?> Barber</span>
                             </div>
                             <div class="card-body">
-                                
-                                <!-- ADD NEW Employee BUTTON -->
-                                <a href="employees.php?do=Add" class="btn btn-success btn-sm" style="margin-bottom: 10px;">
-                                    <i class="fa fa-plus"></i> 
-                                    Add Employee
-                                </a>
-
                                 <!-- Employees Table -->
                                 <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-light">
                                             <tr>
-                                                <th scope="col">First Name</th>
-                                                <th scope="col">Last Name</th>
-                                                <th scope="col">Phone Number</th>
-                                                <th scope="col">E-mail</th>
-                                                <th scope="col">Manage</th>
+                                                <th style="width: 70px;">ID#</th>
+                                                <th>Nama Lengkap Barber</th>
+                                                <th>Nomor Telepon / WhatsApp</th>
+                                                <th>Alamat Email</th>
+                                                <th class="text-center" style="width: 130px;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,63 +80,45 @@
                                                 foreach($rows_employees as $employee)
                                                 {
                                                     echo "<tr>";
-                                                        echo "<td>";
-                                                            echo $employee['first_name'];
-                                                        echo "</td>";
-                                                        echo "<td>";
-                                                            echo $employee['last_name'];
-                                                        echo "</td>";
-                                                        echo "<td>";
-                                                            echo $employee['phone_number'];
-                                                        echo "</td>";
-                                                        echo "<td>";
-                                                            echo $employee['email'];
-                                                        echo "</td>";
-                                                        echo "<td>";
+                                                        echo "<td class='font-weight-bold text-primary'>#" . $employee['employee_id'] . "</td>";
+                                                        echo "<td><strong><i class='fas fa-user-tie text-muted mr-2'></i>" . htmlspecialchars(trim($employee['first_name'])." ".trim($employee['last_name'])) . "</strong></td>";
+                                                        echo "<td><i class='fab fa-whatsapp text-success mr-1'></i> " . htmlspecialchars($employee['phone_number']) . "</td>";
+                                                        echo "<td><i class='far fa-envelope text-muted mr-1'></i> " . htmlspecialchars($employee['email']) . "</td>";
+                                                        echo "<td class='text-center'>";
                                                             $delete_data = "delete_employee_".$employee["employee_id"];
-                                                    ?>
-                                                        <ul class="list-inline m-0">
+                                                            ?>
+                                                            <a href="employees.php?do=Edit&employee_id=<?php echo $employee['employee_id']; ?>" class="btn btn-success btn-sm" title="Ubah Data">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                            <a href="employees-schedule.php" class="btn btn-info btn-sm" title="Atur Jam Kerja">
+                                                                <i class="fas fa-calendar-alt"></i>
+                                                            </a>
+                                                            <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#<?php echo $delete_data; ?>" title="Hapus">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
 
-                                                            <!-- EDIT BUTTON -->
-
-                                                            <li class="list-inline-item" data-toggle="tooltip" title="Edit">
-                                                                <button class="btn btn-success btn-sm rounded-0">
-                                                                    <a href="employees.php?do=Edit&employee_id=<?php echo $employee['employee_id']; ?>" style="color: white;">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </a>
-                                                                </button>
-                                                            </li>
-
-                                                            <!-- DELETE BUTTON -->
-
-                                                            <li class="list-inline-item" data-toggle="tooltip" title="Delete">
-                                                                <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="modal" data-target="#<?php echo $delete_data; ?>" data-placement="top"><i class="fa fa-trash"></i></button>
-
-                                                                <!-- Delete Modal -->
-
-                                                                <div class="modal fade" id="<?php echo $delete_data; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $delete_data; ?>" aria-hidden="true">
-                                                                    <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                Are you sure you want to delete this employee?
-                                                                            </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                                <button type="button" data-id = "<?php echo $employee['employee_id']; ?>" class="btn btn-danger delete_employee_bttn">Delete</button>
-                                                                            </div>
+                                                            <!-- Delete Modal -->
+                                                            <div class="modal fade" id="<?php echo $delete_data; ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header bg-danger text-white">
+                                                                            <h5 class="modal-title font-weight-bold"><i class="fas fa-trash-alt mr-2"></i> Hapus Barber</h5>
+                                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body text-left">
+                                                                            Apakah Anda yakin ingin menghapus data barber <strong>"<?php echo htmlspecialchars(trim($employee['first_name'])." ".trim($employee['last_name'])); ?>"</strong>?
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                                            <button type="button" data-id="<?php echo $employee['employee_id']; ?>" class="btn btn-danger delete_employee_bttn">Ya, Hapus</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </li>
-                                                        </ul>
-                                                    <?php
-                                                    echo "</td>";
+                                                            </div>
+                                                            <?php
+                                                        echo "</td>";
                                                     echo "</tr>";
                                                 }
                                             ?>
@@ -147,329 +132,166 @@
                 elseif($do == 'Add')
                 {
                     ?>
-                    
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add New Employee</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Formulir Tambah Barber Baru</h6>
                         </div>
                         <div class="card-body">
                             <form method="POST" action="employees.php?do=Add">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="employee_fname">First Name</label>
-                                            <input type="text" class="form-control" value="<?php echo (isset($_POST['employee_fname']))?htmlspecialchars($_POST['employee_fname']):'' ?>" placeholder="First Name" name="employee_fname">
-                                            <?php
-                                                $flag_add_employee_form = 0;
-                                                if(isset($_POST['add_new_employee']))
-                                                {
-                                                    if(empty(test_input($_POST['employee_fname'])))
-                                                    {
-                                                        ?>
-                                                            <div class="invalid-feedback" style="display: block;">
-                                                                First name is required.
-                                                            </div>
-                                                        <?php
-
-                                                        $flag_add_employee_form = 1;
-                                                    }
-                                                }
-                                            ?>
+                                            <label class="font-weight-bold">Nama Depan *</label>
+                                            <input type="text" class="form-control" name="employee_fname" placeholder="Contoh: Rian" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="employee_lname">Last Name</label>
-                                            <input type="text" class="form-control" value="<?php echo (isset($_POST['employee_lname']))?htmlspecialchars($_POST['employee_lname']):'' ?>" placeholder="Last Name" name="employee_lname">
-                                            <?php
-                                                if(isset($_POST['add_new_employee']))
-                                                {
-                                                    if(empty(test_input($_POST['employee_lname'])))
-                                                    {
-                                                        ?>
-                                                            <div class="invalid-feedback" style="display: block;">
-                                                                Last name is required.
-                                                            </div>
-                                                        <?php
-
-                                                        $flag_add_employee_form = 1;
-                                                    }
-                                                }
-                                            ?>
+                                            <label class="font-weight-bold">Nama Belakang *</label>
+                                            <input type="text" class="form-control" name="employee_lname" placeholder="Contoh: Pratama" required>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="employee_phone">Phone Number</label>
-                                            <input type="text" class="form-control" value="<?php echo (isset($_POST['employee_phone']))?htmlspecialchars($_POST['employee_phone']):'' ?>" placeholder="Phone number" name="employee_phone">
-                                            <?php
-                                                if(isset($_POST['add_new_employee']))
-                                                {
-                                                    if(empty(test_input($_POST['employee_phone'])))
-                                                    {
-                                                        ?>
-                                                            <div class="invalid-feedback" style="display: block;">
-                                                                Phone number is required.
-                                                            </div>
-                                                        <?php
-
-                                                        $flag_add_employee_form = 1;
-                                                    }
-                                                }
-                                            ?>
+                                            <label class="font-weight-bold">Nomor WhatsApp / Telepon *</label>
+                                            <input type="text" class="form-control" name="employee_phone" placeholder="0812xxxxxxxx" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group"> 
-                                            <label for="employee_email">E-mail</label>
-                                            <input type="text" class="form-control" value="<?php echo (isset($_POST['employee_email']))?htmlspecialchars($_POST['employee_email']):'' ?>" placeholder="E-mail" name="employee_email">
-                                            <?php
-                                                if(isset($_POST['add_new_employee']))
-                                                {
-                                                    if(empty(test_input($_POST['employee_email'])))
-                                                    {
-                                                        ?>
-                                                            <div class="invalid-feedback" style="display: block;">
-                                                                Email is required.
-                                                            </div>
-                                                        <?php
-
-                                                        $flag_add_employee_form = 1;
-                                                    }
-                                                }
-                                            ?>
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Alamat Email *</label>
+                                            <input type="email" class="form-control" name="employee_email" placeholder="barber@barberialuxe.id" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- SUBMIT BUTTON -->
-
-                                <button type="submit" name="add_new_employee" class="btn btn-primary">Add employee</button>
-
+                                <button type="submit" name="add_new_employee" class="btn btn-primary">
+                                    <i class="fas fa-save mr-1"></i> Simpan Data Barber
+                                </button>
+                                <a href="employees.php" class="btn btn-secondary ml-2">Batal</a>
                             </form>
 
                             <?php
-
-                                /*** ADD NEW EMPLOYEE ***/
-
-                                if(isset($_POST['add_new_employee']) && $_SERVER['REQUEST_METHOD'] == 'POST' && $flag_add_employee_form == 0)
+                                if(isset($_POST['add_new_employee']) && $_SERVER['REQUEST_METHOD'] == 'POST')
                                 {
                                     $employee_fname = test_input($_POST['employee_fname']);
-                                    $employee_lname = $_POST['employee_lname'];
+                                    $employee_lname = test_input($_POST['employee_lname']);
                                     $employee_phone = test_input($_POST['employee_phone']);
                                     $employee_email = test_input($_POST['employee_email']);
 
-                                    try
+                                    if(!empty($employee_fname) && !empty($employee_lname) && !empty($employee_phone) && !empty($employee_email))
                                     {
-                                        $stmt = $con->prepare("insert into employees(first_name,last_name,phone_number,email) values(?,?,?,?) ");
-                                        $stmt->execute(array($employee_fname,$employee_lname,$employee_phone,$employee_email));
-                                        
-                                        ?> 
-                                            <!-- SUCCESS MESSAGE -->
-
+                                        try
+                                        {
+                                            $stmt = $con->prepare("INSERT INTO employees (first_name, last_name, phone_number, email) VALUES (?, ?, ?, ?)");
+                                            $stmt->execute(array($employee_fname, $employee_lname, $employee_phone, $employee_email));
+                                            ?>
                                             <script type="text/javascript">
-                                                swal("New Employee","The new employee has been inserted successfully", "success").then((value) => 
-                                                {
+                                                swal("Berhasil Disimpan!","Data barber baru telah berhasil ditambahkan.","success").then(() => {
                                                     window.location.replace("employees.php");
                                                 });
                                             </script>
-
-                                        <?php
-
+                                            <?php
+                                        }
+                                        catch(Exception $e)
+                                        {
+                                            echo "<div class='alert alert-danger mt-3'>Terjadi kesalahan: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                        }
                                     }
-                                    catch(Exception $e)
-                                    {
-                                        echo "<div class = 'alert alert-danger' style='margin:10px 0px;'>";
-                                            echo 'Error occurred: ' .$e->getMessage();
-                                        echo "</div>";
-                                    }
-                                    
                                 }
                             ?>
                         </div>
                     </div>
-                    <?php   
+                    <?php
                 }
                 elseif($do == 'Edit')
                 {
-                    $employee_id = (isset($_GET['employee_id']) && is_numeric($_GET['employee_id']))?intval($_GET['employee_id']):0;
+                    $employee_id = (isset($_GET['employee_id']) && is_numeric($_GET['employee_id'])) ? intval($_GET['employee_id']) : 0;
+                    $stmt = $con->prepare("SELECT * FROM employees WHERE employee_id = ?");
+                    $stmt->execute(array($employee_id));
+                    $employee = $stmt->fetch();
 
-                    if($employee_id)
+                    if($employee)
                     {
-                        $stmt = $con->prepare("Select * from employees where employee_id = ?");
-                        $stmt->execute(array($employee_id));
-                        $employee = $stmt->fetch();
-                        $count = $stmt->rowCount();
-
-                        if($count > 0)
-                        {
-                            ?>
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Edit Employee</h6>
-                                </div>
-                                <div class="card-body">
-                                    <form method="POST" action="employees.php?do=Edit&employee_id=<?php echo $employee_id; ?>">
-                                        <!-- Employee ID -->
-                                        <input type="hidden" name="employee_id" value="<?php echo $employee['employee_id'];?>">
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="employee_fname">First Name</label>
-                                                    <input type="text" class="form-control" value="<?php echo $employee['first_name'] ?>" placeholder="First Name" name="employee_fname">
-                                                    <?php
-                                                        $flag_edit_employee_form = 0;
-                                                        if(isset($_POST['edit_employee_sbmt']))
-                                                        {
-                                                            if(empty(test_input($_POST['employee_fname'])))
-                                                            {
-                                                                ?>
-                                                                    <div class="invalid-feedback" style="display: block;">
-                                                                        First name is required.
-                                                                    </div>
-                                                                <?php
-
-                                                                $flag_edit_employee_form = 1;
-                                                            }
-                                                        }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="employee_lname">Last Name</label>
-                                                    <input type="text" class="form-control" value="<?php echo $employee['last_name'] ?>" placeholder="Last Name" name="employee_lname">
-                                                    <?php
-                                                        if(isset($_POST['edit_employee_sbmt']))
-                                                        {
-                                                            if(empty(test_input($_POST['employee_lname'])))
-                                                            {
-                                                                ?>
-                                                                    <div class="invalid-feedback" style="display: block;">
-                                                                        Last name is required.
-                                                                    </div>
-                                                                <?php
-
-                                                                $flag_edit_employee_form = 1;
-                                                            }
-                                                        }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="employee_phone">Phone Number</label>
-                                                    <input type="text" class="form-control" value="<?php echo $employee['phone_number'] ?>"  placeholder="Phone number" name="employee_phone">
-                                                    <?php
-                                                        if(isset($_POST['edit_employee_sbmt']))
-                                                        {
-                                                            if(empty(test_input($_POST['employee_phone'])))
-                                                            {
-                                                                ?>
-                                                                    <div class="invalid-feedback" style="display: block;">
-                                                                        Phone number is required.
-                                                                    </div>
-                                                                <?php
-
-                                                                $flag_edit_employee_form = 1;
-                                                            }
-                                                        }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"> 
-                                                    <label for="employee_email">E-mail</label>
-                                                    <input type="text" class="form-control" value="<?php echo $employee['email'] ?>" placeholder="E-mail" name="employee_email">
-                                                    <?php
-                                                        if(isset($_POST['edit_employee_sbmt']))
-                                                        {
-                                                            if(empty(test_input($_POST['employee_email'])))
-                                                            {
-                                                                ?>
-                                                                    <div class="invalid-feedback" style="display: block;">
-                                                                        Email is required.
-                                                                    </div>
-                                                                <?php
-
-                                                                $flag_edit_employee_form = 1;
-                                                            }
-                                                        }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- SUBMIT BUTTON -->
-                                        <button type="submit" name="edit_employee_sbmt" class="btn btn-primary">
-                                            Edit employee
-                                        </button>
-                                    </form>
-                                    <?php
-                                        /*** EDIT EMPLOYEE ***/
-                                        if(isset($_POST['edit_employee_sbmt']) && $_SERVER['REQUEST_METHOD'] == 'POST' && $flag_edit_employee_form == 0)
-                                        {
-                                            $employee_fname = test_input($_POST['employee_fname']);
-                                            $employee_lname = $_POST['employee_lname'];
-                                            $employee_phone = test_input($_POST['employee_phone']);
-                                            $employee_email = test_input($_POST['employee_email']);
-                                            $employee_id = $_POST['employee_id'];
-
-                                            try
-                                            {
-                                                $stmt = $con->prepare("update employees set first_name = ?, last_name = ?, phone_number = ?, email = ? where employee_id = ? ");
-                                                $stmt->execute(array($employee_fname,$employee_lname,$employee_phone,$employee_email,$employee_id));
-                                                
-                                                ?> 
-                                                    <!-- SUCCESS MESSAGE -->
-
-                                                    <script type="text/javascript">
-                                                        swal("Employee Updated","The employee has been updated successfully", "success").then((value) => 
-                                                        {
-                                                            window.location.replace("employees.php");
-                                                        });
-                                                    </script>
-
-                                                <?php
-
-                                            }
-                                            catch(Exception $e)
-                                            {
-                                                echo "<div class = 'alert alert-danger' style='margin:10px 0px;'>";
-                                                    echo 'Error occurred: ' .$e->getMessage();
-                                                echo "</div>";
-                                            }
-                                            
-                                        }
-                                    ?>
-                                </div>
+                        ?>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Edit Profil Barber: <?php echo htmlspecialchars(trim($employee['first_name'])." ".trim($employee['last_name'])); ?></h6>
                             </div>
-                            <?php
-                        }
-                        else
-                        {
-                            header('Location: employees.php');
-                            exit();
-                        }
-                    }
-                    else
-                    {
-                        header('Location: employees.php');
-                        exit();
+                            <div class="card-body">
+                                <form method="POST" action="employees.php?do=Edit&employee_id=<?php echo $employee_id; ?>">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Nama Depan *</label>
+                                                <input type="text" class="form-control" name="employee_fname" value="<?php echo htmlspecialchars(trim($employee['first_name'])); ?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Nama Belakang *</label>
+                                                <input type="text" class="form-control" name="employee_lname" value="<?php echo htmlspecialchars(trim($employee['last_name'])); ?>" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Nomor WhatsApp / Telepon *</label>
+                                                <input type="text" class="form-control" name="employee_phone" value="<?php echo htmlspecialchars($employee['phone_number']); ?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Alamat Email *</label>
+                                                <input type="email" class="form-control" name="employee_email" value="<?php echo htmlspecialchars($employee['email']); ?>" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" name="edit_employee_sbmt" class="btn btn-success">
+                                        <i class="fas fa-check mr-1"></i> Simpan Perubahan
+                                    </button>
+                                    <a href="employees.php" class="btn btn-secondary ml-2">Batal</a>
+                                </form>
+
+                                <?php
+                                    if(isset($_POST['edit_employee_sbmt']) && $_SERVER['REQUEST_METHOD'] == 'POST')
+                                    {
+                                        $employee_fname = test_input($_POST['employee_fname']);
+                                        $employee_lname = test_input($_POST['employee_lname']);
+                                        $employee_phone = test_input($_POST['employee_phone']);
+                                        $employee_email = test_input($_POST['employee_email']);
+
+                                        try
+                                        {
+                                            $stmt = $con->prepare("UPDATE employees SET first_name = ?, last_name = ?, phone_number = ?, email = ? WHERE employee_id = ?");
+                                            $stmt->execute(array($employee_fname, $employee_lname, $employee_phone, $employee_email, $employee_id));
+                                            ?>
+                                            <script type="text/javascript">
+                                                swal("Berhasil Diperbarui!","Data barber berhasil diperbarui.","success").then(() => {
+                                                    window.location.replace("employees.php");
+                                                });
+                                            </script>
+                                            <?php
+                                        }
+                                        catch(Exception $e)
+                                        {
+                                            echo "<div class='alert alert-danger mt-3'>Terjadi kesalahan: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                        }
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                        <?php
                     }
                 }
             ?>
         </div>
   
 <?php 
-        
         //Include Footer
         include 'Includes/templates/footer.php';
     }
@@ -478,5 +300,4 @@
         header('Location: login.php');
         exit();
     }
-
 ?>

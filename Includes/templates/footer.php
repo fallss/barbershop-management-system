@@ -1,21 +1,21 @@
-		
 		<footer class="footer_section">
 			<div class="container">
-				<div class="row">
+				<div class="row align-items-center">
 					<div class="col-md-6 xs-padding">
 						<div class="copyright">
 							© 
 							<script type="text/javascript"> 
 								document.write(new Date().getFullYear())
 							</script>
-							Barber Shop Powered by JAIRI Idriss
+							<strong>BARBERIA LUXE</strong> — Barbershop & Salon Grooming Pria Premium. Seluruh hak cipta dilindungi.
 						</div>
 					</div>
-					<div class="col-md-6 xs-padding">
+					<div class="col-md-6 xs-padding text-md-right">
 						<ul class="footer_social">
-							<li><a href="#">Orders</a></li>
-							<li><a href="#">Terms</a></li>
-							<li><a href="#">Report Problem</a></li>
+							<li><a href="appointment.php"><i class="far fa-calendar-check mr-1"></i> Reservasi</a></li>
+							<li><a href="index.php#services">Layanan</a></li>
+							<li><a href="index.php#contact-us">Lokasi & Kontak</a></li>
+							<li><a href="barber-admin/login.php" style="color: var(--primary-gold);"><i class="fas fa-user-shield mr-1"></i> Portal Admin</a></li>
 						</ul>
 					</div>
 				</div>

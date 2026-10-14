@@ -2,7 +2,7 @@
     session_start();
 
     //Page Title
-    $pageTitle = 'Service Categories';
+    $pageTitle = 'Kategori Layanan';
 
     //Includes
     include 'connect.php';
@@ -18,53 +18,51 @@
     
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Service Categories</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                    <i class="fas fa-download fa-sm text-white-50"></i>
-                    Generate Report
-                </a>
+                <div>
+                    <h1 class="h3 mb-1 text-gray-800 font-weight-bold">Kategori Layanan</h1>
+                    <p class="text-muted small mb-0">Kelola kelompok kategori untuk menu perawatan dan cukur di barbershop.</p>
+                </div>
+                <button class="btn btn-primary btn-sm shadow-sm" type="button" data-toggle="modal" data-target="#add_new_category">
+                    <i class="fa fa-plus fa-sm text-white-50 mr-1"></i> 
+                    Tambah Kategori Baru
+                </button>
             </div>
 
             <!-- Service Categories Table -->
             <?php
-                $stmt = $con->prepare("SELECT * FROM service_categories");
+                $stmt = $con->prepare("SELECT * FROM service_categories ORDER BY category_id ASC");
                 $stmt->execute();
                 $rows_categories = $stmt->fetchAll(); 
             ?>
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Service Categories</h6>
+                <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Daftar Kategori Layanan</h6>
+                    <span class="badge badge-primary px-3 py-2"><?php echo count($rows_categories); ?> Kategori</span>
                 </div>
                 <div class="card-body">
-
-                    <!-- ADD NEW CATEGORY BUTTON -->
-                    <button class="btn btn-success btn-sm" style="margin-bottom: 10px;" type="button" data-toggle="modal" data-target="#add_new_category" data-placement="top">
-                        <i class="fa fa-plus"></i> 
-                        Add Category
-                    </button>
 
                     <!-- Add New Category Modal -->
                     <div class="modal fade" id="add_new_category" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Add New Category</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title font-weight-bold"><i class="fas fa-folder-plus mr-2"></i> Tambah Kategori Baru</h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="category_name">Category name</label>
-                                        <input type="text" id="category_name_input" class="form-control" placeholder="Category Name" name="category_name">
-                                        <div class="invalid-feedback" id="required_category_name" style="display: none;">
-                                            Category name is required!
+                                        <label for="category_name" class="font-weight-bold">Nama Kategori *</label>
+                                        <input type="text" id="category_name_input" class="form-control" placeholder="Contoh: Perawatan Jenggot & Kumis" name="category_name">
+                                        <div class="invalid-feedback text-danger" id="required_category_name" style="display: none;">
+                                            Nama kategori wajib diisi!
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-info" id="add_category_bttn">Add Category</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                    <button type="button" class="btn btn-primary" id="add_category_bttn">Simpan Kategori</button>
                                 </div>
                             </div>
                         </div>
@@ -72,12 +70,12 @@
 
                     <!-- Categories Table -->
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+                        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="thead-light">
                                 <tr>
-                                    <th>Category ID</th>
-                                    <th>Category NAME</th>
-                                    <th>Manage</th>
+                                    <th style="width: 80px;">ID#</th>
+                                    <th>Nama Kategori</th>
+                                    <th style="width: 140px;" class="text-center">Kelola / Aksi</th>
                                 </tr>
                             </thead> 
                             <tbody>
@@ -85,79 +83,72 @@
                                 foreach($rows_categories as $category)
                                 {
                                     echo "<tr>";
-                                        echo "<td>";
-                                            echo $category['category_id'];
-                                        echo "</td>";
-                                        echo "<td>";
-                                            echo $category['category_name'];
-                                        echo "</td>";
-                                        echo "<td>";
+                                        echo "<td class='font-weight-bold text-primary'>#" . $category['category_id'] . "</td>";
+                                        echo "<td><strong>" . htmlspecialchars($category['category_name']) . "</strong></td>";
+                                        echo "<td class='text-center'>";
                                             if(strtolower($category["category_name"]) != "uncategorized")
                                             {
                                                 $delete_data = "delete_".$category["category_id"];
                                                 $edit_data = "edit_".$category["category_id"];
                                             ?>
-                                            <!-- DELETE & EDIT BUTTONS -->
-                                            <ul>
-                                                <li class="list-inline-item" data-toggle="tooltip" title="Edit">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="modal" data-target="#<?php echo $edit_data; ?>" data-placement="top"><i class="fa fa-edit"></i></button>
+                                                <button class="btn btn-success btn-sm mr-1" type="button" data-toggle="modal" data-target="#<?php echo $edit_data; ?>" title="Ubah Kategori">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
 
-                                                    <!-- EDIT Modal -->
-
-                                                    <div class="modal fade" id="<?php echo $edit_data; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $edit_data; ?>" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label for="category_name">Category Name</label>
-                                                                        <input type="text" class="form-control" id="<?php echo "input_category_name_".$category["category_id"]; ?>" value="<?php echo $category["category_name"]; ?>">
-                                                                        <div class="invalid-feedback" id = "<?php echo "invalid_input_".$category["category_id"]; ?>">
-                                                                            Category name is required.
-                                                                        </div>
+                                                <!-- EDIT Modal -->
+                                                <div class="modal fade" id="<?php echo $edit_data; ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-success text-white">
+                                                                <h5 class="modal-title font-weight-bold"><i class="fas fa-edit mr-2"></i> Perbarui Kategori</h5>
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <div class="form-group">
+                                                                    <label class="font-weight-bold">Nama Kategori *</label>
+                                                                    <input type="text" class="form-control" id="<?php echo "input_category_name_".$category["category_id"]; ?>" value="<?php echo htmlspecialchars($category["category_name"]); ?>">
+                                                                    <div class="invalid-feedback text-danger" id="<?php echo "invalid_input_".$category["category_id"]; ?>" style="display: none;">
+                                                                        Nama kategori wajib diisi!
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                    <button type="button" data-id = "<?php echo $category['category_id']; ?>" class="btn btn-success edit_category_bttn">Save</button>
-                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                                <button type="button" data-id="<?php echo $category['category_id']; ?>" class="btn btn-success edit_category_bttn">Simpan Perubahan</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </li>
-                                                <!---->
-                                                <li class="list-inline-item" data-toggle="tooltip" title="Delete">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="modal" data-target="#<?php echo $delete_data; ?>" data-placement="top"><i class="fa fa-trash"></i></button>
+                                                </div>
 
-                                                    <!-- Delete Modal -->
+                                                <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#<?php echo $delete_data; ?>" title="Hapus Kategori">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
 
-                                                    <div class="modal fade" id="<?php echo $delete_data; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $delete_data; ?>" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Category</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    Are you sure you want to delete this Category "<?php echo $category['category_name']; ?>"?
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                    <button type="button" data-id = "<?php echo $category['category_id']; ?>" class="btn btn-danger delete_category_bttn">Delete</button>
-                                                                </div>
+                                                <!-- Delete Modal -->
+                                                <div class="modal fade" id="<?php echo $delete_data; ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-danger text-white">
+                                                                <h5 class="modal-title font-weight-bold"><i class="fas fa-trash-alt mr-2"></i> Hapus Kategori</h5>
+                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                Apakah Anda yakin ingin menghapus kategori <strong>"<?php echo htmlspecialchars($category['category_name']); ?>"</strong>? Layanan di dalam kategori ini akan otomatis dialihkan ke kategori umum.
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                                <button type="button" data-id="<?php echo $category['category_id']; ?>" class="btn btn-danger delete_category_bttn">Ya, Hapus</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </li>
-                                            </ul>
+                                                </div>
                                             <?php
+                                            } else {
+                                                echo "<span class='badge badge-secondary'>Default</span>";
                                             }
                                         echo "</td>";
                                     echo "</tr>";
@@ -171,7 +162,6 @@
         </div>
   
 <?php 
-        
         //Include Footer
         include 'Includes/templates/footer.php';
     }
@@ -180,5 +170,4 @@
         header('Location: login.php');
         exit();
     }
-
 ?>

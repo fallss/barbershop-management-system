@@ -46,15 +46,15 @@
 	}
 }
 
-@media (max-width: 1230px)
+@media (max-width: 991px)
 {
 	.main-menu-container 
     {
-    	display: none!important;
+    	display: none !important;
     }
 
-    a.mob-menu-toggle 
+    .mob-menu-toggle 
     {
-     	display: block !important;
+     	display: flex !important;
 	}
 }

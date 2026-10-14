@@ -96,7 +96,7 @@ $('.cancel_appointment_button').click(function()
             $('#cancel_appointment_'+appointment_id).modal('hide');
             
             //Show Success Message
-            swal("Cancel Appointment","The Appointment has been canceled successfully!", "success").then((value) => 
+            swal("Batalkan Reservasi", "Jadwal reservasi berhasil dibatalkan!", "success").then((value) => 
             {
                 window.location.replace("index.php");
             });
@@ -104,7 +104,7 @@ $('.cancel_appointment_button').click(function()
         },
         error: function(xhr, status, error) 
         {
-            alert('ERROR HAS BEEN OCCURRED WHILE TRYING TO PROCESS YOUR REQUEST!');
+            alert('Terjadi kesalahan saat memproses pembatalan reservasi!');
         }
       });
 });
@@ -140,12 +140,12 @@ $('#add_category_bttn').click(function()
             {
                 if(data['alert'] == "Warning")
                 {
-                    swal("Warning",data['message'], "warning").then((value) => {});
+                    swal("Peringatan", data['message'], "warning").then((value) => {});
                 }
                 if(data['alert'] == "Success")
                 {
                     $('#add_new_category').modal('hide');
-                    swal("New Category",data['message'], "success").then((value) => 
+                    swal("Kategori Layanan", data['message'], "success").then((value) => 
                     {
                         window.location.replace("service-categories.php");
                     });
@@ -154,7 +154,7 @@ $('#add_category_bttn').click(function()
             },
             error: function(xhr, status, error) 
             {
-                alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
+                alert('Terjadi kesalahan saat memproses data kategori!');
             }
         });
     }
@@ -186,11 +186,11 @@ $('.delete_category_bttn').click(function()
         {
             if(data['alert'] == "Warning")
                 {
-                    swal("Warning",data['message'], "warning").then((value) => {});
+                    swal("Peringatan", data['message'], "warning").then((value) => {});
                 }
                 if(data['alert'] == "Success")
                 {
-                    swal("New Category",data['message'], "success").then((value) => 
+                    swal("Kategori Layanan", data['message'], "success").then((value) => 
                     {
                         window.location.replace("service-categories.php");
                     });
@@ -198,8 +198,7 @@ $('.delete_category_bttn').click(function()
         },
         error: function(xhr, status, error) 
         {
-            alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
-            alert(error);
+            alert('Terjadi kesalahan saat menghapus kategori!');
         }
       });
 });
@@ -228,11 +227,11 @@ $('.edit_category_bttn').click(function()
             {
                 if(data['alert'] == "Warning")
                 {
-                    swal("Warning",data['message'], "warning").then((value) => {});
+                    swal("Peringatan", data['message'], "warning").then((value) => {});
                 }
                 if(data['alert'] == "Success")
                 {
-                    swal("New Category",data['message'], "success").then((value) => 
+                    swal("Kategori Layanan", data['message'], "success").then((value) => 
                     {
                         window.location.replace("service-categories.php");
                     });
@@ -240,8 +239,7 @@ $('.edit_category_bttn').click(function()
             },
             error: function(xhr, status, error) 
             {
-                alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
-                alert(error);
+                alert('Terjadi kesalahan saat memperbarui kategori!');
             }
         });
     }
@@ -269,13 +267,13 @@ $('.delete_service_bttn').click(function()
         data:{service_id:service_id,do:do_},
         success: function (data) 
         {
-            swal("Delete Service","The service has been deleted successfully!", "success").then((value) => {
+            swal("Hapus Layanan", "Layanan berhasil dihapus!", "success").then((value) => {
                 window.location.replace("services.php");
             });     
         },
         error: function(xhr, status, error) 
         {
-            alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
+            alert('Terjadi kesalahan saat menghapus layanan!');
         }
       });
 });
@@ -322,13 +320,13 @@ $(".sb-worktime-day-switch").click(function()
         data:{employee_id:employee_id,do:do_},
         success: function (data) 
         {
-            swal("Delete Employee","The employee has been deleted successfully!", "success").then((value) => {
+            swal("Hapus Barber", "Data barber berhasil dihapus!", "success").then((value) => {
                 window.location.replace("employees.php");
             });     
         },
         error: function(xhr, status, error) 
         {
-            alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
+            alert('Terjadi kesalahan saat menghapus data barber!');
         }
     });
 });

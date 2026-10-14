@@ -13,7 +13,7 @@
         if($checkItem != 0)
         {
             $data['alert'] = "Warning";
-            $data['message'] = "This category name already exists!";
+            $data['message'] = "Nama kategori ini sudah digunakan!";
             echo json_encode($data);
             exit();
         }
@@ -24,7 +24,7 @@
             $stmt->execute(array($category_name));
 
             $data['alert'] = "Success";
-            $data['message'] = "The new category has been inserted successfully !";
+            $data['message'] = "Kategori baru berhasil ditambahkan!";
             echo json_encode($data);
             exit();
         }
@@ -61,15 +61,12 @@
             $stmt->execute(array($category_id));
             $con->commit();
             $data['alert'] = "Success";
-            $data['message'] = "The new category has been inserted successfully !";
+            $data['message'] = "Kategori berhasil dihapus!";
             echo json_encode($data);
             exit();
-
-            
         }
         catch(Exception $exp)
         {
-            echo $exp->getMessage() ;
             $con->rollBack();
             $data['alert'] = "Warning";
             $data['message'] =  $exp->getMessage() ;
@@ -89,7 +86,7 @@
         if($checkItem != 0)
         {
             $data['alert'] = "Warning";
-            $data['message'] = "This category name already exists!";
+            $data['message'] = "Nama kategori ini sudah digunakan!";
             echo json_encode($data);
             exit();
         }
@@ -102,7 +99,7 @@
                 $stmt->execute(array($category_name, $category_id));
 
                 $data['alert'] = "Success";
-                $data['message'] = "Category name has been updated successfully!";
+                $data['message'] = "Nama kategori berhasil diperbarui!";
                 echo json_encode($data);
                 exit();
             }   

@@ -3,10 +3,10 @@
 	  	<!-- End of Main Content -->
 
 	  	<!-- Footer -->
-	  	<footer class="sticky-footer bg-white">
+	  	<footer class="sticky-footer bg-white border-top">
 			<div class="container my-auto">
-		  		<div class="copyright text-center my-auto">
-					<span>Copyright &copy; Barbershop Website by JAIRI IDRISS 2020</span>
+		  		<div class="copyright text-center my-auto text-muted">
+					<span>Hak Cipta &copy; <strong>Barberia Luxe</strong> Management System <?php echo date('Y'); ?>. Seluruh hak cipta dilindungi.</span>
 		  		</div>
 			</div>
 	  	</footer>
@@ -22,18 +22,18 @@
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-		  		<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-		  		<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
+			<div class="modal-header bg-danger text-white">
+		  		<h5 class="modal-title font-weight-bold" id="exampleModalLabel"><i class="fas fa-sign-out-alt mr-2"></i> Konfirmasi Keluar</h5>
+		  		<button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
 		  		</button>
 			</div>
 			<div class="modal-body">
-				Select "Logout" below if you are ready to end your current session.
+				Pilih tombol <strong>"Keluar Sekarang"</strong> di bawah jika Anda ingin mengakhiri sesi login administrasi saat ini.
 			</div>
 			<div class="modal-footer">
-		  		<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-		  		<a class="btn btn-primary" href="logout.php">Logout</a>
+		  		<button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+		  		<a class="btn btn-danger font-weight-bold" href="logout.php">Keluar Sekarang</a>
 			</div>
 	  	</div>
 	</div>

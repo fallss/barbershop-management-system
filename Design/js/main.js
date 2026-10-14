@@ -22,19 +22,12 @@ function ValidateEmail(mail)
 
 function phonenumber(inputtxt)
 {
-    var phoneno = /^\d{10}$/;
-    if(inputtxt.match(phoneno))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    var cleaned = String(inputtxt).replace(/[\s\-\+\(\)]/g, '');
+    var phoneno = /^[0-9]{8,15}$/;
+    return phoneno.test(cleaned);
 }
 
 /* ============ SEND CONTACT FORM ============== */
-
 
 $('#contact_send').click(function()
 {
@@ -43,15 +36,15 @@ $('#contact_send').click(function()
     var contact_subject = $('#contact_subject').val();
     var contact_message = $('#contact_message').val();
 
-    if($.trim(contact_name) === "" || $.trim(contact_email) === "" || $.trim(contact_subject) === "" || $.trim(contact_message) === "")
+    if($.trim(contact_name) === "" || $.trim(contact_email) === "" || $.trim(contact_message) === "")
     {
-        $('#contact_status_message').html("<div class = 'alert alert-danger'>One or more fields are empty!<div>");
+        $('#contact_status_message').html("<div class='alert alert-danger' style='background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5;'>Harap lengkapi kolom nama, email, dan pesan Anda!</div>");
     }
     else
     {
         if(!ValidateEmail(contact_email))
         {
-            $('#contact_status_message').html("<div class = 'alert alert-danger'>please, enter a valid email!<div>");
+            $('#contact_status_message').html("<div class='alert alert-danger' style='background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5;'>Format email yang Anda masukkan tidak valid!</div>");
         }
         else
         {
@@ -72,7 +65,7 @@ $('#contact_send').click(function()
                 },
                 error: function(xhr, status, error) 
                 {
-                    alert("Internal ERROR has occured, please, try later!");
+                    alert("Terjadi kendala saat mengirim pesan, silakan coba lagi.");
                 }
             });
         }
@@ -84,16 +77,13 @@ $('#contact_send').click(function()
 $(".mob-menu-toggle").click(function()
 {
 	$("#menu_mobile").toggleClass("active");
+	$("#menu_mobile_overlay").toggleClass("active");
 });
 
-$('.mob-close-toggle').click(function() 
+$('.mob-close-toggle, #menu_mobile_overlay, .a-mob-menu').click(function() 
 {
 	$("#menu_mobile").removeClass("active"); 
-});
-
-$('.a-mob-menu').click(function()
-{
-    $("#menu_mobile").removeClass("active"); 
+	$("#menu_mobile_overlay").removeClass("active"); 
 });
 
 
@@ -128,13 +118,15 @@ function showTab(n)
         document.getElementById("prevBtn").style.display = "inline";
     }
 
+    document.getElementById("prevBtn").innerHTML = "<i class='fas fa-arrow-left mr-1'></i> Kembali";
+
     if (n == (x.length - 1)) 
     {
-        document.getElementById("nextBtn").innerHTML = "Submit";
+        document.getElementById("nextBtn").innerHTML = "<i class='fas fa-check-circle mr-1'></i> Konfirmasi Reservasi";
     }
     else 
     {
-        document.getElementById("nextBtn").innerHTML = "Next";
+        document.getElementById("nextBtn").innerHTML = "Lanjut <i class='fas fa-arrow-right ml-1'></i>";
     }
 
     fixStepIndicator(n);
@@ -220,7 +212,7 @@ function validateForm()
                 },
                 error: function(xhr, status, error) 
                 {
-                    alert('AN ERROR HAS BEEN ENCOUNTERED WHILE TRYING TO EXECUTE YOUR REQUEST');
+                    alert('Terjadi kesalahan saat memuat jadwal. Silakan coba kembali.');
                 }
             });
 
