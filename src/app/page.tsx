@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { INITIAL_CATEGORIES, INITIAL_SERVICES } from "@/lib/data";
+import { INITIAL_CATEGORIES, INITIAL_SERVICES, INITIAL_BARBERS, formatRupiah } from "@/lib/data";
 
 export default function HomePage() {
   // Hero Carousel State
@@ -10,10 +10,10 @@ export default function HomePage() {
   const heroSlides = [
     {
       img: "/Design/images/barbershop_image_1.jpg",
-      badge: "Barbershop Premium & Grooming",
+      badge: "Barbershop Premium & Grooming Pria",
       badgeIcon: "fas fa-crown",
       title: "Bukan Sekadar Cukur Rambut, Ini Pengalaman Eksklusif.",
-      desc: "Barbershop mewah khusus pria modern yang mengutamakan presisi, kerapian sempurna, kenyamanan ekstra, dan kepercayaan diri maksimal.",
+      desc: "Barbershop mewah khusus pria modern yang mengutamakan presisi potongan, kenyamanan lounge berkelas, dan rasa percaya diri maksimal.",
       btn1Text: "Pesan Jadwal Sekarang",
       btn1Link: "/booking",
       btn2Text: "Lihat Menu & Harga",
@@ -22,27 +22,27 @@ export default function HomePage() {
     },
     {
       img: "/Design/images/barbershop_image_2.jpg",
-      badge: "Barber Profesional Tersertifikasi",
+      badge: "Master Barber Tersertifikasi Internasional",
       badgeIcon: "fas fa-award",
-      title: "Teknik Potong Presisi & Cukur Tradisional.",
-      desc: "Sentuhan tangan ahli barber berpengalaman dengan teknik modern fade, beard sculpting, dan terapi handuk hangat aromaterapi.",
+      title: "Teknik Potong Presisi & Cukur Tradisional Mewah.",
+      desc: "Sentuhan tangan ahli barber berpengalaman 10+ tahun dengan teknik gradasi skin fade halus, beard line simetris, dan terapi handuk hangat aromaterapi.",
       btn1Text: "Booking Online Cepat",
-      btn1Link: "/booking",
-      btn2Text: "Tentang Barberia",
-      btn2Link: "#about",
-      btn2Icon: "fas fa-info-circle",
-    },
-    {
-      img: "/Design/images/barbershop_image_3.jpg",
-      badge: "Pelayanan Kelas Utama",
-      badgeIcon: "fas fa-gem",
-      title: "Suasana Vintage Mewah & Relaksasi Penuh.",
-      desc: "Nikmati kursi barber ergonomis premium, perawatan wajah menutrisi, dan produk pomade serta hair tonic impor terbaik.",
-      btn1Text: "Reservasi Kursi Anda",
       btn1Link: "/booking",
       btn2Text: "Kenali Tim Barber",
       btn2Link: "#team",
       btn2Icon: "fas fa-user-friends",
+    },
+    {
+      img: "/Design/images/barbershop_image_3.jpg",
+      badge: "Gentlemen's Lounge & Relaksasi Penuh",
+      badgeIcon: "fas fa-gem",
+      title: "Atmosfer Vintage Mewah, Kopi Spesialti & Pelayanan VIP.",
+      desc: "Nikmati kursi barber ergonomis berlapis kulit premium, facial detox charcoal, dan produk pomade serta hair tonic impor kualitas terbaik dunia.",
+      btn1Text: "Reservasi Kursi Anda",
+      btn1Link: "/booking",
+      btn2Text: "Konsultasi Gaya",
+      btn2Link: "#services",
+      btn2Icon: "fas fa-cut",
     },
   ];
 
@@ -50,30 +50,44 @@ export default function HomePage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
+    }, 6500);
     return () => clearInterval(timer);
   }, [heroSlides.length]);
+
+  // Service Category Filter State
+  const [activeCategory, setActiveCategory] = useState<number>(0); // 0 = Semua
+
+  // Filtered Services for Highlight
+  const filteredServices = activeCategory === 0
+    ? INITIAL_SERVICES
+    : INITIAL_SERVICES.filter((s) => s.category_id === activeCategory);
+
+  // FAQ Accordion State
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Review Carousel State
   const [reviewSlide, setReviewSlide] = useState(0);
   const reviewSlides = [
     {
       quote:
-        "\"Pelayanan di Barberia Luxe benar-benar luar biasa! Potongan rambut sangat rapi dan detail, pijatan kepalanya bikin rileks setelah seharian kerja. Sistem booking online-nya sangat praktis tanpa perlu menunggu antrean.\"",
+        "\"Pelayanan di Barberia Luxe benar-benar kasta tertinggi! Potongan rambut sangat rapi dan presisi, pijatan kepala dan lehernya bikin rileks seketika setelah lelah bekerja seharian. Sistem booking online-nya sangat praktis tanpa perlu antre berjam-jam.\"",
       author: "Andi Firmansyah",
       role: "Pengusaha & Pelanggan Setia",
+      rating: 5,
     },
     {
       quote:
-        "\"Fade cut paling halus yang pernah saya rasakan. Barber sangat mengerti karakteristik bentuk kepala saya dan memberikan saran model yang pas. Tempatnya bersih, adem, dan beraroma aromaterapi mewah.\"",
+        "\"Fade cut paling halus dan mulus yang pernah saya rasakan di Jakarta. Barber Budi sangat mengerti karakteristik bentuk wajah saya dan merekomendasikan gaya yang sangat cocok. Ruang tunggu sangat berkelas dengan sajian kopi single origin gratis.\"",
       author: "Reza Pratama",
-      role: "Kreator Konten & Desainer",
+      role: "Kreator Konten & Desainer Grafis",
+      rating: 5,
     },
     {
       quote:
-        "\"Paket Gentlemen Ultimate Grooming sangat saya rekomendasikan! Cukur handuk hangatnya mantap dan masker charcoal bikin muka segar seketika. Pasti langganan tetap di sini.\"",
+        "\"Paket The Executive Luxury Package sangat saya rekomendasikan untuk para pria yang menghargai kualitas! Cukur handuk hangat aromaterapinya juara dan masker charcoal bikin kulit segar bersih. Pasti jadi langganan tetap rutin setiap 3 minggu.\"",
       author: "Bayu Wicaksono",
-      role: "Eksekutif Bisnis",
+      role: "Eksekutif Perusahaan Multinasional",
+      rating: 5,
     },
   ];
 
@@ -107,14 +121,37 @@ export default function HomePage() {
   };
 
   const galleryItems = [
-    { src: "/Design/images/portfolio-1.jpg", title: "Classic Pompadour" },
-    { src: "/Design/images/portfolio-2.jpg", title: "Skin Fade Undercut" },
-    { src: "/Design/images/portfolio-3.jpg", title: "Beard Sculpting & Trim" },
-    { src: "/Design/images/portfolio-4.jpg", title: "Textured French Crop" },
-    { src: "/Design/images/portfolio-5.jpg", title: "Side Part Gentleman" },
-    { src: "/Design/images/portfolio-6.jpg", title: "Modern Taper Fade" },
-    { src: "/Design/images/portfolio-7.jpg", title: "Sharp Clean Razor Edge" },
-    { src: "/Design/images/portfolio-8.jpg", title: "Slick Back Executive" },
+    { src: "/Design/images/portfolio-1.jpg", title: "Classic Pompadour", tag: "Classic Style" },
+    { src: "/Design/images/portfolio-2.jpg", title: "Skin Fade Undercut", tag: "Modern Fade" },
+    { src: "/Design/images/portfolio-3.jpg", title: "Beard Sculpting & Trim", tag: "Beard Grooming" },
+    { src: "/Design/images/portfolio-4.jpg", title: "Textured French Crop", tag: "Urban Style" },
+    { src: "/Design/images/portfolio-5.jpg", title: "Side Part Gentleman", tag: "Executive" },
+    { src: "/Design/images/portfolio-6.jpg", title: "Modern Taper Fade", tag: "Precision" },
+    { src: "/Design/images/portfolio-7.jpg", title: "Sharp Clean Razor Edge", tag: "Shave Line" },
+    { src: "/Design/images/portfolio-8.jpg", title: "Slick Back Executive", tag: "Signature" },
+  ];
+
+  const faqs = [
+    {
+      q: "Apakah saya harus booking online terlebih dahulu sebelum datang?",
+      a: "Sangat disarankan! Dengan melakukan booking online di website kami, Anda mendapatkan jaminan kursi dan waktu barber tanpa perlu mengantre lama. Namun kami juga menerima pelanggan walk-in selama ada slot yang kosong.",
+    },
+    {
+      q: "Metode pembayaran apa saja yang diterima di Barberia Luxe?",
+      a: "Kami menerima berbagai metode pembayaran modern: QRIS (GoPay, OVO, ShopeePay, Dana, BCA Mobile), Transfer Bank, Kartu Debit/Kredit, serta Tunai (Cash).",
+    },
+    {
+      q: "Bagaimana jika saya berhalangan hadir atau ingin mengubah jam reservasi?",
+      a: "Anda cukup menghubungi admin kami melalui WhatsApp di +62 812-3456-7890 dengan menyebutkan kode booking Anda minimal 1 jam sebelum jadwal yang telah dipilih.",
+    },
+    {
+      q: "Apakah Barberia Luxe melayani potongan rambut untuk anak-anak?",
+      a: "Ya! Kami memiliki layanan khusus 'Junior Haircut' untuk anak dan remaja dengan barber yang sabar dan pendekatan ramah agar anak merasa nyaman selama proses potong rambut.",
+    },
+    {
+      q: "Apakah semua peralatan potong dan cukur higienis & steril?",
+      a: "100% Steril. Setiap gunting, clipper, dan sisir disterilisasi menggunakan kotak UV-C medis berstandar sanitasi tinggi setelah setiap pemakaian, dan silet cukur diganti baru untuk setiap pelanggan.",
+    },
   ];
 
   return (
@@ -179,6 +216,48 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* QUICK STATUS BAR */}
+      <div
+        style={{
+          background: "linear-gradient(90deg, #131722 0%, #1e2638 50%, #131722 100%)",
+          borderBottom: "1px solid rgba(212, 175, 55, 0.2)",
+          padding: "10px 0",
+        }}
+      >
+        <div className="container">
+          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 text-center text-md-left">
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  background: "#10b981",
+                  boxShadow: "0 0 10px #10b981",
+                }}
+              ></span>
+              <span style={{ fontSize: "13px", color: "#cbd5e1" }}>
+                <strong>Buka Hari Ini:</strong> 09:00 - 21:00 WIB • Jl. Senopati No. 88, Jakarta Selatan
+              </span>
+            </div>
+            <div className="d-none d-md-flex align-items-center gap-3">
+              <span style={{ fontSize: "12px", color: "var(--primary-gold)" }}>
+                <i className="fas fa-coffee mr-1"></i> Free Specialty Espresso Lounge
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+              <span style={{ fontSize: "12px", color: "#94a3b8" }}>
+                <i className="fas fa-shield-alt mr-1"></i> Sterilisasi Medis UV-C 100%
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+              <Link href="/booking" style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "12px" }}>
+                Slot Terbatas! Booking Sekarang →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* STATS RIBBON SECTION */}
       <section className="stats-ribbon">
         <div className="container">
@@ -218,94 +297,315 @@ export default function HomePage() {
             <div className="col-lg-6">
               <div className="about_content">
                 <h3>Mengenal Barberia Luxe</h3>
-                <h2>Tradisi Cukur Klasik & Gaya Modern Sejak 1991</h2>
+                <h2>Tradisi Cukur Klasik & Gaya Modern Pria Sejati Sejak 1991</h2>
                 <p>
-                  Barberia Luxe lahir dari apresiasi mendalam terhadap seni pangkas rambut pria sejati. Kami memadukan estetika heritage klasik dengan teknik kontemporer untuk menghasilkan potongan yang mencerminkan karakter terbaik Anda.
+                  Barberia Luxe lahir dari apresiasi mendalam terhadap seni pangkas rambut pria sejati. Kami memadukan estetika warisan klasik Eropa dengan teknik potongan kontemporer untuk menghasilkan penampilan berkarakter, rapi, dan memancarkan wibawa terbaik Anda.
                 </p>
 
                 <div className="about-features">
                   <div className="about-feature-box">
                     <i className="fas fa-cut"></i>
-                    <span>Gunting Presisi & Razor Tajam</span>
+                    <span>Gunting Presisi & Silet Tajam Higienis</span>
                   </div>
                   <div className="about-feature-box">
                     <i className="fas fa-pump-soap"></i>
-                    <span>Peralatan Steril Medis 100%</span>
+                    <span>Peralatan Steril Medis UV-C 100%</span>
                   </div>
                   <div className="about-feature-box">
                     <i className="fas fa-hot-tub"></i>
-                    <span>Handuk Hangat Aromaterapi</span>
+                    <span>Handuk Hangat Aromaterapi Eucalyptus</span>
                   </div>
                   <div className="about-feature-box">
                     <i className="fas fa-coffee"></i>
-                    <span>Lounge Nyaman & Free Welcome Drink</span>
+                    <span>Gentlemen Lounge & Welcome Drink</span>
                   </div>
                 </div>
 
-                <Link href="/booking" className="default_btn">
-                  <i className="far fa-calendar-alt mr-2"></i> Booking Jadwal Anda
-                </Link>
+                <div className="d-flex align-items-center gap-3 mt-4 flex-wrap">
+                  <Link href="/booking" className="default_btn">
+                    <i className="far fa-calendar-alt mr-2"></i> Booking Jadwal Anda
+                  </Link>
+                  <a
+                    href="https://wa.me/6281234567890?text=Halo%20Barberia%20Luxe,%20saya%20ingin%20konsultasi%20model%20rambut"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-secondary"
+                    style={{
+                      borderRadius: "8px",
+                      padding: "13px 24px",
+                      color: "#cbd5e1",
+                      borderColor: "rgba(255,255,255,0.2)",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                    }}
+                  >
+                    <i className="fab fa-whatsapp mr-2 text-success"></i> Konsultasi Gaya Rambut
+                  </a>
+                </div>
               </div>
             </div>
             <div className="col-lg-6 d-none d-lg-block">
-              <div className="about_img" style={{ overflow: "hidden" }}>
-                <img className="about_img_1 w-100" src="/Design/images/about-1.jpg" alt="Atmosfer Barbershop" />
+              <div className="about_img" style={{ overflow: "hidden", borderRadius: "16px", border: "1px solid rgba(212,175,55,0.3)" }}>
+                <img className="about_img_1 w-100" src="/Design/images/about-1.jpg" alt="Atmosfer Mewah Barbershop" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SERVICES HIGHLIGHT SECTION */}
+      {/* WHY CHOOSE US / SIGNATURE EXPERIENCE SECTION */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #0d0f13 0%, #121620 50%, #0d0f13 100%)",
+          padding: "90px 0",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          borderBottom: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="container">
+          <div className="section_heading text-center">
+            <h3>Standar Keunggulan Eksekutif</h3>
+            <h2>Pengalaman Signature Barberia Luxe</h2>
+            <div className="heading-line mx-auto"></div>
+            <p className="text-muted mt-3" style={{ maxWidth: "680px", margin: "0 auto" }}>
+              Enam pilar komitmen kami untuk memastikan setiap kunjungan Anda menjadi momen relaksasi mewah dan hasil potongan terbaik.
+            </p>
+          </div>
+
+          <div className="row mt-5">
+            {[
+              {
+                icon: "fas fa-award",
+                title: "Master Barber Tersertifikasi",
+                desc: "Tim pemotong profesional dengan sertifikasi internasional dan jam terbang lebih dari 10 tahun di industri grooming pria.",
+              },
+              {
+                icon: "fas fa-coffee",
+                title: "Gentlemen Lounge & Espresso Bar",
+                desc: "Nikmati racikan kopi single origin dan minuman dingin gratis sembari menikmati lounge ber-AC dingin dengan alunan musik santai.",
+              },
+              {
+                icon: "fas fa-spa",
+                title: "Ritual Handuk Hangat Aromaterapi",
+                desc: "Pori-pori dibuka dengan handuk hangat beraroma eucalyptus herbal untuk melunakkan jenggot dan merilekskan otot leher.",
+              },
+              {
+                icon: "fas fa-pump-soap",
+                title: "Produk Grooming Dunia",
+                desc: "Hanya menggunakan pomade water/oil based, hair tonic ginseng, dan beard oil organik impor terpercaya yang menyehatkan rambut.",
+              },
+              {
+                icon: "fas fa-shield-virus",
+                title: "Higienitas & Steril Medis 100%",
+                desc: "Setiap alat gunting dan razor dibersihkan dengan box radiasi UV-C serta pisau cukur satu mata diganti baru tiap pelanggan.",
+              },
+              {
+                icon: "fas fa-calendar-check",
+                title: "Booking Online Instan & Bebas Antre",
+                desc: "Pilih layanan, tentukan barber favorit, dan amankan jam kunjungan Anda dalam beberapa klik tanpa perlu menunggu antrean.",
+              },
+            ].map((exp, idx) => (
+              <div key={idx} className="col-lg-4 col-md-6 mb-4">
+                <div
+                  className="p-4 h-100"
+                  style={{
+                    background: "rgba(20, 24, 34, 0.75)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: "14px",
+                    transition: "all 0.3s ease",
+                    backdropFilter: "blur(8px)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(212,175,55,0.45)";
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "12px",
+                      background: "linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(212,175,55,0.05) 100%)",
+                      border: "1px solid rgba(212,175,55,0.4)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "var(--primary-gold)",
+                      fontSize: "22px",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    <i className={exp.icon}></i>
+                  </div>
+                  <h4 style={{ color: "#fff", fontSize: "18px", fontWeight: 700, marginBottom: "10px" }}>
+                    {exp.title}
+                  </h4>
+                  <p style={{ color: "#94a3b8", fontSize: "13.5px", lineHeight: "1.6", margin: 0 }}>
+                    {exp.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES HIGHLIGHT SECTION WITH INTERACTIVE CATEGORIES */}
       <section className="services_section" id="services">
         <div className="container">
-          <div className="section_heading">
+          <div className="section_heading text-center">
             <h3>Keahlian & Sentuhan Premium</h3>
             <h2>Layanan Unggulan Kami</h2>
-            <div className="heading-line"></div>
+            <div className="heading-line mx-auto"></div>
+            <p className="text-muted mt-3" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              Pilih kategori di bawah untuk menjelajahi menu perawatan rambut, jenggot, dan relaksasi khusus pria.
+            </p>
           </div>
+
+          {/* Dynamic Category Switcher Tabs */}
+          <div className="d-flex justify-content-center flex-wrap gap-2 mt-4 mb-5">
+            <button
+              onClick={() => setActiveCategory(0)}
+              className="btn btn-sm"
+              style={{
+                background: activeCategory === 0 ? "var(--primary-gold)" : "rgba(255,255,255,0.06)",
+                color: activeCategory === 0 ? "#0b0c10" : "#cbd5e1",
+                fontWeight: 700,
+                borderRadius: "30px",
+                padding: "8px 20px",
+                fontSize: "13px",
+                border: activeCategory === 0 ? "1px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.1)",
+                transition: "all 0.2s",
+              }}
+            >
+              Semua Layanan ({INITIAL_SERVICES.length})
+            </button>
+            {INITIAL_CATEGORIES.map((cat) => {
+              const count = INITIAL_SERVICES.filter((s) => s.category_id === cat.id).length;
+              const isActive = activeCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className="btn btn-sm"
+                  style={{
+                    background: isActive ? "var(--primary-gold)" : "rgba(255,255,255,0.06)",
+                    color: isActive ? "#0b0c10" : "#cbd5e1",
+                    fontWeight: 700,
+                    borderRadius: "30px",
+                    padding: "8px 20px",
+                    fontSize: "13px",
+                    border: isActive ? "1px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.1)",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {cat.icon} {cat.name} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Service Cards Grid */}
           <div className="row">
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="service_box">
-                <i className="bs bs-scissors-1"></i>
-                <h3>Potong Rambut Presisi</h3>
-                <p>Potongan rapi sesuai bentuk wajah dan gaya hidup Anda, lengkap dengan keramas bersih dan pijat kepala.</p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="service_box">
-                <i className="bs bs-razor-2"></i>
-                <h3>Beard Trim & Sculpting</h3>
-                <p>Merapikan garis jenggot dan kumis agar tegas, simetris, dan ternutrisi dengan minyak aromaterapi.</p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="service_box">
-                <i className="bs bs-brush"></i>
-                <h3>Hot Towel Smooth Shave</h3>
-                <p>Sensasi cukur bersih tradisional dengan handuk hangat, foam kaya busa, dan razor satu mata super halus.</p>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="service_box">
-                <i className="bs bs-hairbrush-1"></i>
-                <h3>Facial & Masker Wajah</h3>
-                <p>Perawatan kulit wajah khusus pria untuk mengangkat komedo, mengecilkan pori, dan menyegarkan kulit kusam.</p>
-              </div>
-            </div>
+            {filteredServices.map((service) => {
+              const category = INITIAL_CATEGORIES.find((c) => c.id === service.category_id);
+              return (
+                <div key={service.id} className="col-lg-4 col-md-6 mb-4">
+                  <div
+                    className="service_box h-100 d-flex flex-column justify-content-between text-left p-4"
+                    style={{
+                      background: "#131722",
+                      border: service.popular ? "1px solid rgba(212,175,55,0.5)" : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "14px",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {service.popular && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "12px",
+                          right: "12px",
+                          background: "rgba(212,175,55,0.15)",
+                          color: "var(--primary-gold)",
+                          border: "1px solid rgba(212,175,55,0.4)",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          padding: "3px 8px",
+                          borderRadius: "6px",
+                        }}
+                      >
+                        ⭐ Terfavorit
+                      </div>
+                    )}
+
+                    <div>
+                      <div className="d-flex align-items-center gap-2 mb-2">
+                        <span className="badge badge-secondary" style={{ background: "rgba(255,255,255,0.08)", color: "#94a3b8", fontSize: "11px" }}>
+                          {category ? category.name : "Grooming"}
+                        </span>
+                        <span style={{ fontSize: "11.5px", color: "#64748b" }}>
+                          <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                        </span>
+                      </div>
+
+                      <h3 style={{ fontSize: "18px", color: "#fff", fontWeight: 700, marginBottom: "8px" }}>
+                        {service.name}
+                      </h3>
+                      <p style={{ color: "#94a3b8", fontSize: "13px", lineHeight: "1.5", marginBottom: "16px" }}>
+                        {service.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-top border-dark d-flex justify-content-between align-items-center">
+                      <span style={{ fontSize: "18px", fontWeight: 700, color: "var(--primary-gold)" }}>
+                        {formatRupiah(service.price)}
+                      </span>
+                      <Link
+                        href={`/booking?service=${service.id}`}
+                        className="btn btn-sm"
+                        style={{
+                          background: "var(--primary-gold)",
+                          color: "#0b0c10",
+                          fontWeight: 700,
+                          fontSize: "12px",
+                          borderRadius: "8px",
+                          padding: "6px 14px",
+                        }}
+                      >
+                        Booking Ini →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-4">
+            <Link href="/booking" className="default_btn">
+              <i className="far fa-calendar-check mr-2"></i> Buat Janji Temu Semua Layanan
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* BOOKING CTA SECTION */}
+      {/* BOOKING CTA BANNER */}
       <section className="book_section" id="booking">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <div className="booking-cta-card">
-                <h2>Reservasi Online Tanpa Perlu Mengantre</h2>
+                <h2>Reservasi Kursi Anda Tanpa Perlu Mengantre</h2>
                 <p>
-                  Pilih layanan yang Anda inginkan, tentukan barber favorit, dan jadwalkan waktu terbaik Anda dalam hitungan detik melalui sistem reservasi otomatis kami.
+                  Pilih layanan yang Anda kehendaki, tentukan barber favorit, dan amankan slot waktu terbaik Anda secara instan dalam hitungan detik.
                 </p>
                 <Link href="/booking" className="btn-hero-primary" style={{ fontSize: "16px", padding: "15px 36px" }}>
                   <i className="far fa-calendar-check mr-2"></i> Mulai Pesan Jadwal Sekarang
@@ -316,20 +616,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* GALLERY SECTION */}
+      {/* GALLERY / PORTFOLIO SECTION */}
       <section className="gallery-section" id="gallery">
         <div className="container">
-          <div className="section_heading">
+          <div className="section_heading text-center">
             <h3>Koleksi Gaya & Portofolio</h3>
             <h2>Galeri Kreasi Barbershop</h2>
-            <div className="heading-line"></div>
+            <div className="heading-line mx-auto"></div>
+            <p className="text-muted mt-3" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              Inspirasi model rambut klasik dan kontemporer hasil karya master barber Barberia Luxe.
+            </p>
           </div>
-          <div className="row">
+          <div className="row mt-4">
             {galleryItems.map((item, idx) => (
-              <div key={idx} className="col-lg-3 col-md-6 gallery-column">
-                <div className="gallery-item-wrap">
+              <div key={idx} className="col-lg-3 col-md-6 gallery-column mb-4">
+                <div className="gallery-item-wrap" style={{ borderRadius: "12px", overflow: "hidden" }}>
                   <div className="gallery-img" style={{ backgroundImage: `url('${item.src}')` }}></div>
                   <div className="gallery-item-overlay">
+                    <span className="badge badge-warning mb-1" style={{ fontSize: "10px", background: "var(--primary-gold)", color: "#0b0c10" }}>
+                      {item.tag}
+                    </span>
                     <span className="gallery-item-title">{item.title}</span>
                   </div>
                 </div>
@@ -339,72 +645,93 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TEAM SECTION */}
+      {/* TEAM SECTION (PROFESSIONAL BARBERS) */}
       <section id="team" className="team_section">
         <div className="container">
-          <div className="section_heading">
+          <div className="section_heading text-center">
             <h3>Para Ahli Berpengalaman</h3>
-            <h2>Barber Profesional Kami</h2>
-            <div className="heading-line"></div>
+            <h2>Master Barber Profesional Kami</h2>
+            <div className="heading-line mx-auto"></div>
+            <p className="text-muted mt-3" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              Setiap barber kami memiliki dedikasi tinggi, gaya khas tersendiri, dan teknik pangkas presisi yang teruji.
+            </p>
           </div>
-          <div className="row justify-content-center">
-            <div className="col-lg-4 col-md-6">
-              <div className="team-card">
-                <div className="team-img-wrap">
-                  <img src="/Design/images/team-1.jpg" alt="Budi Santoso" />
-                </div>
-                <div className="team-info">
-                  <h4 className="team-name">Budi Santoso</h4>
-                  <span className="team-role">Head Master Barber (10+ Thn)</span>
-                  <div className="team-stars">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
+          <div className="row justify-content-center mt-4">
+            {INITIAL_BARBERS.map((barber) => (
+              <div key={barber.id} className="col-lg-4 col-md-6 mb-4">
+                <div
+                  className="team-card h-100 d-flex flex-column justify-content-between p-3"
+                  style={{
+                    background: "#131722",
+                    border: "1px solid rgba(212,175,55,0.25)",
+                    borderRadius: "16px",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div>
+                    <div
+                      className="team-img-wrap"
+                      style={{
+                        borderRadius: "12px",
+                        overflow: "hidden",
+                        border: "2px solid rgba(212,175,55,0.4)",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      <img src={barber.avatar} alt={barber.name} className="w-100" />
+                    </div>
+                    <div className="team-info text-center">
+                      <h4 className="team-name" style={{ fontSize: "20px", color: "#fff", fontWeight: 700, margin: "0 0 4px" }}>
+                        {barber.name}
+                      </h4>
+                      <span className="team-role" style={{ color: "var(--primary-gold)", fontSize: "13px", fontWeight: 600 }}>
+                        {barber.role} • {barber.experience}
+                      </span>
+                      <div className="team-stars my-2" style={{ color: "#fbbf24", fontSize: "13px" }}>
+                        <i className="fas fa-star"></i>
+                        <i className="fas fa-star"></i>
+                        <i className="fas fa-star"></i>
+                        <i className="fas fa-star"></i>
+                        <i className="fas fa-star"></i>
+                        <span className="text-muted ml-2" style={{ fontSize: "11px" }}>({barber.rating} • {barber.reviews_count} ulasan)</span>
+                      </div>
+                      <p className="text-muted small" style={{ fontSize: "12.5px", lineHeight: "1.5" }}>
+                        {barber.bio}
+                      </p>
+                      <div className="d-flex justify-content-center flex-wrap gap-1 mb-3">
+                        {barber.specialties.map((spec, sIdx) => (
+                          <span
+                            key={sIdx}
+                            className="badge mr-1"
+                            style={{ background: "rgba(255,255,255,0.06)", color: "#cbd5e1", fontSize: "10.5px", border: "1px solid rgba(255,255,255,0.1)" }}
+                          >
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-muted small">Spesialis model klasik formal, potongan gunting presisi, dan styling eksekutif.</p>
+
+                  <div className="pt-3 border-top border-dark text-center">
+                    <Link
+                      href={`/booking?barber=${barber.id}`}
+                      className="btn btn-sm w-100"
+                      style={{
+                        background: "linear-gradient(135deg, #d4af37 0%, #aa8524 100%)",
+                        color: "#0b0c10",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        borderRadius: "8px",
+                        padding: "8px 16px",
+                      }}
+                    >
+                      <i className="far fa-calendar-check mr-2"></i> Booking Bersama {barber.name.split(" ")[0]}
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="team-card">
-                <div className="team-img-wrap">
-                  <img src="/Design/images/team-2.jpg" alt="Rian Pratama" />
-                </div>
-                <div className="team-info">
-                  <h4 className="team-name">Rian Pratama</h4>
-                  <span className="team-role">Senior Fade & Modern Stylist</span>
-                  <div className="team-stars">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
-                  <p className="text-muted small">Ahli gradasi skin fade halus, tren model kekinian (Crop, Mullet, Two Block), dan hair tattoo.</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="team-card">
-                <div className="team-img-wrap">
-                  <img src="/Design/images/team-3.jpg" alt="Dimas Kusuma" />
-                </div>
-                <div className="team-info">
-                  <h4 className="team-name">Dimas Kusuma</h4>
-                  <span className="team-role">Beard & Shave Specialist</span>
-                  <div className="team-stars">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
-                  <p className="text-muted small">Master cukur tradisional handuk hangat, penataan jenggot maskulin, dan facial spa.</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -412,18 +739,18 @@ export default function HomePage() {
       {/* REVIEWS / TESTIMONIALS SECTION */}
       <section id="reviews" className="testimonial_section">
         <div className="container">
-          <div className="section_heading">
+          <div className="section_heading text-center">
             <h3>Kepuasan Pelanggan</h3>
-            <h2>Apa Kata Mereka Tentang Kami</h2>
-            <div className="heading-line"></div>
+            <h2>Apa Kata Mereka Tentang Barberia Luxe</h2>
+            <div className="heading-line mx-auto"></div>
           </div>
 
-          <div id="reviews-carousel" className="carousel slide" data-ride="carousel">
+          <div id="reviews-carousel" className="carousel slide mt-4" data-ride="carousel">
             <div className="carousel-inner">
               {reviewSlides.map((rev, idx) => (
                 <div key={idx} className={`carousel-item ${reviewSlide === idx ? "active" : ""}`}>
-                  <div className="testimonial-card-wrap">
-                    <div className="testi-stars">
+                  <div className="testimonial-card-wrap text-center">
+                    <div className="testi-stars mb-3">
                       <i className="fas fa-star"></i>
                       <i className="fas fa-star"></i>
                       <i className="fas fa-star"></i>
@@ -461,47 +788,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
+      {/* PRICING TABLE SECTION */}
       <section className="pricing_section" id="pricing">
         <div className="container">
-          <div className="section_heading">
-            <h3>Harga Transparan & Kualitas Terbaik</h3>
-            <h2>Daftar Harga & Menu Layanan</h2>
-            <div className="heading-line"></div>
+          <div className="section_heading text-center">
+            <h3>Harga Transparan & Kualitas Mewah</h3>
+            <h2>Daftar Harga & Menu Lengkap</h2>
+            <div className="heading-line mx-auto"></div>
+            <p className="text-muted mt-3" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              Seluruh harga sudah termasuk konsultasi bentuk kepala, keramas bersih, dan penataan pomade terbaik.
+            </p>
           </div>
 
-          <div className="row">
+          <div className="row mt-4">
             {INITIAL_CATEGORIES.map((category) => {
               const services = INITIAL_SERVICES.filter((s) => s.category_id === category.id);
               if (services.length === 0) return null;
               return (
                 <div key={category.id} className="col-lg-6 col-md-12 mb-4">
-                  <div className="price_wrap">
-                    <h3>
-                      <span>{category.name}</span>
-                      <small style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: "normal" }}>
+                  <div className="price_wrap h-100" style={{ background: "#131722", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "14px", padding: "28px" }}>
+                    <h3 className="d-flex justify-content-between align-items-center mb-3">
+                      <span>{category.icon} {category.name}</span>
+                      <small style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: "normal" }}>
                         {services.length} Layanan
                       </small>
                     </h3>
                     <ul className="price_list">
                       {services.map((service) => (
-                        <li key={service.id}>
-                          <h4>{service.name}</h4>
-                          <p>{service.description}</p>
-                          <div className="d-flex align-items-center mt-2">
-                            <span
-                              className="badge badge-secondary mr-2"
-                              style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", fontWeight: 500 }}
-                            >
-                              <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                        <li key={service.id} className="mb-3 pb-3 border-bottom border-dark">
+                          <div className="d-flex justify-content-between align-items-start">
+                            <div>
+                              <h4 style={{ fontSize: "16px", color: "#fff", fontWeight: 700, margin: "0 0 4px" }}>
+                                {service.name}
+                              </h4>
+                              <p style={{ color: "#94a3b8", fontSize: "12.5px", margin: "0 0 6px" }}>
+                                {service.description}
+                              </p>
+                              <div className="d-flex align-items-center">
+                                <span
+                                  className="badge mr-2"
+                                  style={{ background: "rgba(255,255,255,0.08)", color: "#cbd5e1", fontSize: "11px", fontWeight: 500 }}
+                                >
+                                  <i className="far fa-clock mr-1"></i> {service.duration_min} Menit
+                                </span>
+                                <Link href={`/booking?service=${service.id}`} className="text-warning small font-weight-bold">
+                                  Pilih Layanan →
+                                </Link>
+                              </div>
+                            </div>
+                            <span className="price" style={{ color: "var(--primary-gold)", fontWeight: 700, fontSize: "16px", whiteSpace: "nowrap" }}>
+                              {formatRupiah(service.price)}
                             </span>
-                            <Link href={`/booking?service=${service.id}`} className="text-warning small font-weight-bold ml-2">
-                              Pilih <i className="fas fa-chevron-right ml-1"></i>
-                            </Link>
                           </div>
-                          <span className="price">
-                            Rp {service.price.toLocaleString("id-ID")}
-                          </span>
                         </li>
                       ))}
                     </ul>
@@ -519,6 +857,65 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ SECTION */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #0d0f13 0%, #11151f 100%)",
+          padding: "80px 0",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="container">
+          <div className="section_heading text-center">
+            <h3>Informasi & Pertanyaan Umum</h3>
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <div className="heading-line mx-auto"></div>
+          </div>
+
+          <div className="row justify-content-center mt-4">
+            <div className="col-lg-8">
+              {faqs.map((faq, idx) => {
+                const isOpen = openFaq === idx;
+                return (
+                  <div
+                    key={idx}
+                    className="mb-3 rounded"
+                    style={{
+                      background: "#141822",
+                      border: isOpen ? "1px solid var(--primary-gold)" : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      transition: "all 0.2s",
+                    }}
+                  >
+                    <button
+                      onClick={() => setOpenFaq(isOpen ? null : idx)}
+                      className="w-100 text-left p-3 d-flex justify-content-between align-items-center"
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        color: "#fff",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <span>{faq.q}</span>
+                      <i className={`fas fa-chevron-${isOpen ? "up" : "down"}`} style={{ color: "var(--primary-gold)" }}></i>
+                    </button>
+                    {isOpen && (
+                      <div className="px-3 pb-3 pt-1 text-muted" style={{ fontSize: "13.5px", lineHeight: 1.6, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CONTACT SECTION */}
       <section className="contact-section" id="contact-us">
         <div className="container">
@@ -527,7 +924,7 @@ export default function HomePage() {
               <div className="contact-info">
                 <h2>Kunjungi Studio Kami & Hubungi Kami Hari Ini</h2>
                 <p>
-                  Apakah Anda ingin berkonsultasi mengenai gaya rambut yang sesuai, reservasi rombongan, atau pertanyaan lainnya? Tim kami siap melayani Anda dengan senang hati.
+                  Apakah Anda ingin berkonsultasi mengenai gaya rambut yang sesuai, reservasi rombongan, atau pertanyaan seputar kemitraan? Tim kami siap melayani Anda dengan ramah.
                 </p>
 
                 <div className="contact-info-list">
@@ -654,6 +1051,43 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* FLOATING WHATSAPP CONCIERGE BUTTON */}
+      <a
+        href="https://wa.me/6281234567890?text=Halo%20Barberia%20Luxe,%20saya%20ingin%20tanya%20jadwal%20dan%20booking"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Hubungi WhatsApp CS"
+        style={{
+          position: "fixed",
+          bottom: "28px",
+          right: "28px",
+          zIndex: 9999,
+          background: "#25D366",
+          color: "#fff",
+          width: "56px",
+          height: "56px",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "28px",
+          boxShadow: "0 6px 20px rgba(37, 211, 102, 0.45)",
+          textDecoration: "none",
+          transition: "transform 0.2s, box-shadow 0.2s",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.1)";
+          e.currentTarget.style.boxShadow = "0 8px 25px rgba(37, 211, 102, 0.6)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.boxShadow = "0 6px 20px rgba(37, 211, 102, 0.45)";
+        }}
+        title="Tanya Kasir via WhatsApp (Fast Response)"
+      >
+        <i className="fab fa-whatsapp"></i>
+      </a>
     </>
   );
 }
